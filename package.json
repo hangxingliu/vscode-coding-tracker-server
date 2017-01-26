@@ -1,0 +1,37 @@
+{
+	"name": "vscode-coding-tracker-server",
+	"version": "0.1.3",
+	"description": "Visual Studio Code Coding Tracker Server Script",
+	"main": "app.js",
+	"scripts": {
+		"test": "mocha test/src/*.js",
+		"install-tsd": "npm install @types/colors @types/commander @types/express @types/body-parser @types/request @types/node @types/fs-extra",
+		"start": "node ./app"
+	},
+	"bin": {
+		"coding-tracker-server": "app.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hangxingliu/vscode-coding-tracker-server"
+	},
+	"keywords": [
+		"vscode",
+		"server",
+		"express",
+		"analyzer"
+	],
+	"dependencies": {
+		"express": "*",
+		"commander": "*",
+		"colors": "*",
+		"fs-extra": "*",
+		"morgan": "*",
+		"body-parser": "*"
+	},
+	"devDependencies": {
+		"mocha": "*"
+	},
+	"author": "hangxingliu",
+	"license": "GPL-3.0"
+}

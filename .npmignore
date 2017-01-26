@@ -1,0 +1,17 @@
+# ignore node modules
+node_modules
+
+# ignore test tracking data files
+database
+
+# ignore .vscode config
+.vscode
+
+# ignore .json folder
+.json
+
+# ignore spelling check config
+cSpell.json
+
+# ignore jsconfig.json
+jsconfig.json

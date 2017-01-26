@@ -1,0 +1,11 @@
+# ignore node modules
+node_modules
+
+# ignore test tracking data files
+database
+
+# ignore other files
+yarn.lock
+
+# spell checker dictionary file
+cSpell.json

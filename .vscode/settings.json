@@ -1,0 +1,12 @@
+{
+	"codingTracker.serverURL": "http://localhost:10345/",
+	"codingTracker.uploadToken": "123456",
+	"codingTracker.computerId": "ubuntuLaptop",
+
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/.DS_Store": true
+	}
+}
