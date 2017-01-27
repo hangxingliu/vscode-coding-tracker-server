@@ -21,3 +21,6 @@ TODO.md
 
 # ignore front-end library installer
 assets/INSTALL_LIB
+
+# ignore front-end dist files
+assets/dist

@@ -9,3 +9,6 @@ yarn.lock
 
 # spell checker dictionary file
 cSpell.json
+
+# ignore front-end dist files
+assets/dist
