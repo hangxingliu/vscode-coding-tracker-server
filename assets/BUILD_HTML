@@ -60,7 +60,7 @@ function launcher(isWatchMode) {
 	function done(status) {
 		var endTime = Date.now();
 		console.log(`\n${LINE}\n     ${
-			(status?('BUILD FAILED WITH EXIT CODE: '+ status).red:'BUILD SUCCESS!'.green)
+			(status?('PROCESS FRONTEND PAGES FAILED WITH EXIT CODE: '+ status).red:'PROCESS FRONTEND PAGES SUCCESS!'.green)
 		}   cost: ${(endTime - startTime)} ms\n${LINE}\n`);
 		isWatchMode || process.exit(status || 0);
 	}
