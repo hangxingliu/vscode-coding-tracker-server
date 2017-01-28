@@ -12,3 +12,6 @@ cSpell.json
 
 # ignore front-end dist files
 assets/dist
+
+# ignore private report result to test
+assets/test/PrivateReportResult.json
