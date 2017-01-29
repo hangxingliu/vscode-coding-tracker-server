@@ -19,7 +19,7 @@
 				<div class="panel panel-info">
 					<div class="panel-heading">Coding activities summary </div>
 					<div class="panel-body">
-						This is summary area
+						<div id="chartSummary" style="height: 250px"></div>
 					</div>
 				</div>
 			</div>
@@ -30,18 +30,15 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">Group by projects </div>
 					<div class="panel-body">
-						This is project area
-					</div>
-					<div class="panel-footer text-right">
-						<a href="#" >More...</a>
+						<div id="chartProject" style="height: 250px"></div>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div class="panel panel-success">
+				<div class="panel panel-default">
 					<div class="panel-heading">Computers </div>
 					<div class="panel-body">
-						This is computers area
+						<div id="chartComputer" style="height: 250px"></div>
 					</div>
 				</div>
 			</div>
@@ -52,24 +49,28 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">Group by files </div>
 					<div class="panel-body">
-						This is file area
-					</div>
-					<div class="panel-footer text-right">
-						<a href="#">More...</a>
+						<div id="chartFile" style="height: 250px"></div>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div class="panel panel-success">
+				<div class="panel panel-default">
 					<div class="panel-heading">Languages </div>
 					<div class="panel-body">
-						This is languages area
+						<div id="chartLanguage" style="height: 250px"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	=`load_status`
+
 	=`include_js`
+
+	<script src="js/charts.js"></script>		
+	<script src="js/utils.js"></script>		
+	<script src="js/load_status.js"></script>	
 	<script src="js/index.js"></script>
 </body>
 
