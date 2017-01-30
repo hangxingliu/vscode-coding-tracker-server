@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+## 0.2.0
+
+1. **Added beta version report web page** and analyze cli tools
+2. Added local mode, random token and public report options
+2. Allowed api/upload token passing by query string, such as `/ajax/report/last24hs?token=${YOUR_TOKEN}`
+3. Added more debug output in debug mode
 
 ## 0.1.3
 

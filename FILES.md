@@ -11,8 +11,14 @@
 - `lib/Version.js` version description and check module
 - `lib/Welcome.js` module to echo welcome and version information to express server
 - `lib/UpgradeDatabaseFiles.js` module to upgrade old version database files to current version
+- `lib/RandomToken.js` module to randomly generate token string
+
+- `lib/analyze/AnalyzeCore.js` analyze tracking data core class module
+- `lib/analyze/ReportMiddleware.js` a report API middleware
+
 
 - `database/*.*` Data of your vscode using track
 
 - `utils/cleanDatabaseFiles` a Node.js script to clean up a folder files
 - `utils/upgradeDatabaseFiles` a Node.js script to upgrade old database files in a folder to current version
+- `utils/analyzer` a Node.js utility for analyzing database files
