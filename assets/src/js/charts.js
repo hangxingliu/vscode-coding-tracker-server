@@ -5,13 +5,30 @@ var Charts = function () {
 		GREEN_AREA = { areaStyle: { normal: { color: '#c8e6c9' } } },
 		DARK_GREEN_LINE = { itemStyle: { normal: { color: '#1b5e20' } }, lineStyle: { normal: { color: '#1b5e20' } } },
 		DARK_GREEN_AREA = { areaStyle: { normal: { color: '#388e3c' } } },
+		
+		BLUE_LINE = { itemStyle: { normal: { color: '#29b6f6' } }, lineStyle: { normal: { color: '#29b6f6' } } },
+		BLUE_AREA = { areaStyle: { normal: { color: '#b3e5fc' } } },
+		DARK_BLUE_LINE = { itemStyle: { normal: { color: '#01579b' } }, lineStyle: { normal: { color: '#01579b' } } },
+		DARK_BLUE_AREA = { areaStyle: { normal: { color: '#0288d1' } } },
+
+		YELLOW_BAR = { itemStyle: { normal: { color: '#fff59d' } } },
+		PURPLE_BAR = { itemStyle: { normal: { color: '#ce93d8' } } },
+
+		//lighten-3
+		COLOR_PALETTE_1 = ['#a5d6a7', '#80cbc4', '#90caf9', '#80deea', '#ef9a9a', '#fff59d', '#ffcc80', '#bcaaa4' ,'#b0bec5'],
+		//normal
+		COLOR_PALETTE_2 = ['#4caf50', '#2196f3', '#ffeb3b', '#f44336', '#9c27b0', '#009688', '#ff9800', '#795548'],
+
 		MAX_MARK_POINT = { markPoint: { data: [{ type: 'max', name: 'max time' }] } },
 		AVERAGE_LINE = { markLine: { data: [{ type: 'average', name: 'average time' }] } },
 		PIE_NO_LABEL = { label: { normal: { show: false } } },
 		SMOOTH = { smooth: true },
-		NORMAL_GRID = { left: '20', right: '20', bottom: '10', top: '10', containLabel: true };
+		NORMAL_GRID = { left: '20', right: '20', bottom: '10', top: '10', containLabel: true },
+		AXIS_LABEL_HOURS = { axisLabel: { formatter: '{value} hs' } },
+		AXIS_LABEL_MINUTES = { axisLabel: { formatter: '{value} mins' } };
 
 	var $chartSummary = $('#chartSummary'),
+		$chartLast24Hs = $('#chartLast24Hs'),
 		$chartComputer = $('#chartComputer'),
 		$chartLanguage = $('#chartLanguage'),
 		$chartProject = $('#chartProject'),
@@ -20,7 +37,8 @@ var Charts = function () {
 		echartsComputer = echarts.init($chartComputer[0]),
 		echartsLanguage = echarts.init($chartLanguage[0]),
 		echartsProject = echarts.init($chartProject[0]),
-		echartsFile = echarts.init($chartFile[0]);
+		echartsFile = echarts.init($chartFile[0]),
+		echartsLast24Hs = echarts.init($chartLast24Hs[0]);
 
 	
 	this.setSummaryData = dataGroupByDate => {
@@ -32,9 +50,8 @@ var Charts = function () {
 			(codingTimeValues.push(data[key].coding),
 				watchingTimeValues.push(data[key].watching)));
 		echartsSummary.setOption({
-			legend: { data: [''] },
 			xAxis: { data: xText, boundaryGap: true },
-			yAxis: {},
+			yAxis: AXIS_LABEL_HOURS,
 			grid: NORMAL_GRID,
 			tooltip: { trigger: 'axis' },
 			series: [
@@ -47,23 +64,41 @@ var Charts = function () {
 		
 	};
 
+	this.setLast24HsData = dataGroupByHour => {
+		var data = Utils.convertGroupByDataUnit2Minutes(dataGroupByHour),
+			xText = Object.keys(data).sort(),
+			codingTimeValues = [],
+			watchingTimeValues = [];
+		xText.forEach(key =>
+			(codingTimeValues.push(data[key].coding),
+				watchingTimeValues.push(data[key].watching)));
+		xText = xText.map(v => v.slice(11));
+		echartsLast24Hs.setOption({
+			xAxis: { data: xText, boundaryGap: true },
+			yAxis: AXIS_LABEL_MINUTES,
+			grid: NORMAL_GRID,
+			tooltip: { trigger: 'axis' },
+			series: [
+				Utils.genLineChartSeriesOption('Watching time', watchingTimeValues,
+					group(SMOOTH, BLUE_AREA, BLUE_LINE, MAX_MARK_POINT, AVERAGE_LINE)),
+				Utils.genLineChartSeriesOption('Coding time', codingTimeValues,
+					group(SMOOTH, DARK_BLUE_AREA, DARK_BLUE_LINE, MAX_MARK_POINT, AVERAGE_LINE))
+			]
+		});
+	};
+
+
 	this.setComputerData = dataGroupByComputer => {
 		var data = Utils.convertGroupByDataUnit2Hour(dataGroupByComputer);
 		var xText = Object.keys(dataGroupByComputer).sort((a, b) => data[a].watching - data[b].watching),
-			codingTimeValues = [],
 			watchingTimeValues = [];
-		xText.forEach(name =>
-			(codingTimeValues.push({ name, value:data[name].coding }),
-				watchingTimeValues.push({ name, value:data[name].watching })));
+		xText.forEach(name => watchingTimeValues.push({ name, value:data[name].watching }));
 		echartsComputer.setOption({
-			legend: { data: [''] },
+			color: COLOR_PALETTE_2,
 			grid: NORMAL_GRID,
 			tooltip: { trigger: 'item' },
 			series: [
-				Utils.genPieSeriesOption('Watching time', watchingTimeValues,
-					group({radius: [0, '50%']}, PIE_NO_LABEL)),
-				Utils.genPieSeriesOption('Coding time', codingTimeValues,
-					group({radius: ['65%', '80%']}))
+				Utils.genPieSeriesOption('Watching time', watchingTimeValues, {})
 			]
 		});
 	};
@@ -74,7 +109,7 @@ var Charts = function () {
 			watchingTimeValues = [];
 		xText.forEach(name => watchingTimeValues.push({ name, value: data[name].watching }));
 		echartsLanguage.setOption({
-			legend: { data: [''] },
+			color: COLOR_PALETTE_2,
 			grid: NORMAL_GRID,
 			tooltip: { trigger: 'item' },
 			series: [
@@ -101,11 +136,12 @@ var Charts = function () {
 			},
 			xAxis: {
 				type: 'value', name: 'Watching Time', nameLocation: 'end',
-				position: 'top', axisTick: { show: false }, axisLabel: { interval: 0, formatter: '{value} h', }
+				position: 'top', axisTick: { show: false }, axisLabel: AXIS_LABEL_HOURS.axisLabel
 			},
 			tooltip: { trigger: 'item' },
 			series: [
-				Utils.genBarSeriesOption('Watching time', watchingTimeValues, {})
+				Utils.genBarSeriesOption('Watching time', watchingTimeValues,
+					group(YELLOW_BAR))
 			]
 		});
 	};
@@ -128,11 +164,12 @@ var Charts = function () {
 			},
 			xAxis: {
 				type: 'value', name: 'Watching Time', nameLocation: 'end',
-				position: 'top', axisTick: { show: false }, axisLabel: { interval: 0, formatter: '{value} h', }
+				position: 'top', axisTick: { show: false }, axisLabel: AXIS_LABEL_HOURS.axisLabel
 			},
 			tooltip: { trigger: 'item' },
 			series: [
-				Utils.genBarSeriesOption('Watching time', watchingTimeValues, {})
+				Utils.genBarSeriesOption('Watching time', watchingTimeValues,
+					group(PURPLE_BAR))
 			]
 		});
 	};

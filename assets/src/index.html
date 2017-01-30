@@ -16,14 +16,25 @@
 	<div class="container" style="padding-top: 60px;padding-bottom: 20px">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="panel panel-info">
+				<div class="panel panel-success">
 					<div class="panel-heading">Coding activities summary </div>
 					<div class="panel-body">
 						<div id="chartSummary" style="height: 250px"></div>
 					</div>
 				</div>
 			</div>
-		</div><br>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-info">
+					<div class="panel-heading">Last 24 hours summary </div>
+					<div class="panel-body">
+						<div id="chartLast24Hs" style="height: 250px"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<div class="row">
 			<div class="col-md-8">
@@ -42,7 +53,7 @@
 					</div>
 				</div>
 			</div>
-		</div><br>
+		</div>
 		
 		<div class="row">
 			<div class="col-md-8">
@@ -64,6 +75,9 @@
 		</div>
 	</div>
 
+	=`bottom_info`
+
+
 	=`load_status`
 
 	=`include_js`
@@ -72,6 +86,9 @@
 	<script src="js/utils.js"></script>		
 	<script src="js/load_status.js"></script>	
 	<script src="js/index.js"></script>
+	<script src="js/version.js"></script>
+
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 
 </html>

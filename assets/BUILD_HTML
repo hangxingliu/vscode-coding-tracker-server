@@ -38,9 +38,14 @@ function main(done) {
 	function handlerHTMLFile(fileName) {
 		var distFile = `${DIST_PATH}/${fileName}`;
 		var srcFile = `${SOURCE_PATH}/${fileName}`;
-		var content = fs.readFileSync(srcFile, 'utf8');
-		content = content.replace(/(\s)\=`([\w\.]+)`(\s)/g, (_, a, name, b) =>
-			`${a}${fs.readFileSync(MODULE_PATH + '/' + name + '.html', 'utf8')}${b}`);
+		var content = fs.readFileSync(srcFile, 'utf8'),
+			lastContent = '',
+			maxTime = 16;
+		do {
+			lastContent = content;
+			content = content.replace(/(\s)\=`([\w\.]+)`(\s)/g, (_, a, name, b) =>
+				`${a}${fs.readFileSync(MODULE_PATH + '/' + name + '.html', 'utf8')}${b}`);
+		} while (lastContent != content && maxTime--);
 		fs.writeFileSync(distFile, content, 'utf8');
 	}
 }

@@ -3,8 +3,10 @@ var App = function () {
 	var reportDays = 7,
 		reportProject = null;
 
-	var getBaseReportDataURL = () => `/test/data?days=${reportDays}`,
-		getProjectReportDataURL = () => `/test/data?project=${reportProject}&days=${reportDays}`;
+	var baseURL = '/ajax/report',
+		getBaseReportDataURL = () => `${baseURL}/recent?days=${reportDays}`,
+		getLast24HoursDataURL = (now) => `${baseURL}/last24hs?ts=${now}`,
+		getProjectReportDataURL = () => `${baseURL}/project?project=${reportProject}&days=${reportDays}`;
 
 	var loadStatus = new LoadStatus($('#statusDialog')),
 		$reportDateRange = $('#selectReportDateRange');	
@@ -14,8 +16,11 @@ var App = function () {
 	
 	
 	startAjaxGetBaseReportData();
+	startAjaxGetLast24HoursData();
 
 	function startAjaxGetBaseReportData() {
+		reportDays = Number($reportDateRange.val());
+
 		loadStatus.showLoading();
 		$.ajax({
 			method: 'GET',
@@ -24,7 +29,22 @@ var App = function () {
 			error: data => loadStatus.showFailed(data)
 		});
 	}
+	
+	function startAjaxGetLast24HoursData() {
+		var now = Date.now();
+		$.ajax({
+			method: 'GET',
+			url: getLast24HoursDataURL(now),
+			success: data => handler(data),
+			error: data => loadStatus.showFailed(data)			
+		})
 
+		function handler(data) {
+			charts.setLast24HsData(Utils.expandAndShortGroupByHoursObject(data.groupBy.hour, now));
+		}	
+	}
+
+//Working today logic
 	function handlerBaseReportData(data) {
 
 		//-----------show summary chart--------
