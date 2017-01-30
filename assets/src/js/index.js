@@ -3,10 +3,13 @@ var App = function () {
 	var reportDays = 7,
 		reportProject = null;
 
+	//get API token passing by query string
+	var APIToken = (location.href.match(/[\?\&]token\=(.+?)(\&|$)/)||['',''])[1]
+	
 	var baseURL = '/ajax/report',
-		getBaseReportDataURL = () => `${baseURL}/recent?days=${reportDays}`,
-		getLast24HoursDataURL = (now) => `${baseURL}/last24hs?ts=${now}`,
-		getProjectReportDataURL = () => `${baseURL}/project?project=${reportProject}&days=${reportDays}`;
+		getBaseReportDataURL = () => `${baseURL}/recent?days=${reportDays}&token=${APIToken}`,
+		getLast24HoursDataURL = (now) => `${baseURL}/last24hs?ts=${now}&token=${APIToken}`,
+		getProjectReportDataURL = () => `${baseURL}/project?project=${reportProject}&days=${reportDays}&token=${APIToken}`;
 
 	var loadStatus = new LoadStatus($('#statusDialog')),
 		$reportDateRange = $('#selectReportDateRange');	
@@ -46,6 +49,10 @@ var App = function () {
 
 //Working today logic
 	function handlerBaseReportData(data) {
+		if (data.error)
+			return loadStatus.showFailed($.extend(true, data, {
+				tip: 'You can visit private report page by passing token like this: ' +
+					'`http://domain:port/report/?token=${YOUR TOKEN}`' }));
 
 		//-----------show summary chart--------
 		var today = new Date();
