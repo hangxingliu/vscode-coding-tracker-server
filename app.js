@@ -70,8 +70,12 @@ var log = require('./lib/Log'),
 	errorHandler = require('./lib/Handler404and500'),
 	tokenChecker = require('./lib/TokenMiddleware'),
 	reporter = require('./lib/analyze/ReportMiddleware'),
-	upgrader = require('./lib/UpgradeDatabaseFiles'),
+	upgrade = require('./lib/UpgradeDatabaseFiles'),
+	randomToken = require('./lib/RandomToken'),
 	Program = require('./lib/Launcher');
+
+//If using random token
+Program.token = Program.randomToken ? randomToken.gen() : Program.token;
 
 //Express Server Object
 var app = Express();
@@ -94,11 +98,16 @@ app.use(welcome);
 app.use('/report', Express.static(`${__dirname}/assets/dist`));
 app.use('/lib', Express.static(`${__dirname}/assets/lib`));
 
-//Using analyze report ajax middleware
-app.use('/ajax/report', reporter.init(Program.output));
+
+//If it is public report. Bind analyze report ajax middleware
+Program.publicReport && bindReportAPI2Server();
 
 //Using a upload token checker middleware
 app.use(tokenChecker.get(Program.token));
+
+//private report. Bind analyze report ajax middleware
+Program.publicReport || bindReportAPI2Server();
+
 
 //Handler upload request
 app.post('/ajax/upload', (req, res) => {
@@ -128,18 +137,31 @@ errorHandler(app);
 //|            Launch Server           |
 //--------------------------------------
 
-//If ouput folder is not exists then mkdirs
+//If output folder is not exists then mkdirs
 Fs.existsSync(Program.output) || Fs.mkdirsSync(Program.output);
 //upgrade exists old database files
 upgradeOldDatabaseFiles(Program.output);
 //Launch express web server
-app.listen(Program.port, () => 
-	Log.success('Server has launched and listening port ' + Program.port) );
+Program.local ?
+	app.listen(Program.port, '127.0.0.1', afterServerStarted) :	
+	app.listen(Program.port, afterServerStarted);
 
 
 function returnError(res, errInfo) { res.json({ error: errInfo || 'Unknown error' }).end() }
+
+function bindReportAPI2Server() { app.use('/ajax/report', reporter.init(Program.output)) }
+
 function upgradeOldDatabaseFiles(databaseFolder) {
-	var upgradeResult = upgrader.upgrade(Program.output);
+	var upgradeResult = upgrade.upgrade(Program.output);
 	upgradeResult.count == 0 || Log.info(`**********\nupgrade old version database file version to ${version.storage}\n` +
 		`  there are ${upgradeResult.count} old version database files be upgrade\n**********`);
+}
+
+function afterServerStarted() {
+	Log.success(`Server started!\n` +
+		`-------------------\n` +	
+		`Listening port    : ${Program.port}\n` +
+		`API/Upload token  : ${Program.token}\n` +
+		`Report Permission : ${Program.publicReport ? 'public' : 'private'}\n` +
+		`-------------------`);
 }
