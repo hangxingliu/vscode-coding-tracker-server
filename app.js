@@ -69,6 +69,7 @@ var log = require('./lib/Log'),
 	checker = require('./lib/ParamsChecker'),
 	errorHandler = require('./lib/Handler404and500'),
 	tokenChecker = require('./lib/TokenMiddleware'),
+	reporter = require('./lib/analyze/ReportMiddleware'),
 	upgrader = require('./lib/UpgradeDatabaseFiles'),
 	Program = require('./lib/Launcher');
 
@@ -85,8 +86,17 @@ DEBUG && Log.info('Debug mode be turned on!') +
 app.use(require('morgan')('dev'));
 //Using body parser to analyze upload data
 app.use(require('body-parser').urlencoded({ extended: false }));
+
 //Using homepage welcome
 app.use(welcome);
+
+//Using front end static files
+app.use('/report', Express.static(`${__dirname}/assets/dist`));
+app.use('/lib', Express.static(`${__dirname}/assets/lib`));
+
+//Using analyze report ajax middleware
+app.use('/ajax/report', reporter.init(Program.output));
+
 //Using a upload token checker middleware
 app.use(tokenChecker.get(Program.token));
 
@@ -109,6 +119,7 @@ app.post('/ajax/upload', (req, res) => {
 		//Response HTTP request
 		  res.json({ success: 'upload success' }).end();
 });
+
 //add 404 and 500 response to express server
 errorHandler(app);
  
