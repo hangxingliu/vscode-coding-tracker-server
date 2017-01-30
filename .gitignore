@@ -15,3 +15,6 @@ assets/dist
 
 # ignore private report result to test
 assets/test/PrivateReportResult.json
+
+# ignore log file included npm log
+*.log

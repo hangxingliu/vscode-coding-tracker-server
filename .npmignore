@@ -28,3 +28,6 @@ assets/test/PrivateReportResult.json
 
 # ignore front-end dist files
 assets/dist
+
+# ignore log file included npm log
+*.log
