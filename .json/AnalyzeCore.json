@@ -34,6 +34,8 @@
 		"Result" : {
 			"total": {"coding": 10240, "watching": 20480},
 			"groupBy": {
+				"hour": [],
+				"file": [],
 				"day": [
 					{"name": 1485324624026, "coding": 1024, "watching": 2048},
 					{"name": 1485325624026, "coding": 1024, "watching": 2048},

@@ -7,6 +7,17 @@
 		"**/.git": true,
 		"**/.svn": true,
 		"**/.hg": true,
-		"**/.DS_Store": true
+		"**/.DS_Store": true,
+		"assets/dist": true
+	},
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/bower_components": true,
+		"assets/dist": true
+	},
+	"files.watcherExclude": {
+		"**/.git/objects/**": true,
+		"**/node_modules/**": true,
+		"assets/dist": true
 	}
 }

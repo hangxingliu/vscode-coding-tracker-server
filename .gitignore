@@ -9,3 +9,12 @@ yarn.lock
 
 # spell checker dictionary file
 cSpell.json
+
+# ignore front-end dist files
+assets/dist
+
+# ignore private report result to test
+assets/test/PrivateReportResult.json
+
+# ignore log file included npm log
+*.log

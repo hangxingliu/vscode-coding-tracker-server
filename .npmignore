@@ -18,3 +18,16 @@ jsconfig.json
 
 # ignore TODO.md
 TODO.md
+
+# ignore front-end library installer and test server
+assets/INSTALL_LIB
+assets/TEST_SERVER
+
+# ignore private report result to test
+assets/test/PrivateReportResult.json
+
+# ignore front-end dist files
+assets/dist
+
+# ignore log file included npm log
+*.log

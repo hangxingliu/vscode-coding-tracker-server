@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+
+var Req = require('request'),
+	colors = require('colors'),	
+	path = require('path'),
+	fs = require('fs-extra');
+
+var cdn = 'http://cdn.bootcss.com';
+var lib = `${__dirname}/lib/`
+
+
+var dl = [
+	'-- jquery',
+	'/jquery/2.2.4/jquery.min.js',
+
+	'-- bootstrap',	
+	'/bootstrap/3.3.7/css/bootstrap.min.css',
+	'/bootstrap/3.3.7/js/bootstrap.min.js',
+	'/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg',
+	'/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot',
+	'/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg',
+	'/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.ttf',
+	'/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff',
+	'/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff2',
+
+	'-- echarts',	
+	'/echarts/3.4.0/echarts.min.js',
+
+	'-- ionicons',
+	'/ionicons/2.0.1/css/ionicons.min.css',
+	'/ionicons/2.0.1/fonts/ionicons.eot',
+	'/ionicons/2.0.1/fonts/ionicons.svg',
+	'/ionicons/2.0.1/fonts/ionicons.ttf',
+	'/ionicons/2.0.1/fonts/ionicons.woff'
+
+], i = 0, total = dl.length;
+
+var timerStart = Date.now();
+
+download();
+function download(retry) {
+	if (i == total) {
+		var cost = Date.now() - timerStart;
+		cost = (cost / 1000).toFixed(0).green;
+		console.log('');
+		console.log('========================================================');
+		console.log(` ${'Install Frontend library success!'.green}     cost: ${cost}s `);
+		console.log('========================================================');
+		return;
+	}	
+	if (dl[i].startsWith('-- ')) {
+		console.log(`\n${dl[i].slice(3).trim()}`.cyan);
+		i++;
+		return download();
+	}
+	
+	var dlFrom = dl[i],
+		dlTo = lib + dlFrom.replace(/\/\d+\.\d+\.\d+\//, () => '/');
+	
+	fs.mkdirsSync(path.dirname(dlTo) );
+	console.log(`[${i+1}/${total}] ${retry?'Retrying':'Downloading'} ${dlFrom} ...`);
+	Req(dlFrom, {
+		method: 'GET',
+		baseUrl: cdn
+	}).on('error', (err) => 
+		console.log(`[${i + 1}/${total}] Download error: ${dlFrom}\n${err.stack}`.red) +
+		process.nextTick(() => download(true))
+	).on('complete', () => {
+		console.log(`[${i + 1}/${total}] Downalod success`.green);
+		i++;		
+		process.nextTick(() => download());		
+	}).pipe(fs.createWriteStream(dlTo));
+}
+

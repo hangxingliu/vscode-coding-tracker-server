@@ -10,23 +10,42 @@ VSCode Coding Tracker extension server side program.
 > That repository be separate from above extension repository.
 > So you could find more older commit information in that repository. 
 
+## Screenshot
+
+![screenshots1](screenshots/1.png)
 
 ## How To Install And Use
 
 1. Make sure You have installed `Node.js` development environment included `npm`
 2. Install this server program
-	- Way 1 : Clone this repository and execute `npm i` in the folder where this README.md located 
-	- Way 2 : Using `npm i vscode-coding-tracker-server` anywhere you want to install to
-3. Execute `npm start` or `node app` to launch this server program. 
+	- Way 1 : Clone this repository and execute **`npm i`** in the folder where this README.md located 
+	- Way 2 : Using **`npm i vscode-coding-tracker-server`** anywhere you want to install to
+3. Execute **`npm start`** or **`node app`** to launch this server program. 
+	- You could give it more options like **`npm start -- ${MORE_SERVER_OPTIONS}`** if you start it by using `npm start`
+4. Open URL `http://domain:port/report?token=${YOUR_TOKEN}` to get coding report
+	- In default, URL in local is `http://127.0.0.1:10345/report?token=${YOUR_TOKEN}`
+	- If you using `--public-report` option to launch server, you could ignore the query parameter `token` in above URL
+
+> More server option things:
+>
+> `--local`: It means server bind address on `127.0.0.1` when server listening.
+> **(Other computer could not upload data and visit report page in this mode)**
+>
+> `--random-port`: It means server will using a 8 length random string as API/upload token
+>  **even if you giving a token by `-t` option**
+>
+> `--public-report`: It means anyone could visit report page without token
+> 
+> **more options information you could find by using command `node app --help`**
 
 ## Current Version
 
-## 0.1.3
+## 0.2.0
 
-1. Upgraded storage database file version from 2.0 to 3.0
-2. Added two useful utilities (cleaner and updater)
-3. Supported 3.0 upload format included upload computer ID
-4. Fixed some bug
+1. **Added beta version report web page** and analyze cli tools
+2. Added local mode, random token and public report options
+2. Allowed api/upload token passing by query string, such as `/ajax/report/last24hs?token=${YOUR_TOKEN}`
+3. Added more debug output in debug mode
 
 more version information: [CHANGELOG.md](CHANGELOG.md)
 

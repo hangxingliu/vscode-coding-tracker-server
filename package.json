@@ -1,11 +1,11 @@
 {
 	"name": "vscode-coding-tracker-server",
-	"version": "0.1.3",
+	"version": "0.2.0",
 	"description": "Visual Studio Code Coding Tracker Server Script",
 	"main": "app.js",
 	"scripts": {
 		"test": "mocha test/src/*.js",
-		"install-tsd": "npm install @types/colors @types/commander @types/express @types/body-parser @types/request @types/node @types/fs-extra",
+		"postinstall": "node ./assets/BUILD_HTML",
 		"start": "node ./app"
 	},
 	"bin": {

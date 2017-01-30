@@ -5,7 +5,7 @@
  *
  * Author: LiuYue
  * Github: https://github.com/hangxingliu
- * Version: 0.1.3
+ * Version: 0.2.0
  * License: GPL-3.0
  */
 
@@ -69,8 +69,13 @@ var log = require('./lib/Log'),
 	checker = require('./lib/ParamsChecker'),
 	errorHandler = require('./lib/Handler404and500'),
 	tokenChecker = require('./lib/TokenMiddleware'),
-	upgrader = require('./lib/UpgradeDatabaseFiles'),
+	reporter = require('./lib/analyze/ReportMiddleware'),
+	upgrade = require('./lib/UpgradeDatabaseFiles'),
+	randomToken = require('./lib/RandomToken'),
 	Program = require('./lib/Launcher');
+
+//If using random token
+Program.token = Program.randomToken ? randomToken.gen() : Program.token;
 
 //Express Server Object
 var app = Express();
@@ -85,10 +90,24 @@ DEBUG && Log.info('Debug mode be turned on!') +
 app.use(require('morgan')('dev'));
 //Using body parser to analyze upload data
 app.use(require('body-parser').urlencoded({ extended: false }));
+
 //Using homepage welcome
 app.use(welcome);
+
+//Using front end static files
+app.use('/report', Express.static(`${__dirname}/assets/dist`));
+app.use('/lib', Express.static(`${__dirname}/assets/lib`));
+
+
+//If it is public report. Bind analyze report ajax middleware
+Program.publicReport && bindReportAPI2Server();
+
 //Using a upload token checker middleware
 app.use(tokenChecker.get(Program.token));
+
+//private report. Bind analyze report ajax middleware
+Program.publicReport || bindReportAPI2Server();
+
 
 //Handler upload request
 app.post('/ajax/upload', (req, res) => {
@@ -109,6 +128,7 @@ app.post('/ajax/upload', (req, res) => {
 		//Response HTTP request
 		  res.json({ success: 'upload success' }).end();
 });
+
 //add 404 and 500 response to express server
 errorHandler(app);
  
@@ -117,18 +137,31 @@ errorHandler(app);
 //|            Launch Server           |
 //--------------------------------------
 
-//If ouput folder is not exists then mkdirs
+//If output folder is not exists then mkdirs
 Fs.existsSync(Program.output) || Fs.mkdirsSync(Program.output);
 //upgrade exists old database files
 upgradeOldDatabaseFiles(Program.output);
 //Launch express web server
-app.listen(Program.port, () => 
-	Log.success('Server has launched and listening port ' + Program.port) );
+Program.local ?
+	app.listen(Program.port, '127.0.0.1', afterServerStarted) :	
+	app.listen(Program.port, afterServerStarted);
 
 
 function returnError(res, errInfo) { res.json({ error: errInfo || 'Unknown error' }).end() }
+
+function bindReportAPI2Server() { app.use('/ajax/report', reporter.init(Program.output)) }
+
 function upgradeOldDatabaseFiles(databaseFolder) {
-	var upgradeResult = upgrader.upgrade(Program.output);
+	var upgradeResult = upgrade.upgrade(Program.output);
 	upgradeResult.count == 0 || Log.info(`**********\nupgrade old version database file version to ${version.storage}\n` +
 		`  there are ${upgradeResult.count} old version database files be upgrade\n**********`);
+}
+
+function afterServerStarted() {
+	Log.success(`Server started!\n` +
+		`-------------------\n` +	
+		`Listening port    : ${Program.port}\n` +
+		`API/Upload token  : ${Program.token}\n` +
+		`Report Permission : ${Program.publicReport ? 'public' : 'private'}\n` +
+		`-------------------`);
 }
