@@ -109,7 +109,7 @@ app.use(tokenChecker.get(Program.token));
 Program.publicReport || bindReportAPI2Server();
 
 //Handler API token test request
-app.use('/ajax/test', (req, res) => res.json({ success: '' }).end());
+app.use('/ajax/test', (req, res) => res.json({ success: 'test success!' }).end());
 
 //Handler kill server request
 app.use('/ajax/kill', (req, res) => {
