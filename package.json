@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "mocha": "*",
+    "request": "*",
     "tree-kill": "*"
   },
   "author": "hangxingliu",

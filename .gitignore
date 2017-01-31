@@ -18,3 +18,6 @@ assets/test/PrivateReportResult.json
 
 # ignore log file included npm log
 *.log
+
+# ignore unit test resources folder
+test/resources
