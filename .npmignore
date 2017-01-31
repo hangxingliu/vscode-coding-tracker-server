@@ -31,3 +31,12 @@ assets/dist
 
 # ignore log file included npm log
 *.log
+
+# ignore unit test resources folder
+test/resources
+
+# ignore eslintrc
+.eslintrc.json
+
+# ignore git client hooks
+/hooks

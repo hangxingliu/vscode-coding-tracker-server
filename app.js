@@ -84,7 +84,7 @@ var app = Express();
 storage.init(Program.output);
 
 //Display now is debug mode
-DEBUG && Log.info('Debug mode be turned on!') + 
+DEBUG && log.info('Debug mode be turned on!') + 
 
 //Using visitor log record (if under the debug mode)	
 app.use(require('morgan')('dev'));
@@ -92,7 +92,7 @@ app.use(require('morgan')('dev'));
 app.use(require('body-parser').urlencoded({ extended: false }));
 
 //Using homepage welcome
-app.use(welcome);
+app.use(welcome(Program));
 
 //Using front end static files
 app.use('/report', Express.static(`${__dirname}/assets/dist`));
@@ -108,6 +108,16 @@ app.use(tokenChecker.get(Program.token));
 //private report. Bind analyze report ajax middleware
 Program.publicReport || bindReportAPI2Server();
 
+//Handler API token test request
+app.use('/ajax/test', (req, res) => res.json({ success: 'test success!' }).end());
+
+//Handler kill server request
+app.use('/ajax/kill', (req, res) => {
+	return !Program.local ? returnError(res, 'this server is not a local server, could not be kill') :
+		(res.json({ success: 'killed' }).end(),
+			log.success(`Server killed by "/ajax/kill" API`), 
+			process.nextTick(() => process.exit(0)));
+})
 
 //Handler upload request
 app.post('/ajax/upload', (req, res) => {
@@ -116,7 +126,7 @@ app.post('/ajax/upload', (req, res) => {
 
 	//Check upload version
 	if (versionCheckResult !== true)
-		return Log.error(versionCheckResult) + returnError(res, versionCheckResult);
+		return log.error(versionCheckResult) + returnError(res, versionCheckResult);
 	
 	//Check params
 	params = checker(params);
@@ -152,13 +162,13 @@ function returnError(res, errInfo) { res.json({ error: errInfo || 'Unknown error
 function bindReportAPI2Server() { app.use('/ajax/report', reporter.init(Program.output)) }
 
 function upgradeOldDatabaseFiles(databaseFolder) {
-	var upgradeResult = upgrade.upgrade(Program.output);
-	upgradeResult.count == 0 || Log.info(`**********\nupgrade old version database file version to ${version.storage}\n` +
+	var upgradeResult = upgrade.upgrade(databaseFolder);
+	upgradeResult.count == 0 || log.info(`**********\nupgrade old version database file version to ${version.storage}\n` +
 		`  there are ${upgradeResult.count} old version database files be upgrade\n**********`);
 }
 
 function afterServerStarted() {
-	Log.success(`Server started!\n` +
+	log.success(`Server started!\n` +
 		`-------------------\n` +	
 		`Listening port    : ${Program.port}\n` +
 		`API/Upload token  : ${Program.token}\n` +

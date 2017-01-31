@@ -1,37 +1,40 @@
 {
-	"name": "vscode-coding-tracker-server",
-	"version": "0.2.0",
-	"description": "Visual Studio Code Coding Tracker Server Script",
-	"main": "app.js",
-	"scripts": {
-		"test": "mocha test/src/*.js",
-		"postinstall": "node ./assets/BUILD_HTML",
-		"start": "node ./app"
-	},
-	"bin": {
-		"coding-tracker-server": "app.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/hangxingliu/vscode-coding-tracker-server"
-	},
-	"keywords": [
-		"vscode",
-		"server",
-		"express",
-		"analyzer"
-	],
-	"dependencies": {
-		"express": "*",
-		"commander": "*",
-		"colors": "*",
-		"fs-extra": "*",
-		"morgan": "*",
-		"body-parser": "*"
-	},
-	"devDependencies": {
-		"mocha": "*"
-	},
-	"author": "hangxingliu",
-	"license": "GPL-3.0"
+  "name": "vscode-coding-tracker-server",
+  "version": "0.3.0",
+  "description": "Visual Studio Code Coding Tracker Server Script",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha test/src/*.js",
+    "postinstall": "node ./assets/BUILD_HTML",
+    "start": "node ./app",
+    "install-git-hooks": "cp ./hooks/pre-commit ./.git/hooks -f"
+  },
+  "bin": {
+    "coding-tracker-server": "app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hangxingliu/vscode-coding-tracker-server"
+  },
+  "keywords": [
+    "vscode",
+    "server",
+    "express",
+    "analyzer"
+  ],
+  "dependencies": {
+    "express": "*",
+    "commander": "*",
+    "colors": "*",
+    "fs-extra": "*",
+    "morgan": "*",
+    "body-parser": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "request": "*",
+    "tree-kill": "*"
+  },
+  "author": "hangxingliu",
+  "license": "GPL-3.0"
 }

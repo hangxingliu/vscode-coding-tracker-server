@@ -22,3 +22,10 @@
 - `utils/cleanDatabaseFiles` a Node.js script to clean up a folder files
 - `utils/upgradeDatabaseFiles` a Node.js script to upgrade old database files in a folder to current version
 - `utils/analyzer` a Node.js utility for analyzing database files
+
+- `hooks/pre-commit` bash script to launch pre-commit-test.js script before commit
+- `hooks/pre-commit-test.js` a Node.js script to check are unit test passed before commit. And block commit if test failed
+
+- `test/` some test scripts
+
+- `assets` some frontend files, its test files, its build files
