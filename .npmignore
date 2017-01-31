@@ -37,3 +37,6 @@ test/resources
 
 # ignore eslintrc
 .eslintrc.json
+
+# ignore git client hooks
+/hooks
