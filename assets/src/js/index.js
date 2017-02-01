@@ -8,8 +8,8 @@ var App = function () {
 	
 	var baseURL = '/ajax/report',
 		getBaseReportDataURL = () => `${baseURL}/recent?days=${reportDays}&token=${APIToken}`,
-		getLast24HoursDataURL = (now) => `${baseURL}/last24hs?ts=${now}&token=${APIToken}`,
-		getProjectReportDataURL = () => `${baseURL}/project?project=${reportProject}&days=${reportDays}&token=${APIToken}`;
+		getLast24HoursDataURL = (now) => `${baseURL}/last24hs?ts=${now}&token=${APIToken}`;
+		// getProjectReportDataURL = () => `${baseURL}/project?project=${reportProject}&days=${reportDays}&token=${APIToken}`;
 
 	var loadStatus = new LoadStatus($('#statusDialog')),
 		$reportDateRange = $('#selectReportDateRange');	
@@ -44,11 +44,16 @@ var App = function () {
 
 		function handler(data) {
 			charts.setLast24HsData(Utils.expandAndShortGroupByHoursObject(data.groupBy.hour, now));
+			//last 24 hours counter
+			var totalData = Utils.convertGroupByDataUnit2Hour({ total: data.total }).total;
+			$('#counterLast24Hs').html(`total: watching time: <b>${totalData.watching}</b> hs. coding time: <b>${totalData.coding}</b> hs`);
+
 		}	
 	}
 
-//Working today logic
+	
 	function handlerBaseReportData(data) {
+
 		if (data.error)
 			return loadStatus.showFailed($.extend(true, data, {
 				tip: 'You can visit private report page by passing token like this: ' +
@@ -58,9 +63,14 @@ var App = function () {
 		var today = new Date();
 		var startDate = new Date(today);
 		startDate.setDate(startDate.getDate() - reportDays + 1);
-		var groupByDayData = data.groupBy.day;
+		var groupByDayData = $.extend(true, {}, data.groupBy.day);
 		var data1 = Utils.expandGroupByDaysObject(groupByDayData, startDate, today);
 		charts.setSummaryData(data1);
+		
+		//summary counter
+		var totalData = Utils.convertGroupByDataUnit2Hour({ total: data.total }).total;
+		$('#counterSummary').html(`total: watching time: <b>${totalData.watching}</b> hs. coding time: <b>${totalData.coding}</b> hs`);
+
 		//-------------------------------------
 		
 		//-----------computer chart------------
