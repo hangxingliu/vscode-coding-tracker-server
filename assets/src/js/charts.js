@@ -50,8 +50,8 @@ var Charts = function () {
 			(codingTimeValues.push(data[key].coding),
 				watchingTimeValues.push(data[key].watching)));
 		echartsSummary.setOption({
-			xAxis: { data: xText, boundaryGap: true },
-			yAxis: AXIS_LABEL_HOURS,
+			xAxis: { data: xText },
+			yAxis: group(AXIS_LABEL_HOURS, {boundaryGap: [0, 0.2]}),
 			grid: NORMAL_GRID,
 			tooltip: { trigger: 'axis' },
 			series: [
@@ -74,8 +74,8 @@ var Charts = function () {
 				watchingTimeValues.push(data[key].watching)));
 		xText = xText.map(v => v.slice(11));
 		echartsLast24Hs.setOption({
-			xAxis: { data: xText, boundaryGap: true },
-			yAxis: AXIS_LABEL_MINUTES,
+			xAxis: { data: xText },
+			yAxis: group(AXIS_LABEL_MINUTES, {boundaryGap: [0, 0.2]}),
 			grid: NORMAL_GRID,
 			tooltip: { trigger: 'axis' },
 			series: [
