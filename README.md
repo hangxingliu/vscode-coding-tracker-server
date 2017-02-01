@@ -40,6 +40,11 @@ VSCode Coding Tracker extension server side program.
 
 ## Current Version
 
+## 0.3.1
+
+1. Added total time display in report page
+2. Fixed mark point (maximum time) could not fully show. (add more padding to chart)
+
 ## 0.3.0
 
 1. Added two API(`ajax/kill` and `ajax/test`)
