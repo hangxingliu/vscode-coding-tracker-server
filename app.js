@@ -95,8 +95,8 @@ app.use(require('body-parser').urlencoded({ extended: false }));
 app.use(welcome(Program));
 
 //Using front end static files
-app.use('/report', Express.static(`${__dirname}/assets/dist`));
-app.use('/lib', Express.static(`${__dirname}/assets/lib`));
+app.use('/report', Express.static(`${__dirname}/frontend/dist`));
+app.use('/lib', Express.static(`${__dirname}/frontend/lib`));
 
 
 //If it is public report. Bind analyze report ajax middleware

@@ -7,7 +7,7 @@
     "test": "mocha test/src/*.js",
     "postinstall": "node ./assets/BUILD_HTML",
     "start": "node ./app",
-    "install-git-hooks": "cp ./hooks/pre-commit ./.git/hooks -f"
+    "install-git-hooks": "cp ./git-pre-commit-hook ./.git/hooks/pre-commit -f"
   },
   "bin": {
     "coding-tracker-server": "app.js"
