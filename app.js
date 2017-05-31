@@ -136,7 +136,7 @@ app.post('/ajax/upload', (req, res) => {
 		//Storage data
 		: process.nextTick( () => storage.write(params)) + 
 		//Response HTTP request
-		  res.json({ success: 'upload success' }).end();
+		res.json({ success: 'upload success' }).end();
 });
 
 //add 404 and 500 response to express server
