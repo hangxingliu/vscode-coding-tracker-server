@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha test/src/*.js",
-    "postinstall": "node ./assets/BUILD_HTML",
+    "postinstall": "node ./build/build.js",
     "start": "node ./app",
     "install-git-hooks": "cp ./git-pre-commit-hook ./.git/hooks/pre-commit -f"
   },
