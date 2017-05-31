@@ -4,7 +4,11 @@
         "commonjs": true,
         "es6": true,
         "node": true,
-        "mocha": true
+        "mocha": true,
+        "jquery": true
+    },
+    "globals": {
+        "echarts": true
     },
     "parser": "babel-eslint",
     "parserOptions": {
@@ -18,7 +22,7 @@
         "no-console": "off",
         "no-const-assign": "warn",
         "no-this-before-super": "warn",
-        "no-undef": "warn",
+        "no-undef": "error",
         "no-unreachable": "warn",
         "no-unused-vars": "warn",
         "constructor-super": "warn",

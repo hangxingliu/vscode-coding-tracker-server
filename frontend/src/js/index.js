@@ -1,5 +1,12 @@
-var App = function () {
-	
+//@ts-check
+/// <reference path="type.d.ts" />
+
+function App() {
+	let Utils = require('./utils'),
+		LoadingDialog = require('./loadingDialog'),
+		Charts = require('./charts'),
+		{ displayVersionInfo } = require('./version');
+
 	var reportDays = 7,
 		reportProject = null;
 
@@ -11,25 +18,30 @@ var App = function () {
 		getLast24HoursDataURL = (now) => `${baseURL}/last24hs?ts=${now}&token=${APIToken}`;
 		// getProjectReportDataURL = () => `${baseURL}/project?project=${reportProject}&days=${reportDays}&token=${APIToken}`;
 
-	var loadStatus = new LoadStatus($('#statusDialog')),
-		$reportDateRange = $('#selectReportDateRange');	
-	var charts = new Charts();
+	/**
+	* @type {ClassLoadingDialog}
+	*/
+	let loadingDialog = new LoadingDialog($('#statusDialog'));
+
+	let $reportDateRange = $('#selectReportDateRange');	
+	let charts = new Charts();
 	
 	$reportDateRange.on('change', startAjaxGetBaseReportData);
 	
 	
 	startAjaxGetBaseReportData();
 	startAjaxGetLast24HoursData();
-
+	displayVersionInfo();
+	
 	function startAjaxGetBaseReportData() {
 		reportDays = Number($reportDateRange.val());
 
-		loadStatus.showLoading();
+		loadingDialog.loading();
 		$.ajax({
 			method: 'GET',
 			url: getBaseReportDataURL(),
 			success: data => handlerBaseReportData(data),
-			error: data => loadStatus.showFailed(data)
+			error: data => loadingDialog.failed(data)
 		});
 	}
 	
@@ -39,7 +51,7 @@ var App = function () {
 			method: 'GET',
 			url: getLast24HoursDataURL(now),
 			success: data => handler(data),
-			error: data => loadStatus.showFailed(data)			
+			error: data => loadingDialog.failed(data)			
 		})
 
 		function handler(data) {
@@ -55,7 +67,7 @@ var App = function () {
 	function handlerBaseReportData(data) {
 
 		if (data.error)
-			return loadStatus.showFailed($.extend(true, data, {
+			return loadingDialog.failed($.extend(true, data, {
 				tip: 'You can visit private report page by passing token like this: ' +
 					'`http://domain:port/report/?token=${YOUR TOKEN}`' }));
 
@@ -82,7 +94,7 @@ var App = function () {
 
 		charts.setFileData(data.groupBy.file);
 		
-		loadStatus.hide();
+		loadingDialog.hide();
 	}
-};
-var app = new App();
+}
+global.app = new App();

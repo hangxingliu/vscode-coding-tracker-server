@@ -1,4 +1,4 @@
-var Utils = {
+let Utils = {
 	log: data => (console.log(data), data),
 
 	to2: num => num == 0 ? '00' : num < 10 ? `0${num}` : `${num}`,
@@ -57,6 +57,5 @@ var Utils = {
 	genPieSeriesOption: (name, data, extendOption) => $.extend(true, extendOption || {}, { name, data, type: 'pie' }),
 	genBarSeriesOption: (name, data, extendOption) => $.extend(true, extendOption || {}, { name, data, type: 'bar' })
 	
-
-	
 };
+module.exports = Utils;

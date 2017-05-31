@@ -54,6 +54,7 @@
  * -----
  *     M: use one character to express month(1,2,3,4,5,6,7,8,9,A,B,C)
  */
+//eslint-disable-next-line no-unused-vars
 var there_are_some_help_above;
 
 //Require dependent module

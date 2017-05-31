@@ -5,8 +5,10 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha test/src/*.js",
-    "postinstall": "node ./build/build.js",
+    "build": "node ./build/build.js",
     "start": "node ./app",
+    "server": "node ./app",
+    "dev-test-server": "node ./app -p 8080 -o ~/.coding-tracker",
     "install-git-hooks": "cp ./git-pre-commit-hook ./.git/hooks/pre-commit -f"
   },
   "bin": {

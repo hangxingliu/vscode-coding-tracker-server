@@ -1,4 +1,5 @@
-var Charts = function () {
+function Charts() {
+	let Utils = require('./utils');
 	//configurations
 	const
 		GREEN_LINE = { itemStyle: { normal: { color: '#66bb6a' } }, lineStyle: { normal: { color: '#66bb6a' } } },
@@ -122,7 +123,7 @@ var Charts = function () {
 		var data = Utils.convertGroupByDataUnit2Hour(dataGroupByProject);
 		var y = Object.keys(dataGroupByProject)
 			.sort((a, b) => data[a].watching - data[b].watching)
-			.slice(-6);			
+			.slice(-6),	
 			yText = y.map(name => decodeURIComponent(name).match(/.*(^|[\\\/])(.+)$/)[2]),
 			watchingTimeValues = [];
 		y.forEach(name => watchingTimeValues.push(data[name].watching));
@@ -182,4 +183,5 @@ var Charts = function () {
 		return $.extend(...args);
 	}
 
-};
+}
+module.exports = Charts;

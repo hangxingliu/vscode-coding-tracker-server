@@ -7,12 +7,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<title>VSCode Coding Tracker Report Page</title>
-	=`include_css`
+	<title><%= title.index %></title>
+	<%- include("modules/include_css") %>
 </head>
 
 <body>
-	=`top_navbar`
+	<%- include("modules/top_navbar") %>
 	<div class="container" style="padding-top: 60px;padding-bottom: 20px">
 		<div class="row">
 			<div class="col-md-12">
@@ -81,18 +81,14 @@
 		</div>
 	</div>
 
-	=`bottom_info`
+	<%- include("modules/bottom_info") %>
 
 
-	=`load_status`
+	<%- include("modules/load_status") %>
 
-	=`include_js`
+	<%- include("modules/include_js") %>
 
-	<script src="js/charts.js"></script>		
-	<script src="js/utils.js"></script>		
-	<script src="js/load_status.js"></script>	
 	<script src="js/index.js"></script>
-	<script src="js/version.js"></script>
 
 	<script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

@@ -1,14 +1,14 @@
 name: VSCode Coding Tracker Server
 src: 
     base: frontend/src
-    assets: 
+    assets: []
     pages: 
         - "*.html"
     scripts:
-        - "scripts/index.js"
+        - "js/index.js"
     styles:
-        - "styles/*.scss"
-        - "styles/*.css"
+        - "css/*.scss"
+        - "css/*.css"
 dist: 
     base: frontend/dist
     clean: true
@@ -21,8 +21,8 @@ processor:
     less: true
     autoprefixer: true
     babel: 
-        enable: false
-        babelrc: .babelrc
+        enable: true
+        babelrc: frontend/src/.babelrc
     html_minifier:
         enable: true
         removeComments: true
@@ -32,7 +32,7 @@ processor:
     ejs_variables:
         enable: true
         files:
-            - frontend/variables.yaml
+            - frontend/src/variables.yaml
     ejs_template_tags: 
         enable: true
         selector: script[type="text/template"]
