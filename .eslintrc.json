@@ -6,13 +6,16 @@
         "node": true,
         "mocha": true
     },
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
         "sourceType": "module"
     },
+    "extends": "eslint:recommended",
     "rules": {
+        "no-console": "off",
         "no-const-assign": "warn",
         "no-this-before-super": "warn",
         "no-undef": "warn",
