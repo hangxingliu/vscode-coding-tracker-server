@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+## 0.4.0
+
+Working...
+
 ## 0.3.1
 
 1. Added total time display in report page

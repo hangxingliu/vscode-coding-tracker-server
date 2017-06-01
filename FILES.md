@@ -28,4 +28,4 @@
 
 - `test/` some test scripts
 
-- `assets` some frontend files, its test files, its build files
+- `frontend` some frontend files, its test files, its build files

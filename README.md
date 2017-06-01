@@ -40,21 +40,10 @@ VSCode Coding Tracker extension server side program.
 
 ## Current Version
 
-## 0.3.1
+## 0.4.0
 
-1. Added total time display in report page
-2. Fixed mark point (maximum time) could not fully show. (add more padding to chart)
-
-## 0.3.0
-
-1. Added two API(`ajax/kill` and `ajax/test`)
-2. Added unit test (And automatic test before commit) and eslint support
-	- Install git client test before commit hook by using `npm install-git-hooks`
-3. Supported 403, 404 and 500 HTTP status code to special response
-4. Removed low version upload data support.
-	- although there are not support for low version upload data anytime. 
-	- but uploading an old version data will get a error JSON object in this version. 
-5. Show is this server run under local mode in welcome JSON information.
+1. optimized chart and tooltip of chart display
+2. optimized the frontend codes and replaced frontend builder
 
 more version information: [CHANGELOG.md](CHANGELOG.md)
 
