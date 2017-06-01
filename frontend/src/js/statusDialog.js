@@ -25,7 +25,7 @@ function init() {
 		$title.text('Load Failed!');
 		$loading.hide();
 		$error.show();
-		$errorReason.html(JSON.stringify(error, null, '  '));
+		$errorReason.html(typeof error == 'string' ? error: JSON.stringify(error, null, '  '));
 		show();
 	}
 	function delayHide() {

@@ -89,7 +89,7 @@ function App() {
 		$.ajax({
 			method: 'GET', url,
 			success: data => (success(data), status.hide()),
-			error: data => status.failed(data)
+			error: displayError
 		});
 	}
 
@@ -98,6 +98,21 @@ function App() {
 			tip: 'You can visit private report page by passing token like this: ' +
 			'`http://domain:port/report/?token=${YOUR TOKEN}`'
 		}));
+	}
+
+	function displayError(error) {
+		let info = '',
+			getXHRInfo = () => `\n  readyState: ${error.readyState}\n  status: ${error.status}\n  statusText: ${error.statusText}`;
+		if (error) {
+			if (('readyState' in error && error.readyState < 4) ||
+				('status' in error && error.status != 200))
+				info = `Network exception!` + getXHRInfo();	
+			if (error.responseJSON && typeof error.responseJSON.error == 'string')
+				info = `Server response:\n  ${error.responseJSON.error}`;
+		}
+		//@ts-ignore
+		if (!info) info = error;
+		status.failed(info);
 	}
 }
 global.app = new App();

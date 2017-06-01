@@ -44,6 +44,7 @@ VSCode Coding Tracker extension server side program.
 
 1. optimized chart and tooltip of chart display
 2. optimized the frontend codes and replaced frontend builder
+3. optimized request error display
 
 more version information: [CHANGELOG.md](CHANGELOG.md)
 
