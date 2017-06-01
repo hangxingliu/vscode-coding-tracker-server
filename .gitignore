@@ -1,3 +1,6 @@
+# ignore playground
+test/playground
+
 # ignore node modules
 node_modules
 

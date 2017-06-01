@@ -1,11 +1,19 @@
 //@ts-check
-/// <reference path="type.d.ts" />
+/// <reference path="types/index.d.ts" />
 
 function App() {
 	let Utils = require('./utils'),
-		LoadingDialog = require('./loadingDialog'),
-		Charts = require('./charts'),
-		{ displayVersionInfo } = require('./version');
+		status = require('./statusDialog').init();
+		// Charts = require('./charts'),
+
+	let chart = {
+		summary: require('./charts/summary'),
+		last24hours: require('./charts/24hours'),
+		computer: require('./charts/computer'),
+		language: require('./charts/language'),
+		project: require('./charts/project'),
+		file: require('./charts/file')
+	};
 
 	var reportDays = 7,
 		reportProject = null;
@@ -18,83 +26,78 @@ function App() {
 		getLast24HoursDataURL = (now) => `${baseURL}/last24hs?ts=${now}&token=${APIToken}`;
 		// getProjectReportDataURL = () => `${baseURL}/project?project=${reportProject}&days=${reportDays}&token=${APIToken}`;
 
-	/**
-	* @type {ClassLoadingDialog}
-	*/
-	let loadingDialog = new LoadingDialog($('#statusDialog'));
-
 	let $reportDateRange = $('#selectReportDateRange');	
-	let charts = new Charts();
 	
-	$reportDateRange.on('change', startAjaxGetBaseReportData);
+	$reportDateRange.on('change', requestBasicReportData);
 	
+	requestBasicReportData();
+	requestLast24hsReportData();
+	reqesutVersionInfo();
 	
-	startAjaxGetBaseReportData();
-	startAjaxGetLast24HoursData();
-	displayVersionInfo();
-	
-	function startAjaxGetBaseReportData() {
-		reportDays = Number($reportDateRange.val());
+	function reqesutVersionInfo() {
+		$.get('/', info => $('#version [name]').each((i, e) => $(e).text(info[$(e).attr('name')])));
+	}
 
-		loadingDialog.loading();
+	function requestBasicReportData() {
+		reportDays = Number($reportDateRange.val());
+		requestAPI(getBaseReportDataURL(), genChartsFromBasicResportData);
+	}
+
+	function requestLast24hsReportData() {
+		let now = Date.now();
+		requestAPI(getLast24HoursDataURL(now), genLast24HoursChart);
+		function genLast24HoursChart(data) {
+			chart.last24hours.update(Utils.expandAndShortGroupByHoursObject(data.groupBy.hour, now));
+			showTotalTimes(data.total, $('#counterLast24Hs'));
+		}
+	}
+	
+	function genChartsFromBasicResportData(reportData) {
+		if (reportData.error) return onTokenInvalidError(reportData);
+
+		let today = new Date(),
+			startDate = new Date(today);
+		startDate.setDate(startDate.getDate() - reportDays + 1);
+		
+		let groupByDayData = $.extend(true, {}, reportData.groupBy.day),
+			data = Utils.expandGroupByDaysObject(groupByDayData, startDate, today);
+		
+		chart.summary.update(data);
+		showTotalTimes(reportData.total, $('#counterSummary'));
+
+		chart.computer.update(reportData.groupBy.computer);
+		chart.language.update(reportData.groupBy.language);
+		chart.project.update(reportData.groupBy.project);
+		chart.file.update(reportData.groupBy.file);
+	}
+
+	/**
+	 * @param {WatchingCodingObject} totalObject 
+	 * @param {JQuery} $dom 
+	 */
+	function showTotalTimes(totalObject, $dom) {
+		let _data = Utils.convertUnit2Hour({ total: totalObject }).total,
+			data = {
+				watching: _data.watching.toFixed(2),
+				coding: _data.coding.toFixed(2)
+			};
+		$dom.find('[name]').each((i, e) => $(e).text(data[$(e).attr('name')]));
+	}
+
+	function requestAPI(url, success) {
+		status.loading();
 		$.ajax({
-			method: 'GET',
-			url: getBaseReportDataURL(),
-			success: data => handlerBaseReportData(data),
-			error: data => loadingDialog.failed(data)
+			method: 'GET', url,
+			success: data => (success(data), status.hide()),
+			error: data => status.failed(data)
 		});
 	}
-	
-	function startAjaxGetLast24HoursData() {
-		var now = Date.now();
-		$.ajax({
-			method: 'GET',
-			url: getLast24HoursDataURL(now),
-			success: data => handler(data),
-			error: data => loadingDialog.failed(data)			
-		})
 
-		function handler(data) {
-			charts.setLast24HsData(Utils.expandAndShortGroupByHoursObject(data.groupBy.hour, now));
-			//last 24 hours counter
-			var totalData = Utils.convertGroupByDataUnit2Hour({ total: data.total }).total;
-			$('#counterLast24Hs').html(`total: watching time: <b>${totalData.watching}</b> hs. coding time: <b>${totalData.coding}</b> hs`);
-
-		}	
-	}
-
-	
-	function handlerBaseReportData(data) {
-
-		if (data.error)
-			return loadingDialog.failed($.extend(true, data, {
-				tip: 'You can visit private report page by passing token like this: ' +
-					'`http://domain:port/report/?token=${YOUR TOKEN}`' }));
-
-		//-----------show summary chart--------
-		var today = new Date();
-		var startDate = new Date(today);
-		startDate.setDate(startDate.getDate() - reportDays + 1);
-		var groupByDayData = $.extend(true, {}, data.groupBy.day);
-		var data1 = Utils.expandGroupByDaysObject(groupByDayData, startDate, today);
-		charts.setSummaryData(data1);
-		
-		//summary counter
-		var totalData = Utils.convertGroupByDataUnit2Hour({ total: data.total }).total;
-		$('#counterSummary').html(`total: watching time: <b>${totalData.watching}</b> hs. coding time: <b>${totalData.coding}</b> hs`);
-
-		//-------------------------------------
-		
-		//-----------computer chart------------
-		charts.setComputerData(data.groupBy.computer);
-		//-------------------------------------
-		charts.setLanguageData(data.groupBy.language);
-
-		charts.setProjectData(data.groupBy.project);
-
-		charts.setFileData(data.groupBy.file);
-		
-		loadingDialog.hide();
+	function onTokenInvalidError(response) {
+		status.failed($.extend(true, {}, response, {
+			tip: 'You can visit private report page by passing token like this: ' +
+			'`http://domain:port/report/?token=${YOUR TOKEN}`'
+		}));
 	}
 }
 global.app = new App();

@@ -9,11 +9,11 @@
 				</p>
 
 				<h2>Version</h2>
-				<dl style="margin-left: 2em">
+				<dl id="version" style="margin-left: 2em">
 					<dt>Server Version:</dt>
-					<dd id="versionServer"></dd>
+					<dd name="serverVersion"></dd>
 					<dt>Storage Version:</dt>
-					<dd id="versionStorage"></dd>
+					<dd name="storageVersion"></dd>
 				</dl>
 			</div>
 			<div class="col-md-4">
@@ -30,10 +30,10 @@
 			<div class="col-md-4">
 				<h2>Connect</h2>
 				<p>
-					=`badge_npm`
+					<%- include("badge_npm") %>
 				</p>
 				<p>
-					=`badge_github_star`
+					<%- include("badge_github_star") %>
 				</p>
 				<p>
 					<a href="https://github.com/hangxingliu/vscode-coding-tracker-server" target="_blank" class="">Github Repository (Server)</a>

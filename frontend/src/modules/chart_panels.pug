@@ -1,0 +1,51 @@
+.row
+	.col-md-12
+		.panel.panel-success
+			.panel-heading
+				b Coding activities summary 
+				p#counterSummary.pull-right
+					| Totally: watching for 
+					b(name="watching") ----
+					| &nbsp;hs. coding for 
+					b(name="coding") ----
+					| &nbsp;hs
+			.panel-body
+				#chartSummary(style='height: 250px')
+				
+.row
+	.col-md-12
+		.panel.panel-info
+			.panel-heading
+				b Last 24 hours summary 
+				p#counterLast24Hs.pull-right
+					| Totally, watching for 
+					b(name="watching") ----
+					| &nbsp;hs. coding for 
+					b(name="coding") ----
+					| &nbsp;hs
+			.panel-body
+				#chartLast24Hs(style='height: 250px')
+
+.row
+	.col-md-8
+		.panel.panel-default
+			.panel-heading: b Group by projects 
+			.panel-body
+				#chartProject(style='height: 250px')
+	.col-md-4
+		.panel.panel-default
+			.panel-heading: b Computers 
+			.panel-body
+				#chartComputer(style='height: 250px')
+
+.row
+	.col-md-8
+		.panel.panel-default
+			.panel-heading: b Group by files 
+			.panel-body
+				#chartFile(style='height: 250px')
+	.col-md-4
+		.panel.panel-default
+			.panel-heading: b Languages 
+			.panel-body
+				#chartLanguage(style='height: 250px')
