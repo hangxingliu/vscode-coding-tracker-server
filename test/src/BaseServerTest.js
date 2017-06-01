@@ -104,9 +104,13 @@ describe('Request test', () => {
 			this.retries(10);
 			this.slow(500);
 			//check is there a database file
-			var length = fs.readdirSync(DATABASE_FOLDER).filter(
-				fileName => fs.statSync(`${DATABASE_FOLDER}/${fileName}`).isFile() && fileName.endsWith('.db')).length;
-			setTimeout(() => (length ? then(new Error(`server has not storage tracking data.`)) : then()), 100);
+			setTimeout(() => {
+				let files = fs.readdirSync(DATABASE_FOLDER);
+				for (let file of files)
+					if (file.endsWith('.db') && fs.statSync(`${DATABASE_FOLDER}/${file}`).isFile())
+						return then();
+				return then(new Error(`server has not storage tracking data.`));
+			}, 100);
 		});
 	});
 
