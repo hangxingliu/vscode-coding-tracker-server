@@ -35,7 +35,8 @@
   "devDependencies": {
     "mocha": "*",
     "request": "*",
-    "tree-kill": "*"
+    "tree-kill": "*",
+    "async": "*"
   },
   "author": "hangxingliu",
   "license": "GPL-3.0"

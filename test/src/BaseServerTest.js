@@ -1,6 +1,7 @@
-var killAll = require('tree-kill'),
+let killAll = require('tree-kill'),
 	fs = require('fs-extra'),
-	request = require('request');
+	request = require('request'),
+	Async = require('async');
 
 const PORT = 24680,
 	TOKEN = 'token123456',
@@ -10,10 +11,22 @@ const PORT = 24680,
 const TEST_STATIC_RESOURCE = `${TEST_BASE_URL}/report/`,
 	TEST_API_TOKEN = `${TEST_BASE_URL}/ajax/test`,
 	TEST_UPLOAD = `${TEST_BASE_URL}/ajax/upload`,
-	TEST_KILL = `${TEST_BASE_URL}/ajax/kill`;
+	TEST_KILL = `${TEST_BASE_URL}/ajax/kill`,
+	TEST_REPORT_RECENT = `${TEST_BASE_URL}/ajax/report/recent`,
+	TEST_REPORT_LAST_24HS = `${TEST_BASE_URL}/ajax/report/last24hs`,
+	TEST_REPORT_PROJECT = `${TEST_BASE_URL}/ajax/report/project`;
 
-var server;
+const NOW = Date.now();
+const _5S = 5000, _2S = 2000;
+const UPLOAD_RECORDS = [
+	{ type: 'open', time: NOW - 8 * _5S, long: _5S, lang: 'html', file: 'index.html', proj: 'old_proj' },
+	{ type: 'open', time: NOW - 2 * _5S, long: _5S, lang: 'html', file: 'test.html', proj: 'proj' },
+	{ type: 'open', time: NOW - _5S, long: _5S, lang: 'javascript', file: 'index.js', proj: 'proj' },
+	{ type: 'code', time: NOW - _2S, long: _2S, lang: 'javascript', file: 'index.js', proj: 'proj' },
+];
+const UPLOAD_COMMON = { token: TOKEN, version: '3.0', pcid: 'test' };
 
+let server;
 //Clean resource database
 fs.removeSync(DATABASE_FOLDER);
 
@@ -92,12 +105,11 @@ describe('Request test', () => {
 			}, testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/long/), REGEX(/integer/), then));
 		});
 		it('#success', then => {
-			request.post(TEST_UPLOAD, {
-				form: {
-					token: TOKEN, version: '3.0', type: 0, time: Date.now(), long: 2000,
-					lang: 'javascript', file: 'file', proj: 'proj', pcid: 'test'
-				}
-			}, testGroup(CONNECT, IS_JSON, JSON_SUCCESS, then));
+			Async.mapLimit(UPLOAD_RECORDS, 1, (record, then) => {
+				let form = Object.assign({}, record, UPLOAD_COMMON);
+				request.post(TEST_UPLOAD, { form },
+					testGroup(CONNECT, IS_JSON, JSON_SUCCESS, then))
+			}, then);	
 		});
 
 		it('#success storage to file', function (then) {
@@ -113,7 +125,46 @@ describe('Request test', () => {
 			}, 100);
 		});
 	});
-
+	describe('Analyze test', () => {
+		it('#recent', then => {
+			request.get(TEST_REPORT_RECENT, { qs: { token: TOKEN } },
+				testGroup(CONNECT, IS_200, IS_JSON,
+					JSON_EVAL('obj.total.coding > 0'),
+					JSON_EVAL('obj.total.watching > 0'),
+					JSON_EVAL('obj.groupBy.computer.test'),
+					JSON_EVAL('obj.groupBy.project.proj && obj.groupBy.project.old_proj'),
+					JSON_EVAL('obj.groupBy.file["test.html"] && obj.groupBy.file["index.js"]'),
+					JSON_EVAL('obj.groupBy.language.html && obj.groupBy.language.javascript'),
+					JSON_EVAL('Object.keys(obj.groupBy.day).length > 0'),
+					then));
+		});
+		it('#last24hs', then => {
+			request.get(TEST_REPORT_LAST_24HS, { qs: { token: TOKEN } },
+				testGroup(CONNECT, IS_200, IS_JSON,
+					JSON_EVAL('obj.total.coding > 0'),
+					JSON_EVAL('obj.total.watching > 0'),
+					JSON_EVAL('Object.keys(obj.groupBy.hour).length > 0'),
+					then));
+		});
+		it('#project (missing parameter)', then => {
+			request.get(TEST_REPORT_PROJECT, { qs: { token: TOKEN } },
+				testGroup(CONNECT, IS_400, JSON_ERROR, REGEX(/missing parameter/), then));
+		});
+		it('#project', then => {
+			request.get(TEST_REPORT_PROJECT, { qs: { token: TOKEN, project: 'proj' } },
+				testGroup(CONNECT, IS_200, IS_JSON,
+					JSON_EVAL('obj.total.coding > 0'),
+					JSON_EVAL('obj.total.watching > 0'),
+					JSON_EVAL('obj.groupBy.computer.test'),
+					// has proj but not old_proj
+					JSON_EVAL('obj.groupBy.project.proj && !obj.groupBy.project.old_proj'),
+					// has files in project "proj" but not files in project "old_proj"
+					JSON_EVAL('obj.groupBy.file["test.html"] && obj.groupBy.file["index.js"] && !obj.groupBy.file["index.html"]'),
+					JSON_EVAL('obj.groupBy.language.html && obj.groupBy.language.javascript'),
+					JSON_EVAL('Object.keys(obj.groupBy.day).length > 0'),
+					then));
+		});
+	});
 
 	describe('kill test', () => {
 		it('#call kill method', then => {
@@ -144,8 +195,9 @@ function CONNECT(err) { if (err) throw err; }
 function CONNECT_ERROR(err) { if (!err) throw new Error(`request connected, but expectation is not!`);}
 function IS_200(err, res) { STATUS_CODE(200)(err, res) }
 function IS_403(err, res) { STATUS_CODE(403)(err, res) }
-function IS_404(err, res) { STATUS_CODE(404)(err, res) }
-function IS_500(err, res) { STATUS_CODE(500)(err, res) }
+function IS_400(err, res) { STATUS_CODE(400)(err, res) }
+function IS_404(err, res) { STATUS_CODE(404)(err, res) } //eslint-disable-line no-unused-vars
+function IS_500(err, res) { STATUS_CODE(500)(err, res) } //eslint-disable-line no-unused-vars
 function IS_JSON(err, res) { CONTENT_TYPE('application/json')(err, res); }
 function IS_HTML(err, res) { CONTENT_TYPE('text/html')(err, res); }
 function CONTENT_TYPE(needContentType) {
@@ -166,16 +218,17 @@ function JSON_ERROR(err, res, bd) { JSON_EVAL('obj.error')(err, res, bd)}
 function JSON_EVAL(express) {
 	return (err, res, bd) => {
 		try {
+			//eslint-disable-next-line no-unused-vars
 			var obj = JSON.parse(bd);
 		} catch (e) { throw new Error('result is illegal JSON object'); }
 		try {
 			var result = eval(express);
 		} catch (e) { throw new Error(`result object could not eval ${express}`);}
 		if (!result)
-			throw new Error(`${express} is false wrong`);
+			throw new Error(`${express} is fasly value`);
 	};	
 }
-function ECHO(err, res, bd) {console.log(bd);}
+function ECHO(err, res, bd) { console.log(bd); } //eslint-disable-line no-unused-vars
 
 //-------------------------------------------------
 function testGroup() {
