@@ -1,0 +1,21 @@
+mixin btn(type, text, range)
+	button(type="button" 
+	data-range=range onclick="app.setAllLangs($(this).data('range'))"
+	class=type style="margin: 0 2px;").btn= text
+
+#dlgAllLangs.modal.fade
+	.modal-dialog.modal-lg
+		.modal-content
+			.modal-header
+				button.close(type="button" data-dismiss="modal" aria-label="Close")
+					span(aria-hidden="true") &times;
+				h4.modal-title Group by languages
+			.modal-body
+				.container-fluid
+					.row: .col-xs-12.range-block
+						+btn("btn-success", "All", 0) 
+						+btn("btn-default", "Top 5", 5)
+						+btn("btn-default", "Top 10", 10)
+						+btn("btn-default", "Top 20", 20)
+					.row: .col-xs-12
+						#chartAllLangs(style="height: 500px")

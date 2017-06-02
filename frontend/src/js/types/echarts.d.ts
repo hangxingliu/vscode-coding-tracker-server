@@ -31,7 +31,7 @@ type EChartsObject = {
 
 	getOption(): Object
 
-	resize(): void
+	resize(opts?: { width?: number | string, height?: number | string, silent?: boolean }): void
 
 	dispatchAction(payload: Object): void
 

@@ -3,8 +3,8 @@
 
 function App() {
 	let Utils = require('./utils'),
-		status = require('./statusDialog').init();
-		// Charts = require('./charts'),
+		status = require('./statusDialog').init(),
+		url = require('./url').init();
 
 	let chart = {
 		summary: require('./charts/summary'),
@@ -12,21 +12,18 @@ function App() {
 		computer: require('./charts/computer'),
 		language: require('./charts/language'),
 		project: require('./charts/project'),
-		file: require('./charts/file')
+		file: require('./charts/file'),
+		allProjects: require('./charts/all_projects'),
+		allLanguages: require('./charts/all_languages')
 	};
 
-	var reportDays = 7,
-		reportProject = null;
+	/**
+	 * @type {APIResponse}
+	 */
+	let basicReportData = null;
 
-	//get API token passing by query string
-	var APIToken = (location.href.match(/[\?\&]token\=(.+?)(\&|$)/)||['',''])[1]
-	
-	var baseURL = '/ajax/report',
-		getBaseReportDataURL = () => `${baseURL}/recent?days=${reportDays}&token=${APIToken}`,
-		getLast24HoursDataURL = (now) => `${baseURL}/last24hs?ts=${now}&token=${APIToken}`;
-		// getProjectReportDataURL = () => `${baseURL}/project?project=${reportProject}&days=${reportDays}&token=${APIToken}`;
-
-	let $reportDateRange = $('#selectReportDateRange');	
+	let $reportDateRange = $('#selectReportDateRange'),
+		reportDays = 7;	
 	
 	$reportDateRange.on('change', requestBasicReportData);
 	
@@ -34,41 +31,51 @@ function App() {
 	requestLast24hsReportData();
 	reqesutVersionInfo();
 	
+	this.showAllProjects = showAllProjectsReport;
+	this.showAllLangs = showAllLanguagesReport;
+	this.setAllLangs = setAllLangaugesDisplayRange;
+
+	//============================
+	//           Functions
+	//============================
+	function showAllProjectsReport() { chart.allProjects.update(basicReportData.groupBy.project) }
+	function showAllLanguagesReport() { chart.allLanguages.update(basicReportData.groupBy.language) }
+	function setAllLangaugesDisplayRange(range) { chart.allLanguages.setRange(range)}
+	
 	function reqesutVersionInfo() {
 		$.get('/', info => $('#version [name]').each((i, e) => $(e).text(info[$(e).attr('name')])));
 	}
 
 	function requestBasicReportData() {
 		reportDays = Number($reportDateRange.val());
-		requestAPI(getBaseReportDataURL(), genChartsFromBasicResportData);
+		requestAPI(url.getBasicReportDataURL(reportDays), genChartsFromBasicResportData);
 	}
 
 	function requestLast24hsReportData() {
 		let now = Date.now();
-		requestAPI(getLast24HoursDataURL(now), genLast24HoursChart);
+		requestAPI(url.getLast24HoursDataURL(now), genLast24HoursChart);
 		function genLast24HoursChart(data) {
 			chart.last24hours.update(Utils.expandAndShortGroupByHoursObject(data.groupBy.hour, now));
 			showTotalTimes(data.total, $('#counterLast24Hs'));
 		}
 	}
 	
-	function genChartsFromBasicResportData(reportData) {
-		if (reportData.error) return onTokenInvalidError(reportData);
+	function genChartsFromBasicResportData(data) {
+		basicReportData = data;
 
 		let today = new Date(),
 			startDate = new Date(today);
 		startDate.setDate(startDate.getDate() - reportDays + 1);
 		
-		let groupByDayData = $.extend(true, {}, reportData.groupBy.day),
-			data = Utils.expandGroupByDaysObject(groupByDayData, startDate, today);
-		
-		chart.summary.update(data);
-		showTotalTimes(reportData.total, $('#counterSummary'));
+		let groupByDayData = $.extend(true, {}, data.groupBy.day),
+			summaryData = Utils.expandGroupByDaysObject(groupByDayData, startDate, today);
+		chart.summary.update(summaryData);
+		showTotalTimes(data.total, $('#counterSummary'));
 
-		chart.computer.update(reportData.groupBy.computer);
-		chart.language.update(reportData.groupBy.language);
-		chart.project.update(reportData.groupBy.project);
-		chart.file.update(reportData.groupBy.file);
+		chart.computer.update(data.groupBy.computer);
+		chart.language.update(data.groupBy.language);
+		chart.project.update(data.groupBy.project);
+		chart.file.update(data.groupBy.file);
 	}
 
 	/**
@@ -76,12 +83,8 @@ function App() {
 	 * @param {JQuery} $dom 
 	 */
 	function showTotalTimes(totalObject, $dom) {
-		let _data = Utils.convertUnit2Hour({ total: totalObject }).total,
-			data = {
-				watching: _data.watching.toFixed(2),
-				coding: _data.coding.toFixed(2)
-			};
-		$dom.find('[name]').each((i, e) => $(e).text(data[$(e).attr('name')]));
+		let data = Utils.convertUnit2Hour({ total: totalObject }).total;
+		$dom.find('[name]').each((i, e) => $(e).text(Number(data[$(e).attr('name')]).toFixed(2)));
 	}
 
 	function requestAPI(url, success) {
@@ -91,13 +94,6 @@ function App() {
 			success: data => (success(data), status.hide()),
 			error: displayError
 		});
-	}
-
-	function onTokenInvalidError(response) {
-		status.failed($.extend(true, {}, response, {
-			tip: 'You can visit private report page by passing token like this: ' +
-			'`http://domain:port/report/?token=${YOUR TOKEN}`'
-		}));
 	}
 
 	function displayError(error) {

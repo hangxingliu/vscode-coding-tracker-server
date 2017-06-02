@@ -31,3 +31,19 @@ type EChartsSeriesCreator = {
 	
 	add(...options: any[]): EChartsSeriesCreator;
 }
+
+type APIResponse = {
+	total: CodingWatchingObject;
+	groupBy: {
+		computer: CodingWatchingMap;
+		day: CodingWatchingMap;
+		file: CodingWatchingMap;
+		hour: CodingWatchingMap;
+		language: CodingWatchingMap;
+		project: CodingWatchingMap;
+	}
+}
+type CodingWatchingObject = { coding: number; watching: number };
+type CodingWatchingMap = {
+	[name: string]: CodingWatchingObject;
+};

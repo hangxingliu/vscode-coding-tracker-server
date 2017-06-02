@@ -113,17 +113,20 @@ function generateChartOption(name, type, data, ...options) {
 /**
  * convert each value in data(object) coding/watching time unit from ms to minValue.
  * such as 120 × 1000 => 2 (minValue=60 × 1000)
- * @param {object} data 
+ * @param {object|any[]} data 
  * @param {number} minValue 
  * @returns  {any}
  */
 function convertTimeUnits(data, minValue) {
+	let result = Array.isArray(data) ? [] : {};
 	for (let key in data) {
 		let it = data[key];
-		it.coding = it.coding / minValue;
-		it.watching = it.watching / minValue;
+		result[key] = {
+			coding: it.coding / minValue,
+			watching: it.watching / minValue
+		};
 	}
-	return data;
+	return result;
 }
 /**
  * @param {any[]} objects 
