@@ -2,48 +2,38 @@
 	<div class="container" style="padding-top: 30px; padding-bottom: 50px">
 		<div class="row">
 			<div class="col-md-4">
-				<h2>Author</h2>
+				<h2 data-i18n="title_author">Author</h2>
 				<p>LiuYue(hangxingliu)</p>
 				<p>
 					<a href="https://github.com/hangxingliu" target="_blank">Github</a>
 				</p>
 
-				<h2>Version</h2>
+				<h2 data-i18n="title_version">Version</h2>
 				<dl id="version" style="margin-left: 2em">
-					<dt>Server Version:</dt>
+					<dt data-i18n="title_server_version" >Server Version:</dt>
 					<dd name="serverVersion"></dd>
-					<dt>Storage Version:</dt>
+					<dt data-i18n="title_storage_version" >Storage Version:</dt>
 					<dd name="storageVersion"></dd>
 				</dl>
 			</div>
 			<div class="col-md-4">
-				<h2>License</h2>
+				<h2 data-i18n="title_license">License</h2>
 				<a href="https://github.com/hangxingliu/vscode-coding-tracker-server/blob/master/LICENSE" target="_blank">GPL-3.0</a>
 
-				<h2>Components</h2>
+				<h2 data-i18n="title_components">Components</h2>
 				<a href="https://ecomfe.github.io/echarts-doc/public/en/index.html" target="_blank">echarts3</a><br>
 				<a href="https://jquery.com/" target="_blank">jquery</a><br>
 				<a href="https://getbootstrap.com/" target="_blank">bootstrap</a><br>
-				<a href="http://ionicons.com/" target="_blank">ionicons</a><br>
-
 			</div>
 			<div class="col-md-4">
-				<h2>Connect</h2>
+				<h2 data-i18n="title_connect">Connect</h2>
 				<p>
 					<%- include("badge_npm") %>
 				</p>
 				<p>
 					<%- include("badge_github_star") %>
 				</p>
-				<p>
-					<a href="https://github.com/hangxingliu/vscode-coding-tracker-server" target="_blank" class="">Github Repository (Server)</a>
-				</p>
-				<p>
-					<a href="https://github.com/hangxingliu/vscode-coding-tracker" target="_blank" class="">Github Repository (VSCode Extension)</a>
-				</p>
-				<p>
-					<a href="https://marketplace.visualstudio.com/items?itemName=hangxingliu.vscode-coding-tracker" target="_blank" class="">VSCode Marketplace</a>
-				</p>
+				<%- include("bottom_links.pug") %>
 			</div>
 		</div>
 	</div>

@@ -1,7 +1,7 @@
-mixin btn(type, text, range)
-	button(type="button" 
+mixin btn(type, range)
+	button(type="button"
 	data-range=range onclick="app.setAllLangs($(this).data('range'))"
-	class=type style="margin: 0 2px;").btn= text
+	class=type style="margin: 0 2px;").btn: block
 
 #dlgAllLangs.modal.fade
 	.modal-dialog.modal-lg
@@ -9,13 +9,19 @@ mixin btn(type, text, range)
 			.modal-header
 				button.close(type="button" data-dismiss="modal" aria-label="Close")
 					span(aria-hidden="true") &times;
-				h4.modal-title Group by languages
+				h4.modal-title(data-i18n="title_languages") Group by languages
 			.modal-body
 				.container-fluid
 					.row: .col-xs-12.range-block
-						+btn("btn-success", "All", 0) 
-						+btn("btn-default", "Top 5", 5)
-						+btn("btn-default", "Top 10", 10)
-						+btn("btn-default", "Top 20", 20)
+						+btn("btn-success", 0): span(data-i18n="word_all") All 
+						+btn("btn-default", 5)
+							span(data-i18n="word_top") Top
+							| &nbsp;5
+						+btn("btn-default", 10) 
+							span(data-i18n="word_top") Top
+							| &nbsp;10
+						+btn("btn-default", 20) 
+							span(data-i18n="word_top") Top
+							| &nbsp;20
 					.row: .col-xs-12
 						#chartAllLangs(style="height: 500px")

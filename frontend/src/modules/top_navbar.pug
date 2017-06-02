@@ -1,0 +1,30 @@
+mixin select(id, icon)
+    .input-group(style="margin: 0 2px")
+        .input-group-addon: span(class="glyphicon "+icon)
+        select(id=id).form-control
+            block
+
+nav.navbar.navbar-default.navbar-fixed-top
+    .container
+        .navbar-header
+            button.navbar-toggle.collapsed(type='button', 
+            data-toggle='collapse', data-target='#navbar', 
+            aria-expanded='false', aria-controls='navbar')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a.navbar-brand(href='#')
+                | VSCode Coding Tracker Report
+                sub Beta
+        #navbar.navbar-collapse.collapse
+            form.navbar-form.navbar-right
+                .form-group
+                    +select('selectI18N', 'glyphicon-globe')
+                        option(value='en', selected='') Eng
+                        option(value='zh-cn') 简中
+                        option(value='zh-tw') 繁中
+                    +select('selectReportDateRange', 'glyphicon-calendar')
+                        option(data-i18n="option_7_days", value='7', selected='') 7 days
+                        option(data-i18n="option_30_days", value='30') 30 days
+                        option(data-i18n="option_365_days", value='365') 365 days

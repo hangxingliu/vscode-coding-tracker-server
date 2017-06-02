@@ -42,6 +42,8 @@ VSCode Coding Tracker extension server side program.
 
 ## 0.4.0
 
+0. full projects and languages report
+0. i18n support (English, Chinese)(And waiting for your translation)
 1. optimized chart and tooltip of chart display
 2. optimized the frontend codes and replaced frontend builder
 3. optimized request error display

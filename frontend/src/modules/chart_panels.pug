@@ -3,16 +3,19 @@ mixin chartBlock(id)
 
 mixin totallyIndicator(id)
 	p.pull-right(id=id)
-		| Totally: watching for 
+		span(data-i18n="title_totally_1") Totally: watching for 
 		b(name="watching") ----
-		| &nbsp;hs. coding for 
+		| &nbsp;
+		span(data-i18n="title_totally_2") hs. coding for 
 		b(name="coding") ----
-		| &nbsp;hs
+		| &nbsp;
+		span(data-i18n="title_totally_3") hs
 
 mixin fullReport(onclick)
 	a.pull-right(href="#" style="text-decoration: none" onclick=onclick)
 		span.glyphicon.glyphicon-plus
-		span &nbsp;&nbsp;Full report
+		span &nbsp;&nbsp;
+		span(data-i18n="full_report") Full report
 
 //====mixin==========
 //===========HTML====
@@ -21,7 +24,7 @@ mixin fullReport(onclick)
 	.col-md-12
 		.panel.panel-success
 			.panel-heading
-				b Coding activities summary
+				b(data-i18n="title_summary") Coding activities summary
 				+totallyIndicator("counterSummary")
 			.panel-body
 				+chartBlock("chartSummary")
@@ -30,7 +33,7 @@ mixin fullReport(onclick)
 	.col-md-12
 		.panel.panel-info
 			.panel-heading
-				b Last 24 hours summary 
+				b(data-i18n="title_24hs") Last 24 hours summary 
 				+totallyIndicator("counterLast24Hs")
 			.panel-body
 				+chartBlock("chartLast24Hs")
@@ -39,14 +42,14 @@ mixin fullReport(onclick)
 	.col-md-8
 		.panel.panel-default
 			.panel-heading
-				b Group by projects 
+				b(data-i18n="title_projects") Group by projects 
 				+fullReport("app.showAllProjects()")
 			.panel-body
 				+chartBlock("chartProject")
 	.col-md-4
 		.panel.panel-default
 			.panel-heading 
-				b Languages 
+				b(data-i18n="title_languages") Languages 
 				+fullReport("app.showAllLangs()")
 			.panel-body
 				+chartBlock("chartLanguage")
@@ -54,11 +57,11 @@ mixin fullReport(onclick)
 .row
 	.col-md-8
 		.panel.panel-default
-			.panel-heading: b Group by files 
+			.panel-heading: b(data-i18n="title_files") Group by files 
 			.panel-body
 				+chartBlock("chartFile")
 	.col-md-4
 		.panel.panel-default
-			.panel-heading: b Computers 
+			.panel-heading: b(data-i18n="title_computers") Computers 
 			.panel-body
 				+chartBlock("chartComputer")

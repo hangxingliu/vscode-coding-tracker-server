@@ -4,7 +4,8 @@
 function App() {
 	let Utils = require('./utils'),
 		status = require('./statusDialog').init(),
-		url = require('./url').init();
+		url = require('./url').init(),
+		i18n = require('./i18n');
 
 	let chart = {
 		summary: require('./charts/summary'),
@@ -23,14 +24,20 @@ function App() {
 	let basicReportData = null;
 
 	let $reportDateRange = $('#selectReportDateRange'),
+		$i18nSelector = $('#selectI18N'),
 		reportDays = 7;	
 	
 	$reportDateRange.on('change', requestBasicReportData);
-	
+	$i18nSelector.on('change', () => i18n.setLanguage($i18nSelector.val()));
+
+	i18n.update();
+	$i18nSelector.val(i18n.language || 'eng');
+
 	requestBasicReportData();
 	requestLast24hsReportData();
 	reqesutVersionInfo();
 	
+	// export functionsw
 	this.showAllProjects = showAllProjectsReport;
 	this.showAllLangs = showAllLanguagesReport;
 	this.setAllLangs = setAllLangaugesDisplayRange;

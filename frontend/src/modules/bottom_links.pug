@@ -1,0 +1,12 @@
+mixin link(to, i18n)
+	p: a(href=to target="_blank" data-i18n=i18n)
+		block
++link("https://github.com/hangxingliu/vscode-coding-tracker-server",
+	"link_github_repo_server")
+	| Github Repository (Server)
++link("https://github.com/hangxingliu/vscode-coding-tracker",
+	"link_github_repo_extension")
+	| Github Repository (VSCode Extension)
++link("https://marketplace.visualstudio.com/items?itemName=hangxingliu.vscode-coding-tracker",
+	"link_vscode_marketplace")
+	| VSCode Marketplace
