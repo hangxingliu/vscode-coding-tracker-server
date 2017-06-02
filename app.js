@@ -85,7 +85,7 @@ var app = Express();
 storage.init(Program.output);
 
 //Display now is debug mode
-DEBUG && log.info('Debug mode be turned on!') + 
+global.DEBUG && log.info('Debug mode be turned on!') + 
 
 //Using visitor log record (if under the debug mode)	
 app.use(require('morgan')('dev'));
