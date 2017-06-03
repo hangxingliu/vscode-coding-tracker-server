@@ -1,0 +1,14 @@
+$marginSizes: (
+	0,
+	3px,
+	5px,
+	8px,
+	10px
+) !default;
+
+ @each $size in $marginSizes {
+	.mx-#{$size} { margin-left: $size !important; margin-right: $size !important; }
+	.mb-#{$size} {margin-bottom: $size !important;}
+	.mt-#{$size} {margin-top: $size !important;}	
+	.mt-n#{$size} {margin-top: -$size !important;}	
+ }
