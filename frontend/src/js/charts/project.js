@@ -6,6 +6,7 @@ let {
 	orderByWatchingTime,
 	object2array,
 	getEachFieldToFixed2,
+	getShortProjectName,
 } = require('../utils'), {
 	createEChartsSeries,
 	AXIS_HOURS,
@@ -18,7 +19,7 @@ const SIZE = 5;
 /**
 * @type {string[]}
 */
-let projectNames = [], shortProjectNames = [];
+let originalProjectNames = [], projectNames = [], shortProjectNames = [];
 
 function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
@@ -35,14 +36,19 @@ let charts = null;
 module.exports = { update };
 
 function update(dataGroupByProject) {
-	if (!charts) charts = echarts.init($(SELECTOR)[0]);
+	if (!charts) {
+		charts = echarts.init($(SELECTOR)[0]);
+		charts.on('click', params =>
+			typeof params.dataIndex == 'number' &&
+			global.app.openProjectReport(originalProjectNames[params.dataIndex]));
+	}
 
 	let data = convertUnit2Hour(dataGroupByProject),
 		array = orderByWatchingTime(object2array(data)).slice(-SIZE);
-	
+	originalProjectNames = array.map(it => it.name);
 	projectNames = array.map(it => decodeURIComponent(it.name));
 	shortProjectNames = projectNames.map((name, i) =>
-		name.match(/.*(^|[\\\/])(.+)$/)[2] + ` (${Number(array[i].watching).toFixed(2)} hs)`);
+		getShortProjectName(name) + ` (${Number(array[i].watching).toFixed(2)} hs)`);
 
 	charts.setOption({
 		legend: { data: [''] },

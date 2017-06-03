@@ -1,0 +1,44 @@
+mixin btn(type, range)
+	button(type="button"
+	data-range=range onclick="app.setFilesInProj($(this).data('range'))"
+	class=type style="margin: 0 2px;").btn.btn-sm: block
+
+mixin filesRange()
+	.pull-right.mt-n8px.range-block
+		+btn("btn-default", 0): span(data-i18n="word_all") All 
+		+btn("btn-default", 5)
+			span(data-i18n="word_top") Top
+			| &nbsp;5
+		+btn("btn-primary", 10) 
+			span(data-i18n="word_top") Top
+			| &nbsp;10
+		+btn("btn-default", 20) 
+			span(data-i18n="word_top") Top
+			| &nbsp;20
+
+
+#dlgOneProject.modal.fade
+	.modal-dialog.modal-lg
+		.modal-content
+			.modal-header
+				button.close(type="button" data-dismiss="modal" aria-label="Close")
+					span(aria-hidden="true") &times;
+				h4.modal-title
+					span(name="projName")
+					small: sub(name="projPath")
+			.modal-body
+				.container-fluid
+					.row: .col-xs-12
+						h4.mb-5px.mt-10px
+							span(data-i18n="title_last_xx_days") In last
+							span.mx-3px(name="reportDays")
+							span(data-i18n="word_day") days
+						#chartOneProjectDays(style="height: 200px")
+					.row: hr/
+					.row: .col-xs-12
+						#chartOneProjectLanguages(style="height: 200px;display: none")
+					.row: .col-xs-12
+						h4.mb-5px.mt-10px.clearfix
+							span(data-i18n="title_files_in_proj") Files in this project:
+							+filesRange()
+						#chartOneProjectFiles(style="height: 500px")

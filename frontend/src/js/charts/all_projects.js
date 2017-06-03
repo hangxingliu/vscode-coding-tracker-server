@@ -6,6 +6,7 @@ let {
 	orderByWatchingTime,
 	object2array,
 	getEachFieldToFixed2,
+	getShortProjectName,
 } = require('../utils'), {
 	createEChartsSeries,
 	AXIS_HOURS,
@@ -18,7 +19,7 @@ const SELECTOR = '#chartAllProjects',
 /**
 * @type {string[]}
 */
-let projectNames = [], shortProjectNames = [];
+let projectNames = [], shortProjectNames = [], originalProjectNames = [];
 
 function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
@@ -44,14 +45,23 @@ function update(data) {
 	$dlg.modal();
 }
 function _update() {
-	if (!charts) charts = echarts.init($(SELECTOR)[0]);
+	if (!charts) {
+		charts = echarts.init($(SELECTOR)[0]);
+		charts.on('click', params => {
+			if (typeof params.dataIndex == 'number') {
+				$dlg.modal('hide');
+				global.app.openProjectReport(originalProjectNames[params.dataIndex])
+			}
+		});
+	}
 	
 	let data = convertUnit2Hour(dataGroupByProject),
 		array = orderByWatchingTime(object2array(data));
-	
+
+	originalProjectNames = array.map(it => it.name);
 	projectNames = array.map(it => decodeURIComponent(it.name));
 	shortProjectNames = projectNames.map((name, i) =>
-		name.match(/.*(^|[\\\/])(.+)$/)[2] + ` (${Number(array[i].watching).toFixed(2)} hs)`);
+		getShortProjectName(name) + ` (${Number(array[i].watching).toFixed(2)} hs)`);
 	
 	let height = array.length * 50;
 	$(SELECTOR).height(height);
@@ -64,7 +74,8 @@ function _update() {
 			axisTick: { show: false }, axisLabel: AXIS_HOURS.axisLabel },
 		yAxis: {
 			type: 'category', nameLocation: 'start',
-			axisTick: { show: false }, axisLabel: { inside: true }, z: 1024,
+			// interval: 0 for force display all label
+			axisTick: { show: false }, axisLabel: { inside: true, interval: 0 }, z: 1024,
 			data: shortProjectNames },
 		grid: GRID_NORMAL,
 		tooltip: { trigger: 'item', formatter: tooltipFormatter},

@@ -43,6 +43,7 @@ mixin fullReport(onclick)
 		.panel.panel-default
 			.panel-heading
 				b(data-i18n="title_projects") Group by projects 
+				small.text-muted(data-i18n="title_projects_tip") (click item in chart for details)
 				+fullReport("app.showAllProjects()")
 			.panel-body
 				+chartBlock("chartProject")

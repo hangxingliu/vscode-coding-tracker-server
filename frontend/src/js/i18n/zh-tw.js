@@ -2,6 +2,7 @@ module.exports = {
 	title_summary: '編程時間總結',
 	title_24hs: '24小時總結',
 	title_projects: '項目耗時',
+	title_projects_tip: '(點擊圖表項目查看詳細)',
 	title_languages: '按語言分類',
 	title_files: '文件耗時',
 	title_computers: '按計算機分類',
@@ -15,6 +16,9 @@ module.exports = {
 	title_server_version: '服務器版本:',
 	title_storage_version: '存儲文件版本:',
 
+	title_files_in_proj: '項目中的文件:',
+	title_last_xx_days: '最近',
+
 	title_totally_1: '合計:',
 	title_totally_2: '小時. 專注時間:',
 	title_totally_3: '小時',
@@ -27,6 +31,7 @@ module.exports = {
 
 	word_top: '前',
 	word_all: '全部',
+	word_day: '天',
 
 	link_github_repo_server: 'Github倉庫(服務器端代碼)',
 	link_github_repo_extension: 'Github倉庫(VSCode插件端代碼)',

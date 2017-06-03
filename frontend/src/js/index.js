@@ -15,7 +15,8 @@ function App() {
 		project: require('./charts/project'),
 		file: require('./charts/file'),
 		allProjects: require('./charts/all_projects'),
-		allLanguages: require('./charts/all_languages')
+		allLanguages: require('./charts/all_languages'),
+		oneProject: require('./charts/one_project')
 	};
 
 	/**
@@ -41,14 +42,21 @@ function App() {
 	this.showAllProjects = showAllProjectsReport;
 	this.showAllLangs = showAllLanguagesReport;
 	this.setAllLangs = setAllLangaugesDisplayRange;
-
+	this.setFilesInProj = setFilesInProjectRange;
+	this.openProjectReport = openProjectReport;
 	//============================
 	//           Functions
 	//============================
 	function showAllProjectsReport() { chart.allProjects.update(basicReportData.groupBy.project) }
 	function showAllLanguagesReport() { chart.allLanguages.update(basicReportData.groupBy.language) }
 	function setAllLangaugesDisplayRange(range) { chart.allLanguages.setRange(range)}
-	
+	function setFilesInProjectRange(range) { chart.oneProject.setRange(range); }
+
+	function openProjectReport(projectName) {
+		requestAPI(url.getProjectReportDataURL(reportDays, projectName),
+			data => chart.oneProject.update(data, reportDays), true);
+	}
+
 	function reqesutVersionInfo() {
 		$.get('/', info => $('#version [name]').each((i, e) => $(e).text(info[$(e).attr('name')])));
 	}
@@ -94,8 +102,8 @@ function App() {
 		$dom.find('[name]').each((i, e) => $(e).text(Number(data[$(e).attr('name')]).toFixed(2)));
 	}
 
-	function requestAPI(url, success) {
-		status.loading();
+	function requestAPI(url, success, noLoadingDialog) {
+		noLoadingDialog || status.loading();
 		$.ajax({
 			method: 'GET', url,
 			success: data => (success(data), status.hide()),

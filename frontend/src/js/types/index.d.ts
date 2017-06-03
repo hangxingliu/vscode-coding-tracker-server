@@ -2,7 +2,7 @@
 
 declare var global: {
 	app: {
-		
+		openProjectReport(projectName: string): void;
 	}
 };
 declare var echarts: EChartsStatic;

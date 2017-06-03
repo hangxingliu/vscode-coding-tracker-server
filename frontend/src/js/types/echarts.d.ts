@@ -88,7 +88,7 @@ type EChartsObject = {
 };
 
 type EChartOption = {
-	title?: EChartTitleOption
+	title?: EChartTitleOption,
 	legend?: Object,
 	grid?: Object,
 	xAxis?: Object,
