@@ -42,9 +42,13 @@ let Utils = {
 	generateChartOption,
 
 	merge,
-	getShortProjectName
+	getShortProjectName,
+
+	hasLocalStorage
 };
 module.exports = Utils;
+
+function hasLocalStorage() { return typeof localStorage != 'undefined'; }
 
 function getEmptyCodingWatchingObject() { return { coding: 0, watching: 0 }; }
 

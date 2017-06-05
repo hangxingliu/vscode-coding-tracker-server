@@ -1,13 +1,17 @@
 //@ts-check
 
 const STORAGE_NAME = 'coding-tracker-i18n';
+const HAS_LS = require('./utils').hasLocalStorage();
 let languages = {
 	'zh-cn': require('./i18n/zh-cn'),
 	'zh-tw': require('./i18n/zh-tw')
 }, language = '';
 
+function storageGet(key) { return HAS_LS ? localStorage.getItem(key) : null; }
+function storageSet(key, value) { HAS_LS && localStorage.setItem(key, value); }
+
 function update() {
-	language = localStorage.getItem(STORAGE_NAME) || '';
+	language = storageGet(STORAGE_NAME) || '';
 	if (language in languages) {
 		let data = languages[language];
 		let $items = $('[data-i18n]');
@@ -26,7 +30,7 @@ function update() {
 }
 
 function setLanguage(lang) {
-	localStorage.setItem(STORAGE_NAME, lang);
+	storageSet(STORAGE_NAME, lang);
 	update();
 }
 
