@@ -2,6 +2,8 @@
 /// <reference path="types/index.d.ts" />
 
 function App() {
+	const VERSION_KEY = 'coding-tracker-version';	
+
 	let Utils = require('./utils'),
 		status = require('./statusDialog').init(),
 		url = require('./url').init(),
@@ -26,7 +28,9 @@ function App() {
 
 	let $reportDateRange = $('#selectReportDateRange'),
 		$i18nSelector = $('#selectI18N'),
-		reportDays = 7;	
+		$welcomeInfo = $('#welcomeInfo'),
+		reportDays = 7,
+		currentServerVersion = '';
 	
 	$reportDateRange.on('change', requestBasicReportData);
 	$i18nSelector.on('change', () => i18n.setLanguage($i18nSelector.val()));
@@ -44,6 +48,8 @@ function App() {
 	this.setAllLangs = setAllLangaugesDisplayRange;
 	this.setFilesInProj = setFilesInProjectRange;
 	this.openProjectReport = openProjectReport;
+	this.hideWelcome = hideWelcome;
+	this.showWelcome = showWelcome;
 	//============================
 	//           Functions
 	//============================
@@ -57,8 +63,16 @@ function App() {
 			data => chart.oneProject.update(data, reportDays), true);
 	}
 
+	function hideWelcome() { $welcomeInfo.slideUp(); localStorage.setItem(VERSION_KEY, currentServerVersion); }
+	function showWelcome() { $welcomeInfo.slideDown(); }
 	function reqesutVersionInfo() {
-		$.get('/', info => $('#version [name]').each((i, e) => $(e).text(info[$(e).attr('name')])));
+		$.get('/', info => {
+			currentServerVersion = info.serverVersion;
+			$('#version [name]').each((i, e) => $(e).text(info[$(e).attr('name')]))
+			Utils.hasLocalStorage() &&
+				localStorage.getItem(VERSION_KEY) != currentServerVersion && 
+				showWelcome();
+		});
 	}
 
 	function requestBasicReportData() {

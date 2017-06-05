@@ -1,0 +1,60 @@
+mixin link2(link)
+	a(target="_blank" href=link)
+		block
+
+#welcomeInfo.jumbotron(style="display: none")
+	h1(data-i18n="title_welcome") Welcome to report page
+	p.text-muted(data-i18n="welcome_subtitle") 
+		| This is report page of vscode coding tracker,
+		| you can get your coding activity report in this page.
+
+	p.mb-0
+		span.glyphicon.glyphicon-info-sign.mr-5px.fix-icon
+		span(data-i18n="welcome_intro") Intro:
+	dl.ml-20px
+		dt Watching time
+		dd.ml-5px(data-i18n="welcome_watching_time") 
+			| The time you watching in the VS Code (include coding time)
+		dt Coding time
+		dd.ml-5px(data-i18n="welcome_coding_time") 
+			| The time you typing in the VS Code (On the other hand, it reflects how long you focus coding)
+
+	p.mb-0
+		span.glyphicon.glyphicon-star.mr-5px.fix-icon
+		span(data-i18n="welcome_tips") Tips:
+	dl.ml-20px
+		dt(data-i18n="welcome_tips_click_hover_title") Click or hover on the chart
+		dd.ml-5px(data-i18n="welcome_tips_click_hover") 
+			| Hover for detailed info. Click project bar for detailed report of a project
+		dt(data-i18n="welcome_tips_language_title") Change languages
+		dd.ml-5px 
+			span(data-i18n="welcome_tips_language") 
+				| Select languages in the top of page nearby icon: 
+			span.glyphicon.glyphicon-globe.fix-icon.mr-10px
+			| 可选中文(简/繁)
+
+	p.mb-0
+		span.glyphicon.glyphicon-pencil.mr-5px.fix-icon
+		span(data-i18n="welcome_contribution") Contribution:
+	span.ml-20px.mb-20px.d-inline-block
+		span(data-i18n="welcome_contribution_1")
+			| If you have any good idea or find any bug in this project. Please post 
+		+link2("https://github.com/hangxingliu/vscode-coding-tracker-server/issues") issues 
+		span(data-i18n="welcome_contribution_2")
+			| or give me 
+		+link2("https://github.com/hangxingliu/vscode-coding-tracker-server/pulls") pull request 
+		br/ 
+		| I welcome translations to this page into other languages. 
+		| And solve the language expression fault in the page.
+		br/
+		i (About translating, you can refer to files under "frontend/src/i18n/" and file "frontend/src/i18n.js" )
+	br/
+	div.clearfix
+		button.btn.btn-success.btn-lg.pull-left(
+		style="margin: 20px 10px -46px 0" onclick="app.hideWelcome()")
+			span.glyphicon.glyphicon-ok.mr-10px
+			span(data-i18n="welcome_btn_close")
+				| OK. Hide this information
+		span.text-muted.pull-left(style="margin-top: 46px")
+			span(data-i18n="welcome_reopen")
+				| You can reopen this welcome information by clicking "<u>welcome info</u>" in the bottom of page.

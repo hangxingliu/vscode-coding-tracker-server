@@ -9,30 +9,28 @@
 	<meta name="author" content="">
 	<title><%= title.index %></title>
 	<%- include("modules/include_css") %>
+
 </head>
-
 <body>
+
 	<%- include("modules/top_navbar.pug") %>
-	
 	<div class="container" style="padding-top: 60px;padding-bottom: 20px">
-
+		<%- include("modules/startup_welcome.pug") %>		
 		<%- include("modules/chart_panels.pug") %>
-
 	</div>
-
 	<%- include("modules/bottom_info") %>
 
-
+	<!-- dialogues -->
 	<%- include("modules/dialog_status.pug") %>
 	<%- include("modules/dialog_chart_all_projects.pug") %>
 	<%- include("modules/dialog_chart_all_languages.pug") %>
 	<%- include("modules/dialog_chart_one_project.pug") %>
 
+	<!-- javascripts -->
 	<%- include("modules/include_js") %>
-
 	<script src="js/index.js"></script>
-
 	<script async defer src="https://buttons.github.io/buttons.js"></script>
+
 </body>
 
 </html>

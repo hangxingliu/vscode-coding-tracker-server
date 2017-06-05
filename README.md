@@ -45,6 +45,7 @@ VSCode Coding Tracker extension server side program.
 0. full projects and languages report
 0. detailed report of specified project (each day coding times and echo file coding times)
 0. i18n support (English, 简体中文, 繁體中文)(And waiting for your translation)
+0. add startup welcome info
 1. optimized chart and tooltip of chart display
 2. optimized the frontend codes and replaced frontend builder
 3. optimized request error display

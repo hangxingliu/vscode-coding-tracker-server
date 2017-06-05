@@ -6,9 +6,11 @@ module.exports = {
 	title_languages: '按语言分类',
 	title_files: '文件耗时',
 	title_computers: '按计算机分类',
+	title_welcome: '欢迎来到报告页面',
 
 	title_author: '作者',
 	title_version: '版本',
+	title_help: '帮助',
 	title_license: '开源协议',
 	title_components: '相关组件',
 	title_connect: '链接',
@@ -36,4 +38,22 @@ module.exports = {
 	link_github_repo_server: 'Github仓库(服务器端代码)',
 	link_github_repo_extension: 'Github仓库(VSCode插件端代码)',
 	link_vscode_marketplace: 'VSCode插件市场',
+
+	show_welcome: '欢迎/帮助信息',	
+	
+	//Welcome Info
+	welcome_subtitle: '这是VSCode Coding Tracker的编程情况报告页面, 你能在这儿看到你日常的编程情况统计',
+	welcome_intro: '简介:',
+	welcome_watching_time: '你使用(查看)VSCode的时长 (包括Coding time)',
+	welcome_coding_time: '你在VSCode中写代码(敲键盘)的时长',
+	welcome_tips: '提示:',
+	welcome_tips_click_hover_title: '将鼠标放到或点击图表项',
+	welcome_tips_click_hover: '将鼠标放到图表项上以获得详细信息. 点击项目图表项可以查看针对某个项目的详细报告',
+	welcome_tips_language_title: '更换页面语言',
+	welcome_tips_language: '在页面上方可更换语言, 在这个图标旁:',
+	welcome_contribution: '帮助改进:',
+	welcome_contribution_1: '如果你有什么好的点子 或 发现了一些bug/缺陷. 欢迎给这个项目提交 ',
+	welcome_contribution_2: ' 或 ',
+	welcome_btn_close: 'OK. 隐藏这个欢迎信息',
+	welcome_reopen: '你可以点击页面底部的"欢迎/帮助信息"以重新显示这个信息',
 };

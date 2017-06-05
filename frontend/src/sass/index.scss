@@ -3,12 +3,28 @@ $marginSizes: (
 	3px,
 	5px,
 	8px,
-	10px
+	10px,
+	20px
 ) !default;
 
  @each $size in $marginSizes {
 	.mx-#{$size} { margin-left: $size !important; margin-right: $size !important; }
+	.ml-#{$size} { margin-left: $size !important; }
+	.mr-#{$size} { margin-right: $size !important; }
 	.mb-#{$size} {margin-bottom: $size !important;}
 	.mt-#{$size} {margin-top: $size !important;}	
 	.mt-n#{$size} {margin-top: -$size !important;}	
  }
+
+.fix-icon {position: relative; top: 3px}
+
+.d-block {display: block !important;}
+.d-inline-block {display: inline-block !important;}
+
+#version {
+	dt {display: inline-block; min-width: 150px;}
+	dd {display: inline-block; }
+}
+#bottomContainer {
+	h2 {margin-bottom: 5px}
+}
