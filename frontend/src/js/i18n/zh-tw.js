@@ -8,6 +8,8 @@ module.exports = {
 	title_computers: '按計算機分類',
 	title_welcome: '歡迎來到報告頁面',
 
+	title_share: '分享',	
+	
 	title_author: '作者',
 	title_version: '版本',
 	title_help: '幫助',
@@ -56,4 +58,14 @@ module.exports = {
 	welcome_contribution_2: '或',
 	welcome_btn_close: 'OK. 隱藏這個歡迎信息',
 	welcome_reopen: '你可以點擊頁面底部的"歡迎/幫助信息"以重新顯示這個信息',
+
+	//share
+	share_content: '分享文本',
+	share_font_size: '字號',
+	share_mark_line: '標記線',
+	share_mark_line_max: '最大值',
+	share_mark_line_average: '平均值',
+	share_mark_line_min: '最小值',
+	share_tip: '點擊圖表上的項目可 添加/刪除 標記點',
+	share_btn: '保存為圖片分享'
 };

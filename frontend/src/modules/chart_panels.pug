@@ -11,6 +11,11 @@ mixin totallyIndicator(id)
 		| &nbsp;
 		span(data-i18n="title_totally_3") hs
 
+mixin share(onclick)
+	a.pull-right.text-success.ml-20px(onclick=onclick href="#"): b
+		span.glyphicon.glyphicon-share.mr-3px
+		span(data-i18n="title_share") Share
+
 mixin fullReport(onclick)
 	a.pull-right(href="#" style="text-decoration: none" onclick=onclick)
 		span.glyphicon.glyphicon-plus
@@ -25,6 +30,7 @@ mixin fullReport(onclick)
 		.panel.panel-success
 			.panel-heading
 				b(data-i18n="title_summary") Coding activities summary
+				+share("app.shareSummary()")
 				+totallyIndicator("counterSummary")
 			.panel-body
 				+chartBlock("chartSummary")

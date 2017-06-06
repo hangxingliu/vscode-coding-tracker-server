@@ -8,6 +8,8 @@ module.exports = {
 	title_computers: '按计算机分类',
 	title_welcome: '欢迎来到报告页面',
 
+	title_share: '分享',
+
 	title_author: '作者',
 	title_version: '版本',
 	title_help: '帮助',
@@ -56,4 +58,14 @@ module.exports = {
 	welcome_contribution_2: ' 或 ',
 	welcome_btn_close: 'OK. 隐藏这个欢迎信息',
 	welcome_reopen: '你可以点击页面底部的"欢迎/帮助信息"以重新显示这个信息',
+
+	//share
+	share_content: '分享文本',
+	share_font_size: '字号',
+	share_mark_line: '标记线',
+	share_mark_line_max: '最大值',
+	share_mark_line_average: '平均值',
+	share_mark_line_min: '最小值',
+	share_tip: '点击图表上的项目可 添加/删除 标记点',
+	share_btn: '保存为图片分享'
 };

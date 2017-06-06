@@ -7,7 +7,8 @@ function App() {
 	let Utils = require('./utils'),
 		status = require('./statusDialog').init(),
 		url = require('./url').init(),
-		i18n = require('./i18n');
+		i18n = require('./i18n'),
+		share = require('./share');
 
 	let chart = {
 		summary: require('./charts/summary'),
@@ -42,7 +43,9 @@ function App() {
 	requestLast24hsReportData();
 	reqesutVersionInfo();
 	
-	// export functionsw
+	// export functions
+	this.share = share;
+
 	this.showAllProjects = showAllProjectsReport;
 	this.showAllLangs = showAllLanguagesReport;
 	this.setAllLangs = setAllLangaugesDisplayRange;
@@ -50,6 +53,7 @@ function App() {
 	this.openProjectReport = openProjectReport;
 	this.hideWelcome = hideWelcome;
 	this.showWelcome = showWelcome;
+	this.shareSummary = shareSummary;
 	//============================
 	//           Functions
 	//============================
@@ -75,6 +79,10 @@ function App() {
 		});
 	}
 
+	function shareSummary() {
+		share.shareSummary(getSummaryDataFromBasicData(basicReportData), basicReportData.total);
+	}
+
 	function requestBasicReportData() {
 		reportDays = Number($reportDateRange.val());
 		requestAPI(url.getBasicReportDataURL(reportDays), genChartsFromBasicResportData);
@@ -88,17 +96,21 @@ function App() {
 			showTotalTimes(data.total, $('#counterLast24Hs'));
 		}
 	}
-	
-	function genChartsFromBasicResportData(data) {
-		basicReportData = data;
 
+	function getSummaryDataFromBasicData(basicReportData) {
 		let today = new Date(),
 			startDate = new Date(today);
 		startDate.setDate(startDate.getDate() - reportDays + 1);
 		
-		let groupByDayData = $.extend(true, {}, data.groupBy.day),
+		let groupByDayData = $.extend(true, {}, basicReportData.groupBy.day),
 			summaryData = Utils.expandGroupByDaysObject(groupByDayData, startDate, today);
-		chart.summary.update(summaryData);
+		return summaryData;
+	}
+
+	function genChartsFromBasicResportData(data) {
+		basicReportData = data;
+	
+		chart.summary.update(getSummaryDataFromBasicData(data));
 		showTotalTimes(data.total, $('#counterSummary'));
 
 		chart.computer.update(data.groupBy.computer);
