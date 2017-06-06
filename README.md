@@ -1,5 +1,15 @@
 # Visual Studio Code Coding Tracker Server
 
+<a href="https://www.npmjs.com/package/vscode-coding-tracker-server">
+<img src="https://img.shields.io/npm/v/vscode-coding-tracker-server.svg?style=flat-square" />
+</a>
+<a href="https://travis-ci.org/hangxingliu/vscode-coding-tracker-server">
+<img src="https://img.shields.io/travis/hangxingliu/vscode-coding-tracker-server/master.svg?style=flat-square&label=master" />
+</a>
+<a href="https://travis-ci.org/hangxingliu/vscode-coding-tracker-server">
+<img src="https://img.shields.io/travis/hangxingliu/vscode-coding-tracker-server/develop.svg?style=flat-square&label=dev" />
+</a>
+
 VSCode Coding Tracker extension server side program. 
 > See more:   
 > VSCode Coding Tracker extension   
@@ -40,23 +50,31 @@ VSCode Coding Tracker extension server side program.
 
 ## Current Version
 
-## 0.3.1
+## 0.4.0
 
-1. Added total time display in report page
-2. Fixed mark point (maximum time) could not fully show. (add more padding to chart)
-
-## 0.3.0
-
-1. Added two API(`ajax/kill` and `ajax/test`)
-2. Added unit test (And automatic test before commit) and eslint support
-	- Install git client test before commit hook by using `npm install-git-hooks`
-3. Supported 403, 404 and 500 HTTP status code to special response
-4. Removed low version upload data support.
-	- although there are not support for low version upload data anytime. 
-	- but uploading an old version data will get a error JSON object in this version. 
-5. Show is this server run under local mode in welcome JSON information.
+0. full projects and languages report
+1. detailed report of specified project (each day coding times and echo file coding times)
+2. i18n support (English, 简体中文, 繁體中文)(And waiting for your translation)
+3. add startup welcome/help info
+4. support share now (you can share your coding activities as chart image with your friend)
+5. optimized loading dialog, chart, tooltip of chart and frontend codes (include new builder scripts) display
 
 more version information: [CHANGELOG.md](CHANGELOG.md)
+
+## Contributing
+
+You can get information about functions of each folder and files by [FILES.md](FILES.md) 
+
+### Server codes
+
+You can look codes in folder `lib` and file `app.js`
+
+### Frontend codes
+
+1. install dependencies of frontend builder by executing `./install-builder-dependencies`
+	- For Windows user: Install dependencies manually, you can refer `./install-builder-dependencies` file
+2. test build script is OK `npm run build` or `npm run build-live`
+3. look or edit codes in `frontend` folder
 
 ## File List
 

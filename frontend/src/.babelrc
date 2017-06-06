@@ -1,0 +1,12 @@
+{
+	"presets": [
+		"es2015",
+		"es2017"
+	],
+	"plugins": [
+		"minify-mangle-names",
+		"transform-merge-sibling-variables"
+	],
+	"comments": false,
+	"minified": true
+}

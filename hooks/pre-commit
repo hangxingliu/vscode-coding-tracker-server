@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-export PATH=/usr/local/bin:$PATH
-node './hooks/pre-commit-test.js'

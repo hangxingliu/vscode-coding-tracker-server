@@ -5,7 +5,7 @@
  *
  * Author: LiuYue
  * Github: https://github.com/hangxingliu
- * Version: 0.2.0
+ * Version: 0.4.0
  * License: GPL-3.0
  */
 
@@ -54,6 +54,7 @@
  * -----
  *     M: use one character to express month(1,2,3,4,5,6,7,8,9,A,B,C)
  */
+//eslint-disable-next-line no-unused-vars
 var there_are_some_help_above;
 
 //Require dependent module
@@ -84,7 +85,7 @@ var app = Express();
 storage.init(Program.output);
 
 //Display now is debug mode
-DEBUG && log.info('Debug mode be turned on!') + 
+global.DEBUG && log.info('Debug mode be turned on!') + 
 
 //Using visitor log record (if under the debug mode)	
 app.use(require('morgan')('dev'));
@@ -95,8 +96,8 @@ app.use(require('body-parser').urlencoded({ extended: false }));
 app.use(welcome(Program));
 
 //Using front end static files
-app.use('/report', Express.static(`${__dirname}/assets/dist`));
-app.use('/lib', Express.static(`${__dirname}/assets/lib`));
+app.use('/report', Express.static(`${__dirname}/frontend/dist`));
+app.use('/lib', Express.static(`${__dirname}/frontend/lib`));
 
 
 //If it is public report. Bind analyze report ajax middleware
@@ -136,7 +137,7 @@ app.post('/ajax/upload', (req, res) => {
 		//Storage data
 		: process.nextTick( () => storage.write(params)) + 
 		//Response HTTP request
-		  res.json({ success: 'upload success' }).end();
+		res.json({ success: 'upload success' }).end();
 });
 
 //add 404 and 500 response to express server

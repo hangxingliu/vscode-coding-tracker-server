@@ -1,5 +1,4 @@
-# ignore node modules
-node_modules
+test/playground
 
 # ignore test tracking data files
 database
@@ -16,27 +15,8 @@ cSpell.json
 # ignore jsconfig.json
 jsconfig.json
 
-# ignore TODO.md
-TODO.md
-
-# ignore front-end library installer and test server
-assets/INSTALL_LIB
-assets/TEST_SERVER
-
-# ignore private report result to test
-assets/test/PrivateReportResult.json
-
-# ignore front-end dist files
-assets/dist
-
 # ignore log file included npm log
 *.log
 
 # ignore unit test resources folder
 test/resources
-
-# ignore eslintrc
-.eslintrc.json
-
-# ignore git client hooks
-/hooks

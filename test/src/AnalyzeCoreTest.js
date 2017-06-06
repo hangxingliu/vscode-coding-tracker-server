@@ -28,7 +28,7 @@ describe('AnalyzeCore', () => {
 		it('generate failed and throw a error', () => {
 			var isThrow = false;
 			try {
-				var func = analyzeCore._test.generateFilterFunction({
+				/* var func = */analyzeCore._test.generateFilterFunction({
 					unknownColumn: []
 				});
 			} catch (e) {
@@ -61,5 +61,5 @@ describe('AnalyzeCore', () => {
 		});
 		
 
- 	 });
+	});
 });

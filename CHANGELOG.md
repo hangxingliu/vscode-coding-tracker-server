@@ -1,5 +1,14 @@
 ## CHANGELOG
 
+## 0.4.0
+
+0. full projects and languages report
+1. detailed report of specified project (each day coding times and echo file coding times)
+2. i18n support (English, 简体中文, 繁體中文)(And waiting for your translation)
+3. add startup welcome/help info
+4. support share now (you can share your coding activities as chart image with your friend)
+5. optimized loading dialog, chart, tooltip of chart and frontend codes (include new builder scripts) display
+
 ## 0.3.1
 
 1. Added total time display in report page
