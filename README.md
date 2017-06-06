@@ -1,5 +1,15 @@
 # Visual Studio Code Coding Tracker Server
 
+<a href="https://www.npmjs.com/package/vscode-coding-tracker-server">
+<img src="https://img.shields.io/npm/v/vscode-coding-tracker-server.svg?style=flat-square" />
+</a>
+<a href="https://travis-ci.org/hangxingliu/vscode-coding-tracker-server">
+<img src="https://img.shields.io/travis/hangxingliu/vscode-coding-tracker-server/master.svg?style=flat-square&label=master" />
+</a>
+<a href="https://travis-ci.org/hangxingliu/vscode-coding-tracker-server">
+<img src="https://img.shields.io/travis/hangxingliu/vscode-coding-tracker-server/develop.svg?style=flat-square&label=dev" />
+</a>
+
 VSCode Coding Tracker extension server side program. 
 > See more:   
 > VSCode Coding Tracker extension   
@@ -43,15 +53,28 @@ VSCode Coding Tracker extension server side program.
 ## 0.4.0
 
 0. full projects and languages report
-0. detailed report of specified project (each day coding times and echo file coding times)
-0. i18n support (English, 简体中文, 繁體中文)(And waiting for your translation)
-0. add startup welcome info
-0. support share now (you can share your coding activities as chart image with your friend)
-1. optimized chart and tooltip of chart display
-2. optimized the frontend codes and replaced frontend builder
-3. optimized request error display
+1. detailed report of specified project (each day coding times and echo file coding times)
+2. i18n support (English, 简体中文, 繁體中文)(And waiting for your translation)
+3. add startup welcome/help info
+4. support share now (you can share your coding activities as chart image with your friend)
+5. optimized loading dialog, chart, tooltip of chart and frontend codes (include new builder scripts) display
 
 more version information: [CHANGELOG.md](CHANGELOG.md)
+
+## Contributing
+
+You can get information about functions of each folder and files by [FILES.md](FILES.md) 
+
+### Server codes
+
+You can look codes in folder `lib` and file `app.js`
+
+### Frontend codes
+
+1. install dependencies of frontend builder by executing `./install-builder-dependencies`
+	- For Windows user: Install dependencies manually, you can refer `./install-builder-dependencies` file
+2. test build script is OK `npm run build` or `npm run build-live`
+3. look or edit codes in `frontend` folder
 
 ## File List
 

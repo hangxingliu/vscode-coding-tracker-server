@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha test/src/*.js",
     "build": "node ./build/build.js",
+    "build-live": "node ./build/build.js -w",
     "start": "node ./app",
     "server": "node ./app",
     "dev-test-server": "node ./app -p 8080 -o ~/.coding-tracker",

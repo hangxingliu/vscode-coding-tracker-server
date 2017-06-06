@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+npm i \
+	colors fs-extra commander glob\
+	ejs pug \
+	js-yaml\
+	browserify babel-core\
+	node-sass autoprefixer postcss\
+	cheerio html-minifier\
+	convert-source-map\
+	watch\
+	babel-preset-es2015\
+	babel-preset-es2017\
+	babel-plugin-minify-mangle-names\
+	babel-plugin-transform-merge-sibling-variables
+	
