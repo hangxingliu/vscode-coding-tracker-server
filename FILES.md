@@ -16,16 +16,23 @@
 - `lib/analyze/AnalyzeCore.js` analyze tracking data core class module
 - `lib/analyze/ReportMiddleware.js` a report API middleware
 
+- `lib/utils/cleanDatabaseFiles` a Node.js script to clean up a folder files
+- `lib/utils/upgradeDatabaseFiles` a Node.js script to upgrade old database files in a folder to current version
+- `lib/utils/analyzer` a Node.js utility for analyzing database files
 
-- `database/*.*` Data of your vscode using track
+- `database/*.*` data of your vscode using track
 
-- `utils/cleanDatabaseFiles` a Node.js script to clean up a folder files
-- `utils/upgradeDatabaseFiles` a Node.js script to upgrade old database files in a folder to current version
-- `utils/analyzer` a Node.js utility for analyzing database files
-
-- `hooks/pre-commit` bash script to launch pre-commit-test.js script before commit
-- `hooks/pre-commit-test.js` a Node.js script to check are unit test passed before commit. And block commit if test failed
+- `git-pre-commit-hook` bash script to execute unit test scripts before commit
 
 - `test/` some test scripts
 
-- `frontend` some frontend files, its test files, its build files
+- `build` some frontend builder scripts (from <https://github.com/hangxingliu/fe-build-scripts>)
+
+- `frontend/dist` frontend target files (after build)
+- `frontend/lib` some frontend libraries (such jquery, bootstrap, echarts ... )
+
+- `frontend/src/index.html` the main html page (report page source file)
+- `frontend/src/variables.yaml` Some variables will be inject into target html in build processor  
+- `frontend/src/modules` some html parts(snippets). they will be combine into index.html in build processor
+- `frontend/src/sass` style-sheet sass files
+- `frontend/src/js` some  frontend javascript and type define typescript files
