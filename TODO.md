@@ -10,3 +10,5 @@
 - [ ] custom chart color scheme
 - [ ] replace glyphicons to ionicons
 - [ ] more share charts
+- [ ] add 24 hours report for custom date
+
