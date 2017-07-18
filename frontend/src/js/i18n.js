@@ -4,7 +4,8 @@ const STORAGE_NAME = 'coding-tracker-i18n';
 const HAS_LS = require('./utils').hasLocalStorage();
 let languages = {
 	'zh-cn': require('./i18n/zh-cn'),
-	'zh-tw': require('./i18n/zh-tw')
+	'zh-tw': require('./i18n/zh-tw'),
+	'ru': require('./i18n/ru')
 }, language = '';
 
 function storageGet(key) { return HAS_LS ? localStorage.getItem(key) : null; }
