@@ -37,7 +37,7 @@ function App() {
 	$i18nSelector.on('change', () => i18n.setLanguage($i18nSelector.val()));
 
 	i18n.update();
-	$i18nSelector.val(i18n.language || 'eng');
+	$i18nSelector.val(i18n.language || 'en');
 
 	requestBasicReportData();
 	requestLast24hsReportData();
