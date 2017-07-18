@@ -50,6 +50,12 @@ VSCode Coding Tracker extension server side program.
 
 ## Current Version
 
+## 0.4.1 (2017/07/19)
+
+0. add Russian translation (Thank [Dolgishev Viktor (@vdolgishev)][vdolgishev])
+1. fix a fatal bug (Storing data file without version in first line)
+2. fix a small bug about default language item. and some wrong spelling in codes.
+
 ## 0.4.0
 
 0. full projects and languages report
@@ -76,7 +82,17 @@ You can look codes in folder `lib` and file `app.js`
 2. test build script is OK `npm run build` or `npm run build-live`
 3. look or edit codes in `frontend` folder
 
-## File List
+### Internationalize (Translation)
+
+1. create a translation js file in `frontend/src/js/i18n/`
+2. add a line likes `'language_code': require('./i18n/language_code')` into `frontend/src/js/i18n.js`
+3. add a item likes `option(value='language_code') Language Name` into `frontend/src/modules/top_navbar.pug`
+4. you can build frontend codes and have a look.
+
+Actually, you can refer this commit about adding Russian translations by [Dolgishev Viktor (@vdolgishev)][vdolgishev]:   
+<https://github.com/hangxingliu/vscode-coding-tracker-server/commit/b16499f3d9a1fbe4061fbe1a9617240c71e4e220>
+
+## Files manifest
 
 redirect to [FILES.md](FILES.md)
 
@@ -84,6 +100,12 @@ redirect to [FILES.md](FILES.md)
 
 [LiuYue](https://github.com/hangxingliu)
 
+## Contributors
+
+[Dolgishev Viktor (@vdolgishev)][vdolgishev]
+
 ## License
 
 [GPL-3.0](LICENSE)
+
+[vdolgishev]: https://github.com/vdolgishev

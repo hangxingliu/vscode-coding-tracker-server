@@ -5,7 +5,7 @@
  *
  * Author: LiuYue
  * Github: https://github.com/hangxingliu
- * Version: 0.4.0
+ * Version: 0.4.1
  * License: GPL-3.0
  */
 

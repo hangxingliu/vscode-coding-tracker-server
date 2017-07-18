@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+## 0.4.1 (2017/07/19)
+
+0. add Russian translation (Thank [Dolgishev Viktor (@vdolgishev)][vdolgishev])
+1. fix a fatal bug (Storing data file without version in first line)
+2. fix a small bug about default language item. and some wrong spelling in codes.
+
 ## 0.4.0
 
 0. full projects and languages report
@@ -44,3 +50,5 @@
 Because this repository be separated from
  [original extension repository](https://github.com/hangxingliu/vscode-coding-tracker),
  so older version information you could find in that repository CHANGELOG or commit information.
+
+ [vdolgishev]: https://github.com/vdolgishev
