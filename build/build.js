@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-// version 0.2.0
+// version 0.3.0
 
+//@ts-check
 /// <reference path="../types/type.d.ts" />
 
 const CONFIG_FILE = `${__dirname}/build.config.yaml`;
@@ -9,44 +10,60 @@ const CONFIG_FILE = `${__dirname}/build.config.yaml`;
 require('colors');
 
 let fs = require('fs-extra'),
-	path = require('path'),
 	Options = require('commander'),
 	glob = require('glob'),
-	{ join: joinPath, dirname, basename } = require('path'),
+	yaml = require('js-yaml'),	
+	postcss = require('postcss'),
+	browserify = require('browserify'),
+	sourceMapConvert = require('convert-source-map'),
+	{ join: joinPath, dirname, basename, isAbsolute } = require('path'),
+	Async = require('async'),
 	{ read: loadConfig } = require('./config_reader');
 
 //>>>>>>>>> Processor
-let ejs = require('ejs'),
-	pug = require('pug'),	
-	yaml = require('js-yaml'),
-	browserify = require('browserify'),
-	babel = require('babel-core'),
-	sass = require('node-sass'),
-	autoprefixer = require('autoprefixer'),
-	cheerio = require('cheerio'),
-	postcss = require('postcss'),
-	htmlMinifier = require('html-minifier'),
-	sourceMapConvert = require('convert-source-map');
+let ejs = null, //require('ejs'),
+	pug = null, //require('pug'),	
+	babel = null, //require('babel-core'),
+	sass = null, //require('node-sass'),
+	autoprefixer = null, //require('autoprefixer'),
+	cheerio = null, //require('cheerio'),
+	htmlMinifier = null, //require('html-minifier'),
+	browserSync = null, // require('browser-sync'),
+	watch = null //require('watch');
+;
+function loadProcessors(opts) {
+	let c = processorConfig;
+	if (c.sass.enable) sass = require('node-sass');
+	if (c.less.enable) console.log('LESS is TODO...');
+	if (c.autoprefixer.enable) autoprefixer = require('autoprefixer');
+	if (c.browser_sync.enable && opts.watch) browserSync = require('browser-sync');
+	if (c.babel.enable) babel = require('babel-core');
+	if (c.html_minifier.enable) htmlMinifier = require('html-minifier');
+	if (c.ejs.enable) ejs = require('ejs');
+	if (c.ejs_template_tags.enable) cheerio = require('cheerio');
+	if (c.pug.enable) pug = require('pug');
 
-let watch = require('watch');
+	if (opts.watch) watch = require('watch');
+}
+
 
 //>>>>>>>>> Log functions
 let start = name => {
 	console.log(`# ${name} `.bold + `...`);
 	return {
 		done: () =>console.log(` ${name} done`.green),
-		fail: err => console.error(` ${name} fail:`.red + `\n` + err)
+		fail: (err, msg = "") => console.error(` ${name} fail: ${msg}`.red + `\n`, err && (err.stack || err))
 	};
 };
 
 /**
  * @type {ConfigObject}
  */
-let config = {};
+let config = null;
 /**
  * @type {ProcessorConfigObject}
  */
-let processorConfig = {};
+let processorConfig = null;
 
 function main() {
 	let opts = loadLaunchParameters(),
@@ -54,7 +71,9 @@ function main() {
 
 	config = loadConfig(CONFIG_FILE);
 	processorConfig = config.processor;
-	
+	//加载相应的插件
+	loadProcessors(opts);
+
 	config.clean_dist && (cleanTarget() || exit(1));
 	copyAssets() || exit(2);
 
@@ -66,7 +85,9 @@ function main() {
 	handlerScripts();
 	handlerStyles();
 
-	opts.watch ? (console.log("# Watch mode is on".bold) + watchSources()) 	
+	//opts.watch 是启动参数 watch
+	//@ts-ignore
+	opts.watch ? (console.log("# Watch mode is on".bold), watchSources()) 	
 		: console.log("  Tip: -w option could turn on the watch mode".grey);
 }
 
@@ -89,11 +110,12 @@ function copyAssets() {
 
 //>>>>>>>>>>  EJS/Pug
 function isPugFile(file) { return file.endsWith('.pug') || file.endsWith('.jade'); }
+function getPugOptions(filePath) { return { basedir: config.src, filename: basename(filePath) }; }
 function setEjsFileLoader() {
 	ejs.fileLoader = filePath => {
 		if (isPugFile(filePath))
 			return processorConfig.pug ?
-				pug.compileFile(filePath, { basedir: config.src, filename: basename(filePath) })(ejsRenderVariables)
+				pug.compileFile(filePath, getPugOptions(filePath))(ejsRenderVariables)
 				: (console.error(`  error: The include file is a pug file. And you had not turn on the pug processor in config file!`.red, '\n',
 					`    ${filePath}`.red), "");
 		if (!fs.existsSync(filePath)) {
@@ -117,36 +139,40 @@ function loadEjsVariables() {
 	ejsRenderVariables = obj
 	return true;
 }
-function renderPages() {
-	let log = start('render pages'), count = 0;
+function renderPages(callback) {
+	let log = start('render pages');
 	let files = globFiles(config.src_globs, { cwd: config.src });
 	console.log(` pages count: ${files.length}`);
-	files.map(name => {
-		count++;
+	Async.map(files, (name, callback) => {
 		let path = joinPath(config.src, name);
-		if (isPugFile(name))
-			processorConfig.pug ?
-				callback(null, pug.compileFile(path, { basedir: config.src, filename: basename(path) })(ejsRenderVariables))
-				: fs.readFile(path, 'utf8', callback);
-		processorConfig.ejs ? ejs.renderFile(path, ejsRenderVariables, { root: config.src }, callback)	
-			: fs.readFile(path, 'utf8', callback);
-		function callback(err, content) {
-			if (--count <= 0) log.done();
-			if (err) return console.error(`  error: render page ${path}`.red, '\n', err.stack);
+		if (isPugFile(name) && processorConfig.pug)
+			return render(null, pug.compileFile(path, getPugOptions(path))(ejsRenderVariables));
+		if (processorConfig.ejs)
+			return ejs.renderFile(path, ejsRenderVariables, { root: config.src }, render);
+		readFile(path, render);
+
+		function render(err, content) {
+			if (err) return callback({ path, err });
 			if (processorConfig.ejs_template_tags.enable)
 				content = renderEjsTemplateTags(content);
-			if (processorConfig.html_minifier.enable)
-				content = htmlMinifier.minify(content, processorConfig.html_minifier);
+			if (processorConfig.html_minifier.enable) {
+				try { content = htmlMinifier.minify(content, processorConfig.html_minifier); }
+				catch (err) { return callback({ path, err });}
+			}
 			writeFileWithMkdirsSync(`${config.dist}/${name}`, content);
+			callback(null, true);
 		}
+	}, err => {
+		err ? log.fail(err.err, err.path) : log.done();
+		callback && callback(err);
 	});
 }
 const DEFAULT_EJS_TEMPLATE_TAG_SELECTOR = 'script[type="text/template"]';
 function renderEjsTemplateTags(html) {
 	let selector = processorConfig.ejs_template_tags.selector || DEFAULT_EJS_TEMPLATE_TAG_SELECTOR;
-	console.log(`  selector: ${selector}`);
-	let ejsTagCache = [],
-		random = parseInt(Math.random() * 10000),
+	// console.log(`  selector: ${selector}`);
+	let ejsTagCache = [],	
+		random = parseInt(String(Math.random() * 10000)),
 		mark = `ejstagcache_${random}_`,
 		start = `${mark}start`, end = `${mark}end`,
 		recover = new RegExp(`${start}(\\d*)${end}`,'g');
@@ -170,22 +196,20 @@ function renderEjsTemplateTags(html) {
 }
 
 //>>>>>>>>>>> handlerScripts
-function handlerScripts() {
-	let log = start('handler scripts'), count = 0;
-	let files = globFiles(config.src_script_globs, { cwd: config.src });
-	files.map(name => {
-		count++;
-		browserifyAndBabel(joinPath(config.src, name), joinPath(config.dist, name),
-			() => --count <= 0 && log.done())
-	});
+function handlerScripts(callback) {
+	let log = start('handler scripts');
+	let { src, dist } = config,	
+		files = globFiles(config.src_script_globs, { cwd: src });
+	Async.map(files, (name, cb) => browserifyAndBabel(joinPath(src, name), joinPath(dist, name), cb),
+		() => (log.done(), callback && callback()));
 }
 function browserifyAndBabel(from, to, then) {
 	let scriptName = basename(to);
 	//Extend .babelrc path
 	let babelrcPath = '';
 	if ((babelrcPath = processorConfig.babel.babelrc) &&
-		(!path.isAbsolute(babelrcPath)) )
-		babelrcPath = path.join(process.cwd(), babelrcPath);
+		(!isAbsolute(babelrcPath)) )
+		babelrcPath = joinPath(process.cwd(), babelrcPath);
 	
 	browserify([from], { debug: true, basedir: dirname(to) })
 		.bundle((err, buffer) => {
@@ -210,13 +234,12 @@ function browserifyAndBabel(from, to, then) {
 }
 
 //>>>>>>>>>>> handlerStyles
-function handlerStyles() {
-	let log = start('handler styles'), count = 0;
-	let files = globFiles(config.src_styles_globs, { cwd: config.src });
-	files.map(name =>{
-		handlerSassLessAndCss(joinPath(config.src, name), joinPath(config.dist, name),
-			() => --count <= 0 && log.done())
-	});
+function handlerStyles(callback) {
+	let log = start('handler styles');
+	let { src, dist } = config,
+		files = globFiles(config.src_styles_globs, { cwd: src });
+	Async.map(files, (name, cb) => handlerSassLessAndCss(joinPath(src, name), joinPath(dist, name), cb),	
+		() => (log.done(), callback && callback()));
 }
 function handlerSassLessAndCss(from, to, then) {
 	if (from.endsWith('less')) throw new Error('TODO: support less');
@@ -224,18 +247,18 @@ function handlerSassLessAndCss(from, to, then) {
 		return handlerSass(from, to.replace(/\.s[ca]ss$/, '.css'), to.endsWith('.sass'), then);
 	if (from.endsWith('.css'))
 		return fs.copy(from, to, err => (err && console.error(`  error: copy css file: ${from}`)) + then());
-	console.error(`  warning: unkown style file format: ${from}`);
+	console.error(`  warning: unknown style file format: ${from}`);
 	then();
 }
 function handlerSass(from, to, indented, then){	
 	let styleName = basename(from);
-	let SourcesmapTo = `${to}.map`;
+	let SourcesMapTo = `${to}.map`;
 	sass.render({
 		file: from,
 		indentedSyntax: false,
 		outputStyle: 'compressed',
 		outFile: to,
-		sourceMap: SourcesmapTo,
+		sourceMap: SourcesMapTo,
 	}, (err, result) => {
 		if (err) return console.error(`  error: sass compile ${styleName}`.red, '\n', err), then();
 		postcss([autoprefixer]).process(result.css, {
@@ -249,14 +272,21 @@ function handlerSass(from, to, indented, then){
 				ws.forEach(warn => console.log(`  ${warn.toString()}`.yellow));
 			}
 			writeFileWithMkdirsSync(to, result.css);
-			fs.writeFileSync(SourcesmapTo, JSON.stringify(result.map, null, '\t'));
+			fs.writeFileSync(SourcesMapTo, JSON.stringify(result.map, null, '\t'));
 			then();
-		}).catch(err =>
-			console.error(`  error: auto prefixer ${styleName}`.red, '\n', err)), then();
-		});
+		}).catch(err => {
+			console.error(`  error: auto prefixer ${styleName}`.red, '\n', err);
+			then();
+		})
+	});
 }		
 
 function watchSources() {
+	let bs = null;
+	if (processorConfig.browser_sync.enable){
+		bs = browserSync.create();
+		bs.init(processorConfig.browser_sync);
+	}	
 	watch.unwatchTree(config.src);
 	watch.watchTree(config.src, { interval: 0.5 }, function (path, curr, prev) {
 		if (typeof path == "object" && prev === null && curr === null)
@@ -264,15 +294,19 @@ function watchSources() {
 		//TODO accurately execute handler
 		console.log("watch >", path);
 		if (path.endsWith('.yaml'))
-			return loadEjsVariables() + renderPages();
+			return loadEjsVariables(), renderPages(reloadHTML);
 		if (path.endsWith('.html') || path.endsWith('.ejs') || path.endsWith('.pug') || path.endsWith('.jade'))
-			return renderPages();
+			return renderPages(reloadHTML);
 		if (path.endsWith('.js')) 
-			return handlerScripts();
+			return handlerScripts(reloadJS);
 		if (path.endsWith('.css') || path.endsWith('.sass') ||
 			path.endsWith('.scss') || path.endsWith('.less')) 
-			return handlerStyles();
+			return handlerStyles(reloadCSS);
 	});
+	function reloadHTML() { bs && bs.reload('*.html') }
+	function reloadJS() { bs && bs.reload('*.js') }
+	function reloadCSS() { bs && bs.reload('*.css') }
+	
 }
 
 function loadLaunchParameters() {
@@ -293,6 +327,8 @@ function globFiles(globArray, options) {
 	});
 	return allFiles;
 }
+//>>>>>>>>>>>>> ReadFile
+function readFile(path, cb = null) { return cb ? fs.readFile(path, 'utf8', cb) : fs.readFileSync(path, 'utf8'); }
 //>>>>>>>>>>>>> Write file
 function writeFileWithMkdirsSync(path, content) {
 	let dir = dirname(path);

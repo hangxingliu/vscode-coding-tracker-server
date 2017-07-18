@@ -82,6 +82,9 @@
 		processor.html_minifier = isObjectHasEnableField(configProcessor.html_minifier)
 			? configProcessor.html_minifier
 			: { enable: !!configProcessor.html_minifier };
+		processor.browser_sync = isObjectHasEnableField(configProcessor.browser_sync)
+			? configProcessor.browser_sync
+			:{ enable: !!configProcessor.browser_sync };
 		processor.babel = isObjectHasEnableField(configProcessor.babel)
 			? configProcessor.babel
 			:{ enable: !!configProcessor.babel };
