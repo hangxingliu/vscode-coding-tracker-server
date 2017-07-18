@@ -41,14 +41,14 @@ function App() {
 
 	requestBasicReportData();
 	requestLast24hsReportData();
-	reqesutVersionInfo();
+	requestVersionInfo();
 	
 	// export functions
 	this.share = share;
 
 	this.showAllProjects = showAllProjectsReport;
 	this.showAllLangs = showAllLanguagesReport;
-	this.setAllLangs = setAllLangaugesDisplayRange;
+	this.setAllLangs = setAllLanguagesDisplayRange;
 	this.setFilesInProj = setFilesInProjectRange;
 	this.openProjectReport = openProjectReport;
 	this.hideWelcome = hideWelcome;
@@ -59,7 +59,7 @@ function App() {
 	//============================
 	function showAllProjectsReport() { chart.allProjects.update(basicReportData.groupBy.project) }
 	function showAllLanguagesReport() { chart.allLanguages.update(basicReportData.groupBy.language) }
-	function setAllLangaugesDisplayRange(range) { chart.allLanguages.setRange(range)}
+	function setAllLanguagesDisplayRange(range) { chart.allLanguages.setRange(range)}
 	function setFilesInProjectRange(range) { chart.oneProject.setRange(range); }
 
 	function openProjectReport(projectName) {
@@ -69,7 +69,7 @@ function App() {
 
 	function hideWelcome() { $welcomeInfo.slideUp(); localStorage.setItem(VERSION_KEY, currentServerVersion); }
 	function showWelcome() { $welcomeInfo.slideDown(); }
-	function reqesutVersionInfo() {
+	function requestVersionInfo() {
 		$.get('/', info => {
 			currentServerVersion = info.serverVersion;
 			$('#version [name]').each((i, e) => $(e).text(info[$(e).attr('name')]))
@@ -85,7 +85,7 @@ function App() {
 
 	function requestBasicReportData() {
 		reportDays = Number($reportDateRange.val());
-		requestAPI(url.getBasicReportDataURL(reportDays), genChartsFromBasicResportData);
+		requestAPI(url.getBasicReportDataURL(reportDays), genChartsFromBasicReportData);
 	}
 
 	function requestLast24hsReportData() {
@@ -107,7 +107,7 @@ function App() {
 		return summaryData;
 	}
 
-	function genChartsFromBasicResportData(data) {
+	function genChartsFromBasicReportData(data) {
 		basicReportData = data;
 	
 		chart.summary.update(getSummaryDataFromBasicData(data));

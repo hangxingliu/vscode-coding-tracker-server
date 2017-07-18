@@ -3,7 +3,8 @@ mixin link2(link)
 		block
 
 #welcomeInfo.jumbotron(style="display: none")
-	h1(data-i18n="title_welcome") Welcome to report page
+	h1(data-i18n="title_welcome") 
+		| Welcome to report page
 	p.text-muted(data-i18n="welcome_subtitle") 
 		| This is report page of vscode coding tracker,
 		| you can get your coding activity report in this page.
@@ -31,11 +32,12 @@ mixin link2(link)
 			span(data-i18n="welcome_tips_language") 
 				| Select languages in the top of page nearby icon: 
 			span.glyphicon.glyphicon-globe.fix-icon.mr-10px
-			| 可选中文(简/繁)
+			| Include: Russian, 中文(简/繁) 
 
 	p.mb-0
 		span.glyphicon.glyphicon-pencil.mr-5px.fix-icon
-		span(data-i18n="welcome_contribution") Contribution:
+		span(data-i18n="welcome_contribution") 
+			| Contribution:
 	span.ml-20px.mb-20px.d-inline-block
 		span(data-i18n="welcome_contribution_1")
 			| If you have any good idea or find any bug in this project. Please post 
@@ -47,7 +49,11 @@ mixin link2(link)
 		| I welcome translations to this page into other languages. 
 		| And solve the language expression fault in the page.
 		br/
-		i (About translating, you can refer to files under "frontend/src/i18n/" and file "frontend/src/i18n.js" )
+		i 
+			| (About translating, you can refer chapter "Contributing" in this project 
+			a(href="https://github.com/hangxingliu/vscode-coding-tracker-server/blob/master/README.md" target="_blank") 
+				| README.md 
+			| )
 	br/
 	div.clearfix
 		button.btn.btn-success.btn-lg.pull-left(
