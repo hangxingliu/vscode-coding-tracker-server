@@ -1,12 +1,12 @@
-## CHANGELOG
+# CHANGELOG
 
-## 0.4.1 (2017/07/19)
+### 0.4.1 (2017/07/19)
 
 0. add Russian translation (Thank [Dolgishev Viktor (@vdolgishev)][vdolgishev])
 1. fix a fatal bug (Storing data file without version in first line)
 2. fix a small bug about default language item. and some wrong spelling in codes.
 
-## 0.4.0
+### 0.4.0
 
 0. full projects and languages report
 1. detailed report of specified project (each day coding times and echo file coding times)
@@ -15,12 +15,12 @@
 4. support share now (you can share your coding activities as chart image with your friend)
 5. optimized loading dialog, chart, tooltip of chart and frontend codes (include new builder scripts) display
 
-## 0.3.1
+### 0.3.1
 
 1. Added total time display in report page
 2. Fixed mark point (maximum time) could not fully show. (add more padding to chart)
 
-## 0.3.0
+### 0.3.0
 
 1. Added two API(`ajax/kill` and `ajax/test`)
 2. Added unit test (And automatic test before commit) and eslint support
@@ -31,21 +31,21 @@
 	- but uploading an old version data will get a error JSON object in this version. 
 5. Show is this server run under local mode in welcome JSON information.
 
-## 0.2.0
+### 0.2.0
 
 1. **Added beta version report web page** and analyze cli tools
 2. Added local mode, random token and public report options
 2. Allowed api/upload token passing by query string, such as `/ajax/report/last24hs?token=${YOUR_TOKEN}`
 3. Added more debug output in debug mode
 
-## 0.1.3
+### 0.1.3
 
 1. Upgraded storage database file version from 2.0 to 3.0
 2. Added two useful utilities (cleaner and updater)
 3. Supported 3.0 upload format included upload computer ID
 4. Fixed some bug
 
-## Older version
+### Older version
 
 Because this repository be separated from
  [original extension repository](https://github.com/hangxingliu/vscode-coding-tracker),

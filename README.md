@@ -50,13 +50,13 @@ VSCode Coding Tracker extension server side program.
 
 ## Current Version
 
-## 0.4.1 (2017/07/19)
+### 0.4.1 (2017/07/19)
 
 0. add Russian translation (Thank [Dolgishev Viktor (@vdolgishev)][vdolgishev])
 1. fix a fatal bug (Storing data file without version in first line)
 2. fix a small bug about default language item. and some wrong spelling in codes.
 
-## 0.4.0
+### 0.4.0
 
 0. full projects and languages report
 1. detailed report of specified project (each day coding times and echo file coding times)
