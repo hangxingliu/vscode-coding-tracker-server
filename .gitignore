@@ -1,3 +1,6 @@
+# ignore unit test temporary files
+test/temp
+
 # ignore playground
 test/playground
 

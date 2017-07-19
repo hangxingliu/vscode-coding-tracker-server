@@ -37,7 +37,9 @@
     "mocha": "*",
     "request": "*",
     "tree-kill": "*",
-    "async": "*"
+    "async": "*",
+    "eslint": "*",
+    "typescript": "*"
   },
   "author": "hangxingliu",
   "license": "GPL-3.0"
