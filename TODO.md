@@ -14,6 +14,7 @@
 - [x] add CONTRIBUTING.md file
 - From issues:
 	- [ ] add 24 hours report for custom date
+  - [ ] translation to Brazilian Portuguese
 	- [ ] better time display format
 		- from "1.5 hrs" => "1h 30m"
 		- way
