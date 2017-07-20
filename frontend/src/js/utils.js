@@ -44,7 +44,10 @@ let Utils = {
 	merge,
 	getShortProjectName,
 
-	hasLocalStorage
+	hasLocalStorage,
+
+	getReadableTimeString,
+	getReadableTimeStringArray
 };
 module.exports = Utils;
 
@@ -145,4 +148,56 @@ function convertTimeUnits(data, minValue) {
  */
 function merge(...objects) {
 	return $.extend(true, {}, ...objects);
+}
+/**
+ * convert a decimal hour value in a hour minute format
+ * such as 1.3 => 1h 18m
+ * @param {number} data 
+ * @returns {string}
+ */
+function getReadableTimeString(data) { 
+	let hoursAsInt = Math.floor(data);
+	let hoursAsText = '';
+
+	if (hoursAsInt) {
+		hoursAsText = `${hoursAsInt}h`;
+	}
+
+	return `${hoursAsText} ${Math.floor(data * 60)}m`;
+}
+
+/**
+ * convert a decimal data(object) coding/watching time unit in a hour minute format
+ * such as 1.3 => 1h 18m
+ * @param {object} data 
+ * @returns {object}
+ */
+function getReadableTimeStringArray(data) { 
+	let result = Array.isArray(data) ? [] : {};
+	data = Utils.convertUnit2Hour(data);
+	for (let key in data) {
+		let it = data[key];
+		let hoursAsInt = {
+			coding: Math.floor(it.coding),
+			watching: Math.floor(it.watching),
+		};
+		let hoursAsText = {
+			coding: '',
+			watching: '',
+		};
+
+		if (hoursAsInt.coding) {
+			hoursAsText.coding = `${hoursAsInt.coding}h`;
+		}
+
+		if (hoursAsInt.watching) {
+			hoursAsText.watching = `${hoursAsInt.watching}h`;
+		}
+
+		result[key] = {
+			coding: `${hoursAsText.coding} ${Math.floor(it.coding * 60)}m`,
+			watching: `${hoursAsText.watching} ${Math.floor(it.watching * 60)}m`,
+		};
+	}
+	return result;
 }

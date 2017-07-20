@@ -15,7 +15,7 @@
 - From issues:
 	- [ ] add 24 hours report for custom date
   - [ ] translation to Brazilian Portuguese
-	- [ ] better time display format
+	- [x] better time display format
 		- from "1.5 hrs" => "1h 30m"
 		- way
 			1. removing all `convertUnit2Hour` in `charts/*.js`

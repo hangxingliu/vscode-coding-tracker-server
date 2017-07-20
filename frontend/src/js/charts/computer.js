@@ -3,6 +3,7 @@
 
 let {
 	convertUnit2Hour,
+	getReadableTimeString,
 	orderByWatchingTime,
 	object2array,
 	getEachFieldToFixed2
@@ -17,7 +18,7 @@ const SELECTOR = '#chartComputer';
 function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
 	return setText(`You spent<br/> <b>${p.percent}%</b> time` +
-		`<br/>(<b>${p.value}</b> hours)<br/> on ${p.name} `);
+		`<br/>(<b>${getReadableTimeString(p.value)}</b>)<br/> on ${p.name} `);
 }
 
 /**
