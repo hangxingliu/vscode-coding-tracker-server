@@ -124,8 +124,8 @@ function App() {
 	 * @param {JQuery} $dom 
 	 */
 	function showTotalTimes(totalObject, $dom) {
-		let data = Utils.convertUnit2Hour({ total: totalObject }).total;
-		$dom.find('[name]').each((i, e) => $(e).text(Number(data[$(e).attr('name')]).toFixed(2)));
+		let data = Utils.getReadableTimeStringArray({ total: totalObject }).total;
+		$dom.find('[name]').each((i, e) => $(e).text(data[$(e).attr('name')]));
 	}
 
 	function requestAPI(url, success, noLoadingDialog) {

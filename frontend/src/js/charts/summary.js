@@ -3,6 +3,7 @@
 
 let {
 	convertUnit2Hour,
+	getReadableTimeString,
 	orderByName,
 	object2array,
 	getEachFieldToFixed2,
@@ -19,13 +20,13 @@ const SELECTOR = '#chartSummary';
 function tooltipFormatter(p, ticket, set){
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
 	if (p.componentType == 'markLine') //average
-		return setText(`Average ${p.seriesName} for <b>${p.value}</b> hours`);
+		return setText(`Average ${p.seriesName} for <b>${getReadableTimeString(p.value)}</b>`);
 	else if (p.componentType == 'markPoint')
-		return setText(`Longest ${p.seriesName} for <b>${p.value}</b> hours` +
+		return setText(`Longest ${p.seriesName} for <b>${getReadableTimeString(p.value)}</b>` +
 			`<br/>in ${dateLabels[p.data.coord[0]]}`)
 	else if (Array.isArray(p) && p.length == 2)
 		return setText(`In ${p[0].name}:<br/>` +
-			p.map(it => `${it.seriesName} for <b>${it.value}</b> hours`).join('<br/>'));
+			p.map(it => `${it.seriesName} for <b>${getReadableTimeString(it.value)}</b>`).join('<br/>'));
 	return setText(null);
 }
 
