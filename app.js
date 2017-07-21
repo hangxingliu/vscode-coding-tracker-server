@@ -31,8 +31,8 @@
  * Storage:
  *
  * Each file first line is storage version
- * And since second line, every line is a coding record and echo items in line are splited by a space character
- * Each lines are splited by a character '\n'
+ * And since second line, every line is a coding record and echo items in line are split by a space character
+ * Each lines are split by a character '\n'
  * And each string item(exclude version item) should storage after encodeURIComponent operate
  *
  *
@@ -58,9 +58,9 @@
 var there_are_some_help_above;
 
 //Require dependent module
+require('colors');
+
 var Express = require('express'),
-	Colors = require('colors'),
-	Path = require('path'),
 	Fs = require('fs-extra');
 	
 var log = require('./lib/Log'),
@@ -85,10 +85,12 @@ var app = Express();
 storage.init(Program.output);
 
 //Display now is debug mode
-global.DEBUG && log.info('Debug mode be turned on!') + 
-
-//Using visitor log record (if under the debug mode)	
-app.use(require('morgan')('dev'));
+//@ts-ignore
+if (global.DEBUG) {
+	log.info('Debug mode be turned on!');
+	//Using visitor log record (if under the debug mode)	
+	app.use(require('morgan')('dev'));
+}
 //Using body parser to analyze upload data
 app.use(require('body-parser').urlencoded({ extended: false }));
 
@@ -127,7 +129,7 @@ app.post('/ajax/upload', (req, res) => {
 
 	//Check upload version
 	if (versionCheckResult !== true)
-		return log.error(versionCheckResult) + returnError(res, versionCheckResult);
+		return log.error(versionCheckResult), returnError(res, versionCheckResult);
 	
 	//Check params
 	params = checker(params);
@@ -135,9 +137,7 @@ app.post('/ajax/upload', (req, res) => {
 	//Params are invalid
 	return params.error ? returnError(res, params.error)
 		//Storage data
-		: process.nextTick( () => storage.write(params)) + 
-		//Response HTTP request
-		res.json({ success: 'upload success' }).end();
+		: (process.nextTick(() => storage.write(params)), res.json({ success: 'upload success' }).end())
 });
 
 //add 404 and 500 response to express server

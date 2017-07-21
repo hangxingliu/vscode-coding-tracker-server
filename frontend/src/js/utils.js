@@ -114,7 +114,7 @@ function getEachFieldToFixed2(array, fieldName) {
 /**
  * @param {string} name 
  * @param {'line'|'pie'|'bar'} type 
- * @param {object} data 
+ * @param {any} data 
  * @param {any[]} options
  * @returns {EChartOption}
  */

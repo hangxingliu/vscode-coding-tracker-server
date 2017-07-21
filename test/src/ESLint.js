@@ -7,7 +7,8 @@
 const FILES = [
 	'lib/',
 	'frontend/src/',
-	'test/'
+	'test/src/',
+	'app.js'
 ];
 const TEST_SLOW_TIME = 3600 * 1000;
 
