@@ -5,7 +5,7 @@ let APIToken = '';
 
 let exportObject = {
 	init: () => {
-		APIToken = (location.href.match(/[\?\&]token\=(.+?)(\&|$)/) || ['', ''])[1];
+		APIToken = (location.href.match(/[?&]token=(.+?)(&|$)/) || ['', ''])[1];
 		return exportObject;
 	},
 	getBasicReportDataURL: (reportDays) =>

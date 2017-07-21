@@ -19,7 +19,8 @@ let {
 } = require('../form');
 
 const SELECTOR_0 = '#chartOneProjectDays',
-	SELECTOR_1 = '#chartOneProjectLanguages',
+	// TODO: add language report in one project	
+	// SELECTOR_1 = '#chartOneProjectLanguages',
 	SELECTOR_2 = '#chartOneProjectFiles',
 	DIALOG_SELECTOR = '#dlgOneProject';
 
@@ -49,7 +50,7 @@ function tooltipFormatter2(p, ticket, set) {
 /**
  * @type {EChartsObject}
  */
-let charts0 = null, charts1 = null, charts2 = null;
+let charts0 = null, /*charts1 = null,*/ charts2 = null;
 let $dlg = null;
 /**
 * @type {APIResponse}

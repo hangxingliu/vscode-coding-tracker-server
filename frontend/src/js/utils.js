@@ -56,7 +56,7 @@ function getEmptyCodingWatchingObject() { return { coding: 0, watching: 0 }; }
  * @param {string} projectName 
  * @returns  {string}
  */
-function getShortProjectName(projectName) { return (projectName.match(/.*(^|[\\\/])(.+)$/) || [0, 0, projectName])[2] }
+function getShortProjectName(projectName) { return (projectName.match(/.*(^|[\\/])(.+)$/) || [0, 0, projectName])[2] }
 
 /**
  * @param {string|number} num 
