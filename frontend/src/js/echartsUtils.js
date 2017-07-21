@@ -3,7 +3,7 @@ module.exports = {
 	AXIS_HOURS: { axisLabel: { formatter: '{value} hs' } },
 	AXIS_MINUTES: { axisLabel: { formatter: '{value} mins' } },
 	GRID_NORMAL: { left: '20', right: '20', bottom: '10', top: '10', containLabel: true },
-	GRID_HORIZON_BAR: {left: '10', right: '20', bttom: '5', top: '5', containLabel: true}
+	GRID_HORIZON_BAR: {left: '10', right: '20', bottom: '5', top: '5', containLabel: true}
 };
 
 /**

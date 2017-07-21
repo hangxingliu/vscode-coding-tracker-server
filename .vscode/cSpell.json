@@ -7,7 +7,15 @@
     // words - list of words to be always considered correct
     "words": [
         "fname",
-        "CHANGELOG"
+        "CHANGELOG",
+        "echarts",
+        "coord",
+        "btns",
+        "markline",
+        "YYYYMMDD",
+        "HHMM",
+        "pcid",
+        "intelli"
     ],
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.
