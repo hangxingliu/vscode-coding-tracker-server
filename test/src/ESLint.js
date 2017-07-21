@@ -10,7 +10,8 @@ const FILES = [
 	'test/src/',
 	'app.js'
 ];
-const TEST_SLOW_TIME = 3600 * 1000;
+const TEST_SLOW_TIME = 60 * 1000;
+const TEST_TIMEOUT_TIME = 120 * 1000;
 
 // Check this unit test is running in project root folder
 function runningInProjectRoot() {
@@ -28,7 +29,8 @@ function runningInProjectRoot() {
 
 function main() {
 	this.slow(TEST_SLOW_TIME);
-
+	this.timeout(TEST_TIMEOUT_TIME);
+	
 	let ESLint = require('eslint');		
 	//@ts-ignore
 	let eslint = new ESLint.CLIEngine({ useEslintrc: true });
