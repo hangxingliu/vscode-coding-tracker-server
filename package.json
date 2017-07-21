@@ -34,11 +34,14 @@
     "body-parser": "*"
   },
   "devDependencies": {
+    "@types/mocha": "*",
+    "@types/jquery": "*",
     "mocha": "*",
     "request": "*",
     "tree-kill": "*",
     "async": "*",
     "eslint": "*",
+    "babel-eslint": "*",
     "typescript": "*"
   },
   "author": "hangxingliu",
