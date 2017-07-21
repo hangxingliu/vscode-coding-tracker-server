@@ -12,11 +12,9 @@ const FILES = [
 ];
 const TEST_SLOW_TIME = 3600 * 1000;
 
-let path = require('path');
-let ESLint = require('eslint');
-
 // Check this unit test is running in project root folder
 function runningInProjectRoot() {
+	let path = require('path');
 	try {
 		if (require(path.join(process.cwd(), 'package.json')).name
 			!= 'vscode-coding-tracker-server')
@@ -31,6 +29,7 @@ function runningInProjectRoot() {
 function main() {
 	this.slow(TEST_SLOW_TIME);
 
+	let ESLint = require('eslint');		
 	//@ts-ignore
 	let eslint = new ESLint.CLIEngine({ useEslintrc: true });
 
@@ -53,7 +52,9 @@ function main() {
 	}
 }
 
-describe('ESLint', () => {
-	it('running in project root directory', runningInProjectRoot);
-	it('no warning and error', main);
-});
+if (process.argv.indexOf('--no-eslint') < 0) {
+	describe('ESLint', () => {
+		it('# running in project root directory', runningInProjectRoot);
+		it('# no warning and error', main);
+	});
+}	

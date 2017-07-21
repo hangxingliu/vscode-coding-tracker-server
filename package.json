@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha test/src/*.js",
+    "test-no-eslint-tsc": "mocha test/src/*.js --no-eslint --no-tsc",
     "build": "node ./build/build.js",
     "build-live": "node ./build/build.js -w",
     "start": "node ./app",
@@ -34,8 +35,16 @@
     "body-parser": "*"
   },
   "devDependencies": {
+    "@types/node": "*",
+    "@types/colors": "*",
     "@types/mocha": "*",
     "@types/jquery": "*",
+    "@types/bootstrap": "*",
+    "@types/commander": "*",
+    "@types/fs-extra": "*",
+    "@types/express": "*",
+    "@types/morgan": "*",
+    "@types/body-parser": "*",
     "mocha": "*",
     "request": "*",
     "tree-kill": "*",

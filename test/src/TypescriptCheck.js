@@ -15,21 +15,23 @@ const TEST_TIMEOUT_TIME = 120 * 1000;
 let { exec } = require('child_process'),
 	{ removeSync } = require('fs-extra');
 
-describe('Typescript', function () {
-	it('# type check', function(done) {
-		this.slow(TEST_SLOW_TIME);
-		this.timeout(TEST_TIMEOUT_TIME);
+if (process.argv.indexOf('--no-tsc') < 0) {
+	describe('Typescript', function () {
+		it('# type check', function (done) {
+			this.slow(TEST_SLOW_TIME);
+			this.timeout(TEST_TIMEOUT_TIME);
 
-		exec(COMMAND, { cwd: CWD, encoding: 'utf8' }, (err, stdout, stderr) => {
-			if (err) throw err;
-			if ((stdout + stderr).indexOf('error') >= 0) {
-				console.log(stdout);
-				console.log(stderr);
-				throw new Error(`Check failed by tsc!`);
-			}
-			// clean temp path
-			removeSync(TEMP_DIRECTORY);
-			return done();
+			exec(COMMAND, { cwd: CWD, encoding: 'utf8' }, (err, stdout, stderr) => {
+				if (err) throw err;
+				if ((stdout + stderr).indexOf('error') >= 0) {
+					console.log(stdout);
+					console.log(stderr);
+					throw new Error(`Check failed by tsc!`);
+				}
+				// clean temp path
+				removeSync(TEMP_DIRECTORY);
+				return done();
+			});
 		});
 	});
-});
+}	
