@@ -11,7 +11,7 @@
 - [ ] replace glyphicons to ionicons
 - [ ] more share charts
 - [ ] add eslint to unit test to keeping code health
-- [ ] add CONTRIBUTING.md file
+- [x] add CONTRIBUTING.md file
 - From issues:
 	- [ ] add 24 hours report for custom date
 	- [ ] better time display format

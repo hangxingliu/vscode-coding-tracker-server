@@ -67,30 +67,13 @@ VSCode Coding Tracker extension server side program.
 
 more version information: [CHANGELOG.md](CHANGELOG.md)
 
+## Editing, Modifying and Building codes
+
+Goto chapter *Editing, Building, Running and Testing* in [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Contributing
 
-You can get information about functions of each folder and files by [FILES.md](FILES.md) 
-
-### Server codes
-
-You can look codes in folder `lib` and file `app.js`
-
-### Frontend codes
-
-1. install dependencies of frontend builder by executing `./install-builder-dependencies`
-	- For Windows user: Install dependencies manually, you can refer `./install-builder-dependencies` file
-2. test build script is OK `npm run build` or `npm run build-live`
-3. look or edit codes in `frontend` folder
-
-### Internationalize (Translation)
-
-1. create a translation js file in `frontend/src/js/i18n/`
-2. add a line likes `'language_code': require('./i18n/language_code')` into `frontend/src/js/i18n.js`
-3. add a item likes `option(value='language_code') Language Name` into `frontend/src/modules/top_navbar.pug`
-4. you can build frontend codes and have a look.
-
-Actually, you can refer this commit about adding Russian translations by [Dolgishev Viktor (@vdolgishev)][vdolgishev]:   
-<https://github.com/hangxingliu/vscode-coding-tracker-server/commit/b16499f3d9a1fbe4061fbe1a9617240c71e4e220>
+It is **necessary** to read [CONTRIBUTING.md](CONTRIBUTING.md) before **contributing codes/translations or building codes**
 
 ## Files manifest
 
