@@ -69,3 +69,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# compiled frontend
+frontend/dist/

@@ -3,6 +3,7 @@
 
 let {
 	convertUnit2Hour,
+	getReadableTimeString,
 	orderByWatchingTime,
 	object2array,
 	getEachFieldToFixed2,
@@ -25,7 +26,7 @@ function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
 	let i = p.dataIndex;
 	if (i >= projectNames.length) return setText(null);
-	return setText(`You spent<br/> (<b>${p.value}</b> hours)<br/> on <u>${projectNames[i]}</u>`);
+	return setText(`You spent <b>${getReadableTimeString(p.value)}</b><br/> on <u>${projectNames[i]}</u>`);
 }
 
 /**
@@ -48,7 +49,7 @@ function update(dataGroupByProject) {
 	originalProjectNames = array.map(it => it.name);
 	projectNames = array.map(it => decodeURIComponent(it.name));
 	shortProjectNames = projectNames.map((name, i) =>
-		getShortProjectName(name) + ` (${Number(array[i].watching).toFixed(2)} hs)`);
+		getShortProjectName(name) + `(${getReadableTimeString(array[i].watching)})`);
 
 	charts.setOption({
 		legend: { data: [''] },

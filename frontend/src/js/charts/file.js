@@ -3,6 +3,7 @@
 
 let {
 	convertUnit2Hour,
+	getReadableTimeString,
 	orderByWatchingTime,
 	object2array,
 	getEachFieldToFixed2,
@@ -24,7 +25,7 @@ function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
 	let i = p.dataIndex;
 	if (i >= fileNames.length) return setText(null);
-	return setText(`You spent<br/> (<b>${p.value}</b> hours)<br/> on <u>${fileNames[i]}</u>`);
+	return setText(`You spent <b>${getReadableTimeString(p.value)}</b><br/> on <u>${fileNames[i]}</u>`);
 }
 
 /**
@@ -43,7 +44,7 @@ function update(dataGroupByFile) {
 	
 	fileNames = array.map(it => decodeURIComponent(it.name));
 	displayFileNames = fileNames.map((name, i) =>
-		name + ` (${Number(array[i].watching).toFixed(2)} hs)`);
+		name + `(${getReadableTimeString(array[i].watching)})`);
 
 	charts.setOption({
 		legend: { data: [''] },

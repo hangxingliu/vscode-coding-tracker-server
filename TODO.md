@@ -14,7 +14,8 @@
 - [x] add CONTRIBUTING.md file
 - From issues:
 	- [ ] add 24 hours report for custom date
-	- [ ] better time display format
+  - [ ] translation to Brazilian Portuguese
+	- [x] better time display format
 		- from "1.5 hrs" => "1h 30m"
 		- way
 			1. removing all `convertUnit2Hour` in `charts/*.js`
