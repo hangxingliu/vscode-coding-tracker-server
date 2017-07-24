@@ -48,3 +48,4 @@ type CodingWatchingObject = { coding: number; watching: number };
 type CodingWatchingMap = {
 	[name: string]: CodingWatchingObject;
 };
+type CodingWatchingArray = CodingWatchingObject[];

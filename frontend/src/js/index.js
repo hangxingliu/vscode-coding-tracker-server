@@ -1,4 +1,3 @@
-//@ts-check
 /// <reference path="types/index.d.ts" />
 
 function App() {
@@ -124,7 +123,8 @@ function App() {
 	 * @param {JQuery} $dom 
 	 */
 	function showTotalTimes(totalObject, $dom) {
-		let data = Utils.getReadableTimeStringArray({ total: totalObject }).total;
+		let totalHoursMap = Utils.convertUnit2Hour({ total: totalObject });
+		let data = Utils.getReadableTimeStringFromMap(totalHoursMap).total;
 		$dom.find('[name]').each((i, e) => $(e).text(data[$(e).attr('name')]));
 	}
 
