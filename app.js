@@ -27,32 +27,8 @@
  */
 
 /**
- * Storage Structure Version: 3.0
- * Storage:
- *
- * Each file first line is storage version
- * And since second line, every line is a coding record and echo items in line are split by a space character
- * Each lines are split by a character '\n'
- * And each string item(exclude version item) should storage after encodeURIComponent operate
- *
- *
- * Example Rule:
- *
- * [version]
- * [type] [time] [long] [lang] [file] [proj] [pcid]
- * ...
- * -----
- *     [type]: open=>0, look=>1(reserve), code=>2
- *
- *
- * Storage file name:
- *
- * YYMDD.db   a output data file included all record uploaded on day YY-MM-DD
- * YYMDD.ov   a overview analyze result data file analyzed from all record before day YYMDD
- *      could be used to display each project or each files in a project time consuming
- * ...
- * -----
- *     M: use one character to express month(1,2,3,4,5,6,7,8,9,A,B,C)
+ * Storage Structure Version: 4.0
+ * @see docs/STORAGE_SYNTAX_V4.md
  */
 //eslint-disable-next-line no-unused-vars
 var there_are_some_help_above;
