@@ -30,6 +30,7 @@
  * Storage Structure Version: 4.0
  * @see docs/STORAGE_SYNTAX_V4.md
  */
+"use strict";
 //eslint-disable-next-line no-unused-vars
 var there_are_some_help_above;
 

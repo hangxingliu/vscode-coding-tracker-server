@@ -4,6 +4,7 @@
  * A cli utility for analyzing database files
  */
 
+"use strict";
 var Program = require('commander'),
 	fs = require('fs'),
 	path = require('path'),
