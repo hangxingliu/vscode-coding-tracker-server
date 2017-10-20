@@ -73,6 +73,8 @@ app.use(require('body-parser').urlencoded({ extended: false }));
 //Using homepage welcome
 app.use(welcome(Program));
 
+//Empty favicon.ico
+app.use('/favicon.ico', (req, res) => res.end());
 //Using front end static files
 app.use('/report', Express.static(`${__dirname}/frontend/dist`));
 app.use('/lib', Express.static(`${__dirname}/frontend/lib`));
