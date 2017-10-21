@@ -6,20 +6,20 @@
     "language": "en",
     // words - list of words to be always considered correct
     "words": [
-        "CHANGELOG",
-        "fname",
-        "CHANGELOG",
-        "echarts",
-        "coord",
         "btns",
-        "markline",
-        "YYYYMMDD",
-        "HHMM",
-        "pcid",
-        "intelli",
-        "YYMDD",
+        "CHANGELOG",
+        "coord",
+        "echarts",
+        "fname",
         "hangxingliu",
-        "repo"
+        "HHMM",
+        "intelli",
+        "markline",
+        "pcid",
+        "repo",
+        "YYMDD",
+        "YYYYMMDD",
+        "YYYYMMDDHH"
     ],
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.

@@ -1,6 +1,6 @@
 # Storage Syntax Version 4
 
-This document be updated on `2017/09/10`
+This document be updated on `2017/10/22`
 
 ## Summary
 
@@ -58,7 +58,7 @@ Then defined string can be used in tracking record line, for example:
 ### Tracking record line
 
 The line include 12 columns or 7 columns(version 3.0)   
-And all string without defined string should be escape by `encodeURIComponent`
+And all string should be escape by `encodeURIComponent` (Exclude `$` in defined string variable and `:` in vcs field)
 
 Format: 
 
@@ -99,19 +99,19 @@ Description:
 
 ```
 4.0
-0 1488560825949 294515 javascript mdjs.js %2Fpath%2Fto%2project ubuntu git%3A%3Amaster  40 0 0 0
-2 1488561059090 5000 javascript mdjs.js %2Fpath%2Fto%2project ubuntu git%3A%3Amaster 40 0 0 0
-0 1488561846988 60918 css mdcss.css %2Fpath%2Fto%2project ubuntu git%3A%3Amaster 100 0 0 0
-0 1488561918367 130119 javascript mdjs.js %2Fpath%2Fto%2project ubuntu git%3A%3Amaster 50 0 0 0
-2 1488561923500 45000 javascript mdjs.js %2Fpath%2Fto%2project ubuntu git%3A%3Amaster 50 0 0 0
-0 1488562174377 7514 html demo.html %2Fpath%2Fto%2project ubuntu git%3A%3Agh-pages 100 0 0 0
+0 1488560825949 294515 javascript mdjs.js %2Fpath%2Fto%2project ubuntu git::master  40 0 0 0
+2 1488561059090 5000 javascript mdjs.js %2Fpath%2Fto%2project ubuntu git::master 40 0 0 0
+0 1488561846988 60918 css mdcss.css %2Fpath%2Fto%2project ubuntu git::master 100 0 0 0
+0 1488561918367 130119 javascript mdjs.js %2Fpath%2Fto%2project ubuntu git::master 50 0 0 0
+2 1488561923500 45000 javascript mdjs.js %2Fpath%2Fto%2project ubuntu git::master 50 0 0 0
+0 1488562174377 7514 html demo.html %2Fpath%2Fto%2project ubuntu git::gh-pages 100 0 0 0
 ```
 
 ```
 4.0
 # Define
 d 1 %2Fpath%2Fto%2project
-d 2 git%3A%3Amaster
+d 2 git::master
 d 3 ubuntu
 d 4 javascript
 d 5 mdjs.js
@@ -121,6 +121,6 @@ d 5 mdjs.js
 0 1488561846988 60918 css mdcss.css $1 $3 $2 100 0 0 0
 0 1488561918367 130119 $4 $5 $1 $3 $2 50 0 0 0
 2 1488561923500 45000 $4 $5 $1 $3 $2 50 0 0 0
-0 1488562174377 7514 html demo.html $1 $3 %3A%3Agh-pages 100 0 0 0
+0 1488562174377 7514 html demo.html $1 $3 git::gh-pages 100 0 0 0
 ```
 
