@@ -78,19 +78,19 @@ describe('Request test', () => {
 	describe('Upload test', () => {
 		it('#has not version', then => {
 			request.post(TEST_UPLOAD, { form: { token: TOKEN } },
-				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/invalid/), then));
+				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/empty/), then));
 		});
-		it('#wrong version', then => {
+		it('#wrong version1', then => {
 			request.post(TEST_UPLOAD, { form: { token: TOKEN, version: '1.2.3' } },
-				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/invalid/), then));
+				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/unsupported/), then));
 		});
-		it('#low version', then => {
-			request.post(TEST_UPLOAD, { form: { token: TOKEN, version: '1.0' } },
-				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/version/), then));
+		it('#wrong version2', then => {
+			request.post(TEST_UPLOAD, { form: { token: TOKEN, version: '4.0.3' } },
+				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/unsupported/), then));
 		});
-		it('#high version', then => {
-			request.post(TEST_UPLOAD, { form: { token: TOKEN, version: '10.0' } },
-				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/version/), then));
+		it('#wrong version3', then => {
+			request.post(TEST_UPLOAD, { form: { token: TOKEN, version: 'version' } },
+				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/unsupported/), then));
 		});
 		it('#missing params', then => {
 			request.post(TEST_UPLOAD, { form: { token: TOKEN, version: '3.0', type: 0 } },

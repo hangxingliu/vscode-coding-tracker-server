@@ -10,23 +10,6 @@
  */
 
 /**
- * Upload Structure Version: 3.0
- * Upload item:
- *
- * version: string      upload version
- * token: string        upload token
- *
- * type: enum<string>   open|look|code coding type(open time, looking time and coding time)
- *    if upload type is not in enum item will be choose default enum: open
- * time: integer        coding record happened timestamp
- * long: integer        coding record duration time(s)
- * lang: string         coding language
- * file: string         coding file path(relative project path)
- * proj: string         coding project path
- * pcid: string			coding computer id
- */
-
-/**
  * Storage Structure Version: 4.0
  * @see docs/STORAGE_SYNTAX_V4.md
  */
@@ -44,7 +27,7 @@ var log = require('./lib/Log'),
 	version = require('./lib/Version'),
 	welcome = require('./lib/Welcome'),
 	storage = require('./lib/Storage'),
-	checker = require('./lib/ParamsChecker'),
+	checkParams = require('./lib/ParamsChecker'),
 	errorHandler = require('./lib/Handler404and500'),
 	tokenChecker = require('./lib/TokenMiddleware'),
 	reporter = require('./lib/analyze/ReportMiddleware'),
@@ -103,7 +86,7 @@ app.use('/ajax/kill', (req, res) => {
 
 //Handler upload request
 app.post('/ajax/upload', (req, res) => {
-	var params = req.body,
+	let params = req.body,
 		versionCheckResult = version.check(params.version);
 
 	//Check upload version
@@ -111,12 +94,14 @@ app.post('/ajax/upload', (req, res) => {
 		return log.error(versionCheckResult), returnError(res, versionCheckResult);
 	
 	//Check params
-	params = checker(params);
-
+	params = checkParams(params);
 	//Params are invalid
-	return params.error ? returnError(res, params.error)
-		//Storage data
-		: (process.nextTick(() => storage.write(params)), res.json({ success: 'upload success' }).end())
+	if (params.error)
+		return returnError(res, params.error);	
+
+	res.json({ success: 'upload success' });
+	res.end();
+	storage.write(params);
 });
 
 //add 404 and 500 response to express server

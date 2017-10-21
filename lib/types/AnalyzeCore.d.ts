@@ -9,7 +9,9 @@ type AnalyzeGroupByEnum = {
 	FILE: 32;
 	PROJECT: 128;
 	COMPUTER: 256;
-	ALL: 511;
+	VCS_REPO: 512;
+	VCS_BRANCH: 1024;
+	ALL: 2047;
 	NONE: 0;
 };
 type AnalyzeCoreInstance = {
@@ -21,20 +23,24 @@ type AnalyzeCoreInstance = {
 	getResult(): AnalyzeResult;
 };
 type AnalyzeFilterRules = {
-	project?: string[],
-	computer?: string[],
-	language?: string[],
-	file?: string[]
+	project?: string[];
+	computer?: string[];
+	language?: string[];
+	file?: string[];
+	repo?: string[];
+	branch?: string[];
 };
 type AnalyzeResult = {
 	total: HasCodingWatchingObject,
 	groupBy: {
-		hour?: (HasCodingWatchingObject & HasNameObject)[];
-		file?: (HasCodingWatchingObject & HasNameObject)[];
-		day?: (HasCodingWatchingObject & HasNameObject)[];
-		project?: (HasCodingWatchingObject & HasNameObject)[];
-		computer?: (HasCodingWatchingObject & HasNameObject)[];
+		hour?: HasNameAndTimeObject[];
+		file?: HasNameAndTimeObject[];
+		day?: HasNameAndTimeObject[];
+		project?: HasNameAndTimeObject[];
+		computer?: HasNameAndTimeObject[];
+		repo?: HasNameAndTimeObject[];
+		branch?: HasNameAndTimeObject[];
 	}
 };
 type HasCodingWatchingObject = { coding: number; watching: number; }
-type HasNameObject = { name: string; }
+type HasNameAndTimeObject = { name: string; } & HasCodingWatchingObject;
