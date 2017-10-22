@@ -1,11 +1,10 @@
-/// <reference path="types/index.d.ts" />
+/// <reference path="./index.d.ts" />
 
 function App() {
 	const VERSION_KEY = 'coding-tracker-version';	
 
 	let Utils = require('./utils'),
-		status = require('./statusDialog').init(),
-		url = require('./url').init(),
+		api = require('./api').init(),
 		i18n = require('./i18n'),
 		share = require('./share');
 
@@ -62,8 +61,8 @@ function App() {
 	function setFilesInProjectRange(range) { chart.oneProject.setRange(range); }
 
 	function openProjectReport(projectName) {
-		requestAPI(url.getProjectReportDataURL(reportDays, projectName),
-			data => chart.oneProject.update(data, reportDays), true);
+		api.requestSilent(api.getProjectReportDataURL(reportDays, projectName),
+			data => chart.oneProject.update(data, reportDays));
 	}
 
 	function hideWelcome() { $welcomeInfo.slideUp(); localStorage.setItem(VERSION_KEY, currentServerVersion); }
@@ -84,12 +83,12 @@ function App() {
 
 	function requestBasicReportData() {
 		reportDays = Number($reportDateRange.val());
-		requestAPI(url.getBasicReportDataURL(reportDays), genChartsFromBasicReportData);
+		api.request(api.getBasicReportDataURL(reportDays), genChartsFromBasicReportData);
 	}
 
 	function requestLast24hsReportData() {
 		let now = Date.now();
-		requestAPI(url.getLast24HoursDataURL(now), genLast24HoursChart);
+		api.request(api.getLast24HoursDataURL(now), genLast24HoursChart);
 		function genLast24HoursChart(data) {
 			chart.last24hours.update(Utils.expandAndShortGroupByHoursObject(data.groupBy.hour, now));
 			showTotalTimes(data.total, $('#counterLast24Hs'));
@@ -128,28 +127,5 @@ function App() {
 		$dom.find('[name]').each((i, e) => $(e).text(data[$(e).attr('name')]));
 	}
 
-	function requestAPI(url, success, noLoadingDialog) {
-		noLoadingDialog || status.loading();
-		$.ajax({
-			method: 'GET', url,
-			success: data => (success(data), status.hide()),
-			error: displayError
-		});
-	}
-
-	function displayError(error) {
-		let info = '',
-			getXHRInfo = () => `\n  readyState: ${error.readyState}\n  status: ${error.status}\n  statusText: ${error.statusText}`;
-		if (error) {
-			if (('readyState' in error && error.readyState < 4) ||
-				('status' in error && error.status != 200))
-				info = `Network exception!` + getXHRInfo();	
-			if (error.responseJSON && typeof error.responseJSON.error == 'string')
-				info = `Server response:\n  ${error.responseJSON.error}`;
-		}
-		//@ts-ignore
-		if (!info) info = error;
-		status.failed(info);
-	}
 }
 global.app = new App();
