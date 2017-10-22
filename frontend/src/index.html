@@ -5,11 +5,14 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="">
-	<meta name="author" content="">
+	<meta name="description" content="<%= description %>">
+	<meta name="author" content="<%= author %>">
 	<title><%= title.index %></title>
-	<%- include("modules/include_css") %>
-
+	
+	<link href="../lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../lib/ionicons/dist/css/ionicons.min.css" rel="stylesheet">
+	<link href="sass/index.css" rel="stylesheet">
+	
 </head>
 <body>
 
@@ -28,10 +31,14 @@
 	<%- include("modules/dialog_share.pug") %>
 
 	<!-- javascripts -->
-	<%- include("modules/include_js") %>
+	<script src="../lib/jquery/dist/jquery.min.js"></script>
+	<script src="../lib/popper.js/dist/umd/popper.min.js"></script>
+	<script src="../lib/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="../lib/echarts/dist/echarts.min.js"></script>
+	
 	<script src="js/index.js"></script>
 	<script async defer src="https://buttons.github.io/buttons.js"></script>
-
+	
 </body>
 
 </html>
