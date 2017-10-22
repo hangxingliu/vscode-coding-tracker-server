@@ -58,8 +58,8 @@ Detailed files manifest: [FILES.md](FILES.md)
 
 1. Make sure `node` and `npm` environments have been installed in your system. 
 2. Executing `npm install` for Node.js tradition
-3. If you want to editing frontend codes (included HTML, style-sheet, scripts). Please install dependencies of builder by executing script`./install-builder-dependencies`
-	- For Windows user: You should install dependencies manually by referring `./install-builder-dependencies` file
+3. If you want to editing frontend codes (included HTML, style-sheet, scripts). Please install dependencies of builder by executing script`./build/install-dependencies`
+	- For Windows user: You should install dependencies manually by referring `./build/install-dependencies` file
 4. Recommended IDE: `Visual Studio Code`
 
 ### Building frontend codes

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 npm i \
-	colors fs-extra commander glob\
+	async colors fs-extra commander glob\
 	ejs pug \
 	js-yaml\
 	browserify babel-core\
