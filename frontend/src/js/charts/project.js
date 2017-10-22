@@ -1,5 +1,5 @@
 //@ts-check
-/// <reference path="../types/index.d.ts" />
+/// <reference path="../index.d.ts" />
 
 let {
 	convertUnit2Hour,

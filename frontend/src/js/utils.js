@@ -1,6 +1,6 @@
 //@ts-check
-/// <reference path="types/index.d.ts" />
-/// <reference path="types/echarts.d.ts" />
+/// <reference path="./index.d.ts" />
+/// <reference path="./echarts.d.ts" />
 
 let Utils = {
 	expandGroupByDaysObject: (obj, startDate, endDate) => {

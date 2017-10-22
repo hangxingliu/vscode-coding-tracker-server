@@ -42,6 +42,8 @@ type APIResponse = {
 		hour: CodingWatchingMap;
 		language: CodingWatchingMap;
 		project: CodingWatchingMap;
+		vcs_branch: CodingWatchingMap;
+		vcs_repo: CodingWatchingMap;
 	}
 }
 type CodingWatchingObject = { coding: number; watching: number };
