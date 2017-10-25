@@ -2,73 +2,83 @@ mixin chartBlock(id)
 	div(id=id style="height: 250px")
 
 mixin totallyIndicator(id)
-	p.pull-right(id=id)
+	h6.card-subtitle.text-muted.mb-3.mt-1(id=id)
 		span(data-i18n="title_totally_1") Totally: watching for 
-		b(name="watching") ----
+		span(name="watching") ----
 		| &nbsp;
 		span(data-i18n="title_totally_2") coding for 
-		b(name="coding") ----
+		span(name="coding") ----
 		| &nbsp;
 		span(data-i18n="title_totally_3")
 
-mixin share(onclick)
-	a.pull-right.text-success.ml-20px(onclick=onclick href="#"): b
-		span.glyphicon.glyphicon-share.mr-3px
-		span(data-i18n="title_share") Share
 
-mixin fullReport(onclick)
-	a.pull-right(href="#" style="text-decoration: none" onclick=onclick)
-		span.glyphicon.glyphicon-plus
-		span &nbsp;&nbsp;
-		span(data-i18n="full_report") Full report
 
 //====mixin==========
 //===========HTML====
 
 .row
-	.col-md-12
-		.panel.panel-success
-			.panel-heading
-				b(data-i18n="title_summary") Coding activities summary
-				+share("app.shareSummary()")
+	.col-12
+		.card.my-2
+			.card-body
+				h4.card-title
+					span(data-i18n="title_summary") Coding activity
+					a.text-accent-color.ml-1.link-share(href="#" onclick="app.shareSummary()") 
+						span.ion-share
 				+totallyIndicator("counterSummary")
-			.panel-body
-				+chartBlock("chartSummary")
+				.card-text
+					+chartBlock("chartSummary")
 				
 .row
-	.col-md-12
-		.panel.panel-info
-			.panel-heading
-				b(data-i18n="title_24hs") Last 24 hours summary 
+	.col-8
+		.card.my-2(style="height: 400px")
+			.card-body
+				h4.card-title(data-i18n="title_24hs") Last 24 hours 
 				+totallyIndicator("counterLast24Hs")
-			.panel-body
-				+chartBlock("chartLast24Hs")
+				.card-text
+					+chartBlock("chartLast24Hs")
+				a.card-link.float-right.link-full-report(href="#") 
+					span More 24 hours report
+					span.ion-chevron-right.ml-2
+	.col-4
+		.card.my-2(style="height: 400px")
+			.card-body
+				h4.card-title() Contrast
+			
 
 .row
 	.col-md-8
-		.panel.panel-default
-			.panel-heading
-				b(data-i18n="title_projects") Group by projects 
-				small.text-muted(data-i18n="title_projects_tip") (click item in chart for details)
-				+fullReport("app.showAllProjects()")
-			.panel-body
-				+chartBlock("chartProject")
+		.card.my-2(style="height: 400px")
+			.card-body
+				h4.card-title(data-i18n="title_projects") Projects
+				h6.card-subtitle.text-muted.mb-2.mt-1(data-i18n="title_projects_tip") 
+					| (click item in chart for details)
+				.card-text
+					+chartBlock("chartProject")
+				a.card-link.float-right.link-full-report(href="#" 
+					onclick="app.showAllProjects()") 
+					span Full report
+					span.ion-connection-bars.ml-2
 	.col-md-4
-		.panel.panel-default
-			.panel-heading 
-				b(data-i18n="title_languages") Languages 
-				+fullReport("app.showAllLangs()")
-			.panel-body
-				+chartBlock("chartLanguage")
+		.card.my-2(style="height: 400px")
+			.card-body
+				h4.card-title(data-i18n="title_languages") Languages 
+				.card-text
+					+chartBlock("chartLanguage")
+				a.card-link.float-right.link-full-report(href="#" 
+					onclick="app.showAllProjects()") 
+					span Full report
+					span.ion-connection-bars.ml-2
 
 .row
 	.col-md-8
-		.panel.panel-default
-			.panel-heading: b(data-i18n="title_files") Group by files 
-			.panel-body
-				+chartBlock("chartFile")
+		.card.my-2
+			.card-body
+				h4.card-title(data-i18n="title_projects") Files
+				.card-text
+					+chartBlock("chartFile")
 	.col-md-4
-		.panel.panel-default
-			.panel-heading: b(data-i18n="title_computers") Computers 
-			.panel-body
-				+chartBlock("chartComputer")
+		.card.my-2
+			.card-body
+				h4.card-title(data-i18n="title_languages") Computers 
+				.card-text
+					+chartBlock("chartComputer")
