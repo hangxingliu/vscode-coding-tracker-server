@@ -6,7 +6,7 @@ npm i --save-dev\
 	jquery@3.2.1\
 	echarts@3.7.2\
 	popper.js@1.12.6\
-	ionicons@3.0.0
+	ionicons@2.0.1
 
 echo "Installing builder script dependencies ..."
 npm i --save-dev\

@@ -15,12 +15,11 @@ const COMPONENTS = {
 		"dist/js/bootstrap.min.js"
 	],
 	"ionicons": [
-		"dist/css/ionicons.min.css",
-		"dist/fonts/ionicons.eot",
-		"dist/fonts/ionicons.svg",
-		"dist/fonts/ionicons.ttf",
-		"dist/fonts/ionicons.woff",
-		"dist/fonts/ionicons.woff",
+		"css/ionicons.min.css",
+		"fonts/ionicons.eot",
+		"fonts/ionicons.svg",
+		"fonts/ionicons.ttf",
+		"fonts/ionicons.woff"
 	]
 };
 

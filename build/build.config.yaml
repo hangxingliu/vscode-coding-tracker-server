@@ -7,7 +7,7 @@ src:
     scripts:
         - "js/index.js"
     styles:
-        - "sass/*.scss"
+        - "sass/index.scss"
 dist: 
     base: frontend/dist
     clean: true
