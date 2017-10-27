@@ -1,4 +1,14 @@
 module.exports = {
+	formatTime: (hours = 0, minutes = 0, seconds = 0) => { 
+		let result = [];
+		if (hours > 0) result.push(`${hours}小时`);
+		if (minutes > 0) result.push(`${minutes}分钟`);
+		if (seconds > 0) result.push(`${seconds}秒`);
+		if (result.length == 0)
+			return `0秒`;
+		return result.join(' ');
+	},
+
 	title_summary: '编程时间总结',
 	title_24hs: '24小时总结',
 	title_projects: '项目耗时',
