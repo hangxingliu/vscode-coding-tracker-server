@@ -12,14 +12,14 @@ let chart24hs = require('../charts/24hours');
 let chartProjects = require('../charts/projects');
 let chartFiles = require('../charts/file');
 let chartComputers = require('../charts/computer');
-let chartLanguages = require('../charts/language');
+let chartLanguages = require('../charts/languages');
 /** @type {EChartsInstance[]} */
 let charts = [];
 
 /** @type {ReportFilter} */
 let requestFilter = null;
 
-module.exports = { name: 'overview', start, stop };
+module.exports = { name: utils.basename(__filename, '.js'), start, stop };
 
 function stop() { charts.map(chart => chart.dispose()); $page.hide(); }
 function start() { 

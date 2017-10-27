@@ -24,10 +24,7 @@ let projectName = '';
 
 let $rangeButtons = $pageOneProject.find('.range-block [data-range]');
 
-module.exports = {
-	name: 'projects',
-	start, stop, update
-};
+module.exports = { name: utils.basename(__filename, '.js'), start, stop, update };
 
 function stop() { 
 	$pageIndex.hide();

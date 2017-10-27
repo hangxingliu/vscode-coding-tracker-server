@@ -48,9 +48,20 @@ let Utils = {
 	getReadableTimeStringFromMap,
 
 	getYYYYMMDD,
-	getChartDom
+	getChartDom,
+
+	basename
 };
 module.exports = Utils;
+
+function basename(path = '', ext = '') { 
+	let index = path.lastIndexOf('/');
+	path = index < 0 ? path : path.slice(index + 1);
+	if (ext && path.endsWith(ext))
+		path = path.slice(0, -ext.length);
+	return path;
+}
+
 
 /**
  * @param {string} chartId 

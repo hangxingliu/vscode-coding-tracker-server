@@ -1,0 +1,30 @@
+mixin chartBlock(id, height)
+	div(data-chart=id style="height: "+height)
+
+mixin btn(_type, range)
+	button(type="button" data-range=range
+		class=_type style="margin: 0 2px;").btn.btn-sm: block
+
+mixin range()
+	.pull-right.range-block
+		+btn("btn-success", 0): span(data-i18n="word_all") All 
+		+btn("btn-default", 5)
+			span(data-i18n="word_top") Top
+			| &nbsp;5
+		+btn("btn-default", 10) 
+			span(data-i18n="word_top") Top
+			| &nbsp;10
+		+btn("btn-default", 20) 
+			span(data-i18n="word_top") Top
+			| &nbsp;20
+
+div.page-languages(style="display: none")
+	.row
+		.col-12
+			.card.my-2
+				.card-body
+					h4.card-title(data-i18n="title_languages") Group by languages
+					.card-text
+						+range()
+					.card-text
+						+chartBlock('languages', '600px')
