@@ -1,0 +1,38 @@
+
+#toggleSidebarNav {
+	color: $primary-color-text;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+.layout-navbar {
+	position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+	z-index: 1071;
+	min-height: 3rem;
+	
+	@media (max-width: 767px) {
+		padding: .5rem 0 0 0;
+	}
+
+	.navbar-nav-scroll {
+		width: auto;
+		
+		@media (max-width: 767px) {
+			background-color: $primary-color;
+
+			padding: .5rem 1rem;
+			width: 100%;
+			margin-top: .25rem;
+			// will hiden drop down
+			// overflow: hidden;
+			font-size: .875rem;
+		}
+	}
+
+	.dropdown-item.active {
+		background-color: $primary-color !important;
+		color: $primary-color-text !important;
+	}
+}

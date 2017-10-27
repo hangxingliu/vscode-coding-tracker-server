@@ -16,9 +16,9 @@ mixin markLineButton(type,select)
 	.modal-dialog.modal-lg
 		.modal-content
 			.modal-header
+				h4.modal-title(data-i18n="title_share") Share
 				button.close(type="button" data-dismiss="modal" aria-label="Close")
 					span(aria-hidden="true") &times;
-				h4.modal-title(data-i18n="title_share") Share
 			.modal-body
 				.container-fluid
 					.row.mt-n10px.mb-10px
@@ -37,7 +37,7 @@ mixin markLineButton(type,select)
 							+markLineButton("average", true)
 							+markLineButton("min", false)
 					.row: hr/
-					.row: .col-xs-12
+					.row: .col-12
 						#chartShare(style="height: 300px")
 					.row.mb-10px: .col-xs-12
 						i.pull-right.text-muted(data-i18n="share_tip") (Click item in the chart to add markpoint for share)

@@ -10,25 +10,40 @@
 	<title><%= title.index %></title>
 	
 	<link href="../lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link href="../lib/ionicons/dist/css/ionicons.min.css" rel="stylesheet">
+	<link href="../lib/ionicons/css/ionicons.min.css" rel="stylesheet">
 	<link href="sass/index.css" rel="stylesheet">
 	
 </head>
 <body>
 
 	<%- include("modules/top_navbar.pug") %>
-	<div class="container" style="padding-top: 60px;padding-bottom: 20px">
-		<%- include("modules/startup_welcome.pug") %>		
-		<%- include("modules/chart_panels.pug") %>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12 col-md-3 col-xl-2 layout-sidebar">
+				<%- include("modules/sidebar.pug") %>		
+			</div>
+			<main class="col-12 col-md-9 col-xl-10 mt-2 layout-content" role="main">
+				<div class="body-include-welcome">
+					<%- include("modules/startup_welcome.pug") %>
+					<div id="bodyContainer">
+						<%- include("modules/page/overview.pug") %>
+						<%- include("modules/page/projects_index.pug") %>
+						<%- include("modules/page/projects_sub.pug") %>
+					</div>	
+				</div>
+				<%- //include("modules/chart_panels.pug") %>
+				<div class="row">
+					<%- include("modules/bottom_info") %>
+				</div>
+			</main>
+		</div>
 	</div>
-	<%- include("modules/bottom_info") %>
 
 	<!-- dialogues -->
-	<%- include("modules/dialog_status.pug") %>
-	<%- include("modules/dialog_chart_all_projects.pug") %>
-	<%- include("modules/dialog_chart_all_languages.pug") %>
-	<%- include("modules/dialog_chart_one_project.pug") %>
-	<%- include("modules/dialog_share.pug") %>
+	<div class="modal-container">
+		<%- include("modules/dialog/status.pug") %>
+		<%- include("modules/dialog/share.pug") %>
+	</div>
 
 	<!-- javascripts -->
 	<script src="../lib/jquery/dist/jquery.min.js"></script>

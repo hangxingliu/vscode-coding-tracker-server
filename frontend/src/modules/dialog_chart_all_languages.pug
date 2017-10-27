@@ -1,18 +1,19 @@
-mixin btn(type, range)
+mixin btn(_type, range)
 	button(type="button"
 	data-range=range onclick="app.setAllLangs($(this).data('range'))"
-	class=type style="margin: 0 2px;").btn: block
+	class=_type style="margin: 0 2px;").btn
+		block
 
 #dlgAllLangs.modal.fade
 	.modal-dialog.modal-lg
 		.modal-content
 			.modal-header
+				h4.modal-title(data-i18n="title_languages") Group by languages
 				button.close(type="button" data-dismiss="modal" aria-label="Close")
 					span(aria-hidden="true") &times;
-				h4.modal-title(data-i18n="title_languages") Group by languages
 			.modal-body
 				.container-fluid
-					.row: .col-xs-12.range-block
+					.row: .col-12.range-block
 						+btn("btn-success", 0): span(data-i18n="word_all") All 
 						+btn("btn-default", 5)
 							span(data-i18n="word_top") Top
@@ -23,5 +24,5 @@ mixin btn(type, range)
 						+btn("btn-default", 20) 
 							span(data-i18n="word_top") Top
 							| &nbsp;20
-					.row: .col-xs-12
+					.row: .col-12
 						#chartAllLangs(style="height: 500px")
