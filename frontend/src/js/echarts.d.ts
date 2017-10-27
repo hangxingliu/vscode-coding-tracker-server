@@ -18,29 +18,25 @@ type EChartsStatic = {
 	registerTheme(themeName: string, theme: Object): void;
 };
 
+type EChartsInstance = EChartsObject;
 type EChartsObject = {
-	group: string;
+	group: string | number;
 
-	setOption(option: EChartOption, notMerge?: boolean, notRefreshImmediately?: boolean): void
+	setOption(option: EChartOption, notMerge?: boolean, lazyUpdate?: boolean): void
 
 	getWidth(): number
-
 	getHeight(): number
-
 	getDom(): HTMLCanvasElement | HTMLDivElement
 
-	getOption(): Object
-
+	getOption(): EChartOption
 	resize(opts?: { width?: number | string, height?: number | string, silent?: boolean }): void
 
 	dispatchAction(payload: Object): void
 
 	on(eventName: string, handler: Function, context?: Object): void
-
 	off(eventName: string, handler?: Function): void
 
 	showLoading(type?: string, opts?: Object): void
-
 	hideLoading(): void
 
 	getDataURL(opts: {
@@ -62,9 +58,7 @@ type EChartsObject = {
 	}): string
 
 	clear(): void
-
 	isDisposed(): boolean
-
 	dispose(): void
 
 	// 转换逻辑点到像素

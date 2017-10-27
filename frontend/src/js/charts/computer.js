@@ -7,10 +7,10 @@ let {
 	orderByWatchingTime,
 	object2array,
 	getEachFieldToFixed2
-} = require('../utils'), {
+} = require('../utils/utils'), {
 	createEChartsSeries,
 	GRID_NORMAL
-} = require('../echartsUtils');
+} = require('../utils/echartsUtils');
 
 const COLORS = ['#4caf50', '#2196f3', '#ffeb3b', '#f44336', '#9c27b0', '#009688', '#ff9800', '#795548'];
 const SELECTOR = '#chartComputer';
@@ -21,20 +21,14 @@ function tooltipFormatter(p, ticket, set) {
 		`<br/>(<b>${getReadableTimeString(p.value)}</b>)<br/> on ${p.name} `);
 }
 
-/**
- * @type {EChartsObject}
- */
-let charts = null;
-
-module.exports = { update };
+let base = require('./_base').createBaseChartClass();
+module.exports = { recommendedChartId: 'computers', init: base.init, update };
 
 function update(dataGroupByComputer) {
-	if (!charts) charts = echarts.init($(SELECTOR)[0]);
-
 	let data = convertUnit2Hour(dataGroupByComputer),
 		array = orderByWatchingTime(object2array(data));
 
-	charts.setOption({
+	base.getCharts().setOption({
 		color: COLORS,
 		grid: GRID_NORMAL,
 		tooltip: { trigger: 'item', formatter: tooltipFormatter },

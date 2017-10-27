@@ -8,43 +8,23 @@ let {
 	object2array,
 	getEachFieldToFixed2,
 	merge
-} = require('../utils'), {
+} = require('../utils/utils'), {
 	createEChartsSeries,
 	AXIS_HOURS,
 	GRID_NORMAL
-} = require('../echartsUtils');
+} = require('../utils/echartsUtils');
 
 let dateLabels = [];
 
-const SELECTOR = '#chartSummary';
-function tooltipFormatter(p, ticket, set){
-	let setText = text => (setTimeout(set, 1, ticket, text), text);
-	if (p.componentType == 'markLine') //average
-		return setText(`Average ${p.seriesName} for <b>${getReadableTimeString(p.value)}</b>`);
-	else if (p.componentType == 'markPoint')
-		return setText(`Longest ${p.seriesName} for <b>${getReadableTimeString(p.value)}</b>` +
-			`<br/>in ${dateLabels[p.data.coord[0]]}`)
-	else if (Array.isArray(p) && p.length == 2)
-		return setText(`In ${p[0].name}:<br/>` +
-			p.map(it => `${it.seriesName} for <b>${getReadableTimeString(it.value)}</b>`).join('<br/>'));
-	return setText(null);
-}
-
-/**
- * @type {EChartsObject}
- */
-let charts = null;
-
-module.exports = { update };
+let base = require('./_base').createBaseChartClass();
+module.exports = { recommendedChartId: 'summary', init: base.init, update };
 
 function update(dataGroupByDate) {
-	if (!charts) charts = echarts.init($(SELECTOR)[0]);
-
 	let data = convertUnit2Hour(dataGroupByDate),
 		array = orderByName(object2array(data));
 	dateLabels = array.map(it => it.name);
 
-	charts.setOption({
+	base.getCharts().setOption({
 		xAxis: { data: dateLabels },
 		yAxis: merge(AXIS_HOURS, { boundaryGap: [0, 0.2] }),
 		grid: GRID_NORMAL,
@@ -71,4 +51,17 @@ function update(dataGroupByDate) {
 			.toObject()
 		]
 	});
+}
+
+function tooltipFormatter(p, ticket, set){
+	let setText = text => (setTimeout(set, 1, ticket, text), text);
+	if (p.componentType == 'markLine') //average
+		return setText(`Average ${p.seriesName} for <b>${getReadableTimeString(p.value)}</b>`);
+	else if (p.componentType == 'markPoint')
+		return setText(`Longest ${p.seriesName} for <b>${getReadableTimeString(p.value)}</b>` +
+			`<br/>in ${dateLabels[p.data.coord[0]]}`)
+	else if (Array.isArray(p) && p.length == 2)
+		return setText(`In ${p[0].name}:<br/>` +
+			p.map(it => `${it.seriesName} for <b>${getReadableTimeString(it.value)}</b>`).join('<br/>'));
+	return setText(null);
 }

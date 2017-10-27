@@ -51,3 +51,26 @@ type CodingWatchingMap = {
 	[name: string]: CodingWatchingObject;
 };
 type CodingWatchingArray = CodingWatchingObject[];
+
+
+type IRoute = {
+	name: string;
+	start: (param: string) => void;
+	stop: () => void;
+	update: (param: string) => void;
+};
+type IRoutesMap = { [x: name]: IRoute };
+
+type ReportFilter = {
+	from?: Date;
+	to?: Date;
+	project?: string;
+	vcsRepo?: string;
+};
+type ReportFilterSubscriber = (filter: ReportFilter) => void; 
+
+type ChartModule = {
+	recommendedName: string;
+	init: (dom: HTMLElement) => EChartsInstance;
+	update: (option: EChartOption) => void;
+};

@@ -8,12 +8,12 @@ let {
 	object2array,
 	getEachFieldToFixed2,
 	merge
-} = require('./utils'), {
+} = require('./utils/utils'), {
 	createEChartsSeries,
 	AXIS_HOURS
-} = require('./echartsUtils'), {
+} = require('./utils/echartsUtils'), {
 	encode, fill
-} = require('./form');
+} = require('./utils/form');
 
 /**
  * @type {JQuery}
@@ -136,6 +136,7 @@ function show() {
 			if (!chart) {
 				chart = echarts.init($('#chartShare')[0]);
 				chart.on('click', onChartClick);
+				console.log(chart)
 			}
 			fill($dlgShare, formData);		
 			updateChartOption();

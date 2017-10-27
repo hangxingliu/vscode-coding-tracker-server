@@ -7,10 +7,10 @@ let {
 	orderByWatchingTime,
 	object2array,
 	getEachFieldToFixed2,
-} = require('../utils'), {
+} = require('../utils/utils'), {
 	createEChartsSeries,
 	GRID_NORMAL
-} = require('../echartsUtils');
+} = require('../utils/echartsUtils');
 
 const SELECTOR = '#chartAllLangs',
 	DIALOG_SELECTOR = '#dlgAllLangs';
@@ -35,15 +35,13 @@ function tooltipFormatter(p, ticket, set) {
 		`<br/>(<b>${getReadableTimeString(p.value)}</b>)<br/> on ${p.name} `);
 }
 
-/**
- * @type {EChartsObject}
- */
-let charts = null;
 let $dlg = null,
 	dataGroupByLanguage = null,
 	range = 0;
 
-module.exports = { update, setRange };
+let base = require('./_base').createBaseChartClass();
+module.exports = { recommendedChartId: 'languages', init: base.init, update };
+
 function update(data) {
 	if (!$dlg) {
 		$dlg = $(DIALOG_SELECTOR);
@@ -61,8 +59,6 @@ function setRange(_range) {
 	_update();
 }
 function _update() {
-	if (!charts) charts = echarts.init($(SELECTOR)[0]);
-	
 	let data = convertUnit2Hour(dataGroupByLanguage),
 		array = orderByWatchingTime(object2array(data), true/*DESC*/);
 	
@@ -79,7 +75,7 @@ function _update() {
 	}	
 	
 	let langNames = array.map(it => it.name);
-	charts.setOption({
+	base.getCharts().setOption({
 		legend: { orient: 'vertical', x: 'right', data: langNames },
 		color: getColors(range),
 		grid: GRID_NORMAL,

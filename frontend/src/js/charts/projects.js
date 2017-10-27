@@ -8,19 +8,19 @@ let {
 	object2array,
 	getEachFieldToFixed2,
 	getShortProjectName,
-} = require('../utils'), {
+} = require('../utils/utils'), {
 	createEChartsSeries,
 	AXIS_HOURS,
 	GRID_NORMAL
-} = require('../echartsUtils');
+} = require('../utils/echartsUtils');
 
-const SELECTOR = '#chartProject';
-const SIZE = 5;
 
-/**
-* @type {string[]}
-*/
+/** @type {string[]} */
 let originalProjectNames = [], projectNames = [], shortProjectNames = [];
+/** @type {HTMLElement} */
+let dom = null;
+let onClick = null;
+let limit = 5;
 
 function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
@@ -29,28 +29,45 @@ function tooltipFormatter(p, ticket, set) {
 	return setText(`You spent <b>${getReadableTimeString(p.value)}</b><br/> on <u>${projectNames[i]}</u>`);
 }
 
-/**
- * @type {EChartsObject}
- */
-let charts = null;
+let base = require('./_base').createBaseChartClass(charts => {
+	charts.on('click', params =>
+		typeof params.dataIndex == 'number' &&
+		onClick && onClick(originalProjectNames[params.dataIndex]));
+});
+module.exports = { recommendedChartId: 'projects', update, init };
 
-module.exports = { update };
+/**
+ * @param {HTMLElement} _dom 
+ * @param {(proj: string) => any} [_onClick=null] 
+ * @param {number} [_limit=-1] 
+ */
+function init(_dom, _onClick = null, _limit = -1) { 
+	limit = _limit;
+	onClick = _onClick;
+	return base.init(dom = _dom);
+}
 
 function update(dataGroupByProject) {
-	if (!charts) {
-		charts = echarts.init($(SELECTOR)[0]);
-		charts.on('click', params =>
-			typeof params.dataIndex == 'number' &&
-			global.app.openProjectReport(originalProjectNames[params.dataIndex]));
-	}
-
 	let data = convertUnit2Hour(dataGroupByProject),
-		array = orderByWatchingTime(object2array(data)).slice(-SIZE);
+		array = orderByWatchingTime(object2array(data));
+
+	if(limit > 0) array = array.slice(-limit);
+
 	originalProjectNames = array.map(it => it.name);
 	projectNames = array.map(it => decodeURIComponent(it.name));
 	shortProjectNames = projectNames.map((name, i) =>
 		getShortProjectName(name) + `(${getReadableTimeString(array[i].watching)})`);
 
+	let charts = base.getCharts(),
+		//interval: 0 for force display all label
+		interval = undefined;
+	if (limit <= 0) {
+		let height = 50 + array.length * 50
+		$(dom).height(height);
+		charts.resize({ height });
+		interval = 0;
+	}
+	
 	charts.setOption({
 		legend: { data: [''] },
 		xAxis: {
@@ -58,7 +75,7 @@ function update(dataGroupByProject) {
 			axisTick: { show: false }, axisLabel: AXIS_HOURS.axisLabel },
 		yAxis: {
 			type: 'category', nameLocation: 'start',
-			axisTick: { show: false }, axisLabel: { inside: true }, z: 1024,
+			axisTick: { show: false }, axisLabel: { inside: true, interval}, z: 1024,
 			data: shortProjectNames },
 		grid: GRID_NORMAL,
 		tooltip: { trigger: 'item', formatter: tooltipFormatter},

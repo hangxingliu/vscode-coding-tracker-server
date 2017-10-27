@@ -1,14 +1,25 @@
 //@ts-check
 
-const StatusDialog = require('./statusDialog');
+let StatusDialog = require('./ui/statusDialog');
+let { getFilter } = require('./reportFilter');
 
-const BASE = '/ajax/report';
+const BASE = '/ajax/report-v2';
+
 let APIToken = '';
+let URL = {
+	overview: () => getBaseURL('overview', getFilter()),
+	hours: (whichDay) => getBaseURLFor24Hours('hours', whichDay || new Date()),
+	languages: () => getBaseURL('languages', getFilter()),
+	vcs: () => getBaseURL('vcs', getFilter()),
+	project: (projectName) => 
+		getBaseURL('project', getFilter()) + '&project=' + encodeURIComponent(projectName)
+};
 
-let exportObject = {
+let API = {
+	URL,
 	init: () => {
 		APIToken = (location.href.match(/[?&]token=(.+?)(&|$)/) || ['', ''])[1];
-		return exportObject;
+		return API;
 	},
 
 	/**
@@ -24,17 +35,30 @@ let exportObject = {
 			error: displayError
 		});
 	},
-	requestSilent: (url, callback) => exportObject.request(url, callback, true),
-
-	getBasicReportDataURL: (reportDays) =>
-		`${BASE}/recent?days=${reportDays}&token=${APIToken}`,
-	getLast24HoursDataURL: (now) =>
-		`${BASE}/last24hs?ts=${now}&token=${APIToken}`,
-	getProjectReportDataURL: (reportDays, project) =>
-		`${BASE}/project?project=${project}&days=${reportDays}&token=${APIToken}`
+	requestSilent: (url, callback) => API.request(url, callback, true)
 
 };
-module.exports = exportObject;
+module.exports = API;
+
+/**
+ * @param {string} name
+ * @param {ReportFilter} filter
+ */
+function getBaseURL(name, filter) {
+	return `${BASE}/${name}?token=${APIToken}&from=${filter.from.getTime()}&to=${filter.to.getTime()}`;
+}
+
+/**
+ * @param {string} name
+ * @param {Date} [whichDay] 
+ */
+function getBaseURLFor24Hours(name, whichDay) { 
+	let ts = whichDay.getTime(), date = whichDay.getDate();
+	let from = new Date(ts), to = new Date(ts);
+	from.setDate(date - 1);
+	to.setDate(date + 1);
+	return `${BASE}/${name}?token=${APIToken}&from=${from.getTime()}&to=${to.getTime()}`;
+}
 
 
 function displayError(error) {

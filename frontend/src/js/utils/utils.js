@@ -1,6 +1,6 @@
 //@ts-check
-/// <reference path="./index.d.ts" />
-/// <reference path="./echarts.d.ts" />
+/// <reference path="../index.d.ts" />
+/// <reference path="../echarts.d.ts" />
 
 let Utils = {
 	expandGroupByDaysObject: (obj, startDate, endDate) => {
@@ -44,14 +44,21 @@ let Utils = {
 	merge,
 	getShortProjectName,
 
-	hasLocalStorage,
-
 	getReadableTimeString,
-	getReadableTimeStringFromMap
+	getReadableTimeStringFromMap,
+
+	getYYYYMMDD,
+	getChartDom
 };
 module.exports = Utils;
 
-function hasLocalStorage() { return typeof localStorage != 'undefined'; }
+/**
+ * @param {string} chartId 
+ * @param {JQuery} [parentJqDom]
+ */
+function getChartDom(chartId, parentJqDom) {
+	return (parentJqDom || $(document)).find(`[data-chart="${chartId}"]`);
+}
 
 function getEmptyCodingWatchingObject() { return { coding: 0, watching: 0 }; }
 

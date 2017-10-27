@@ -7,10 +7,10 @@ let {
 	orderByWatchingTime,
 	object2array,
 	getEachFieldToFixed2
-} = require('../utils'), {
+} = require('../utils/utils'), {
 	createEChartsSeries,
 	GRID_NORMAL
-} = require('../echartsUtils');
+} = require('../utils/echartsUtils');
 
 const COLORS = ['#a5d6a7', '#80cbc4', '#90caf9', '#80deea', '#ef9a9a', '#ffcc80', '#bcaaa4', '#b0bec5'];
 const COLORS_OTHER = ['#a5d6a7', '#80cbc4', '#90caf9', '#80deea', '#ef9a9a', '#d6d6d6'];
@@ -24,16 +24,10 @@ function tooltipFormatter(p, ticket, set) {
 		`<br/>(<b>${getReadableTimeString(p.value)}</b>)<br/> on ${p.name == 'other' ? otherLanguages : p.name} `);
 }
 
-/**
- * @type {EChartsObject}
- */
-let charts = null;
-
-module.exports = { update };
+let base = require('./_base').createBaseChartClass();
+module.exports = { recommendedChartId: 'languages', init: base.init, update };
 
 function update(dataGroupByLanguage) {
-	if (!charts) charts = echarts.init($(SELECTOR)[0]);
-
 	let data = convertUnit2Hour(dataGroupByLanguage),
 		array = orderByWatchingTime(object2array(data), true/*DESC*/);
 
@@ -48,7 +42,7 @@ function update(dataGroupByLanguage) {
 		array.length = i0 + 1;
 	}
 	
-	charts.setOption({
+	base.getCharts().setOption({
 		color: i1 > i0 ? COLORS_OTHER : COLORS,
 		grid: GRID_NORMAL,
 		tooltip: { trigger: 'item', formatter: tooltipFormatter },
