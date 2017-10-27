@@ -31,6 +31,7 @@ var log = require('./lib/Log'),
 	errorHandler = require('./lib/Handler404and500'),
 	tokenChecker = require('./lib/TokenMiddleware'),
 	reporter = require('./lib/analyze/ReportMiddleware'),
+	reporterV2 = require('./lib/analyze/ReportMiddlewareV2'),
 	upgrade = require('./lib/UpgradeDatabaseFiles'),
 	randomToken = require('./lib/RandomToken'),
 	Program = require('./lib/Launcher');
@@ -44,13 +45,6 @@ var app = Express();
 //Init Storage
 storage.init(Program.output);
 
-//Display now is debug mode
-//@ts-ignore
-if (global.DEBUG) {
-	log.info('Debug mode be turned on!');
-	//Using visitor log record (if under the debug mode)	
-	app.use(require('morgan')('dev'));
-}
 //Using body parser to analyze upload data
 app.use(require('body-parser').urlencoded({ extended: false }));
 
@@ -60,18 +54,29 @@ app.use(welcome(Program));
 //Empty favicon.ico
 app.use('/favicon.ico', (req, res) => res.end());
 //Using front end static files
+app.use('/lib', Express.static(`${__dirname}/frontend/lib`), (req, res) => { res.writeHead(404); res.end(); });
 app.use('/report', Express.static(`${__dirname}/frontend/dist`));
-app.use('/lib', Express.static(`${__dirname}/frontend/lib`));
 
+//Display now is debug mode
+//@ts-ignore
+if (global.DEBUG) {
+	log.info('Debug mode be turned on!');
+	//Using visitor log record (if under the debug mode)	
+	app.use(require('morgan')('dev'));
+}
+
+//Return timezone offset in server
+const TZ_OFFSET = new Date().getTimezoneOffset();
+app.use('/ajax/tz-offset', (req, res) => res.json({ timezoneOffset: TZ_OFFSET}).end());
 
 //If it is public report. Bind analyze report ajax middleware
-Program.publicReport && bindReportAPI2Server();
+Program.publicReport && bindReportAPIToServer();
 
 //Using a upload token checker middleware
 app.use(tokenChecker.get(Program.token));
 
 //private report. Bind analyze report ajax middleware
-Program.publicReport || bindReportAPI2Server();
+Program.publicReport || bindReportAPIToServer();
 
 //Handler API token test request
 app.use('/ajax/test', (req, res) => res.json({ success: 'test success!' }).end());
@@ -124,7 +129,10 @@ Program.local ?
 
 function returnError(res, errInfo) { res.json({ error: errInfo || 'Unknown error' }).end() }
 
-function bindReportAPI2Server() { app.use('/ajax/report', reporter.init(Program.output)) }
+function bindReportAPIToServer() {
+	app.use('/ajax/report', reporter.init(Program.output));
+	app.use('/ajax/report-v2', reporterV2.init(Program.output));
+}
 
 function upgradeOldDatabaseFiles(databaseFolder) {
 	var upgradeResult = upgrade.upgrade(databaseFolder);
