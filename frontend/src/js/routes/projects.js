@@ -32,7 +32,7 @@ function stop() {
 	$rangeButtons.off('click');
 	charts.map(chart => chart.dispose());
 }
-function start(projectName) {
+function start(_projectName) {
 	charts = [
 		chartProjects.init(utils.getChartDom(chartProjects.recommendedChartId, $pageIndex)[0],
 			project => router.to('projects', project)),
@@ -49,9 +49,10 @@ function start(projectName) {
 
 	$rangeButtons.on('click', updateRange);
 
-	update(projectName);
+	update(_projectName);
 }
 function update(proj) {
+	console.log(proj);
 	(projectName = proj) ? showOneProject() : showAllProjects();
 }
 
