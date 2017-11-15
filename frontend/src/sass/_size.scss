@@ -2,8 +2,10 @@ $extraSmallScreen: 'only screen and (max-width: 575px)';
 $smallScreen: 'only screen and (max-width: 767px)';
 $mediumScreen: 'only screen and (max-width: 991px)';
 $largeScreen: 'only screen and (max-width: 1199px)';
+$xLargeScreen: 'only screen and (min-width: 1200px)';
 
-@mixin extraSmallScreen{ @media #{$extraSmallScreen} { @content; } }
-@mixin smallScreen{ @media #{$smallScreen} { @content; } }
-@mixin mediumScreen{ @media #{$mediumScreen} { @content; } }
-@mixin largeScreen{ @media #{$largeScreen} { @content; } }
+@mixin lessThanExtraSmall{ @media #{$extraSmallScreen} { @content; } }
+@mixin lessThanSmall{ @media #{$smallScreen} { @content; } }
+@mixin lessThanMedium{ @media #{$mediumScreen} { @content; } }
+@mixin lessThanLarge{ @media #{$largeScreen} { @content; } }
+@mixin greaterThanLarge { @media #{$xLargeScreen} { @content; } }
