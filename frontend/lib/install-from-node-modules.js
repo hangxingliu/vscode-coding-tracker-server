@@ -14,6 +14,10 @@ const COMPONENTS = {
 		"dist/css/bootstrap.min.css",
 		"dist/js/bootstrap.min.js"
 	],
+	"bootstrap-datepicker": [
+		"dist/css/bootstrap-datepicker3.standalone.min.css",
+		"dist/js/bootstrap-datepicker.min.js"
+	],
 	"ionicons": [
 		"css/ionicons.min.css",
 		"fonts/ionicons.eot",

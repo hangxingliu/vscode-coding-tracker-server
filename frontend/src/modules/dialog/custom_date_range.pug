@@ -1,0 +1,18 @@
+#dlgCustomDateRange.modal.fade
+	.modal-dialog.modal-sm
+		.modal-content
+			.modal-header
+				h4.modal-title 
+					i.ion-calendar.mr-2
+					span Custom range
+			.modal-body
+				.input-group
+					input#rangeStart.form-control(type='text', value='--')
+					.input-group-addon to
+					input#rangeEnd.form-control(type='text', value='--')
+				#rangeDescription.text-right
+				#rangeCalendar
+			.modal-footer
+				button.btn.btn-secondary(type="button" data-dismiss="modal") Cancel
+				button#rangeConfirm.btn.btn-success(type="button") OK
+			

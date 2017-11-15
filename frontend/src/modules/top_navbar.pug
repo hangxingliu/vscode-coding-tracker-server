@@ -1,4 +1,4 @@
-include report_range_dropdown_menu.pug
+include _report_range_dropdown_menu.pug
 
 mixin language(lang, text)
     a.dropdown-item(href='#', data-lang=lang)= text
@@ -12,17 +12,17 @@ header(class=['navbar', 'navbar-expand', 'navbar-dark'],
     ul.navbar-nav-scroll.navbar-nav.ml-auto
         li#reportRangeDropdown4Mobile.nav-item.dropdown.mr-auto.d-md-none
             a.nav-item.nav-link.dropdown-toggle.text-primary-color-text(
-                href='#', data-toggle='dropdown', 
+                href='#', data-toggle='dropdown',
                 aria-haspopup='true', aria-expanded='false')
-                i.ion.ion-calendar
-                | &nbsp;&nbsp; Range: &nbsp;
+                i.ion.ion-calendar.mr-1.d-none.d-sm-inline
+                span.d-none.d-sm-inline Range: &nbsp;
                 b.current-range Recent 7 Days
             +reportRangeDropdownMenu
         li#selectI18N.nav-item.dropdown
             a.nav-item.nav-link.dropdown-toggle.text-primary-color-text(
                 href='#', data-toggle='dropdown', 
                 aria-haspopup='true', aria-expanded='false')
-                i.ion.ion-earth
+                i.ion.ion-earth.d-none.d-sm-inline
                 | &nbsp;&nbsp;Languages
             .dropdown-menu.dropdown-menu-right
                +language("en", "English")

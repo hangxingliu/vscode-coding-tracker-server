@@ -2,7 +2,7 @@ mixin range(range, text)
 	a.dropdown-item(href='#', data-range=range)= text
 
 mixin reportRangeDropdownMenu
-	.dropdown-menu.dropdown-menu-right
+	.dropdown-menu
 		h6.dropdown-header Report Date Range
 		+range("1", "Recent 7 Days")
 		+range("2", "Recent 14 Days")

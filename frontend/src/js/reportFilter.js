@@ -1,8 +1,10 @@
 //@ts-check
 /// <reference path="./index.d.ts" />
 
-let { getYYYYMMDD } = require('./utils/utils');
+let { getYYYYMMDD, getMMDD } = require('./utils/utils');
+let customRangeDlg = require('./ui/customDateRangeDialog');
 
+const CUSTOM = '20';
 const RECENT_DAYS = [0, 7, 14, 30, 365];
 
 /** @type {ReportFilter} */
@@ -19,9 +21,15 @@ function installReportRangeComponent() {
 	onClick.call($rangeDropdownItem[0]);
 
 	function onClick() { 
-		//TODO: 20: custom date range
+		let rangeId = $(this).attr('data-range');
+		if (rangeId == CUSTOM)
+			return customRangeDlg.show((from, to) => { 
+				$currentRange.text(getMMDD(from) + ' ~ ' + getMMDD(to));
+				setCustomRange(from, to);
+			});
+
 		$currentRange.text($(this).text());
-		setRange($(this).attr('data-range'));
+		setRange(rangeId);
 	}
 }
 
@@ -61,8 +69,10 @@ function setRange(_rangeId) {
 	filter.from = from;
 	notifySubscribers();
 }
-function setCustomRange(todo, todo2, todo3, todo4, todo5) { 
-
+function setCustomRange(from ,to) { 
+	filter.from = from;
+	filter.to = to;
+	notifySubscribers();
 }	
 
 /** @param {string} repo */

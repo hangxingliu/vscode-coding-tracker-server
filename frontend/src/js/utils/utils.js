@@ -47,7 +47,7 @@ let Utils = {
 	getReadableTimeString,
 	getReadableTimeStringFromMap,
 
-	getYYYYMMDD,
+	getYYYYMMDD, getMMDD,
 	getChartDom,
 
 	basename
@@ -79,21 +79,18 @@ function getEmptyCodingWatchingObject() { return { coding: 0, watching: 0 }; }
  */
 function getShortProjectName(projectName) { return (projectName.match(/.*(^|[\\/])(.+)$/) || [])[2] || projectName }
 
-/**
- * @param {string|number} num 
- * @returns {string}
- */
+
+/** @param {string|number} num */
 function to2(num) { return num == 0 ? '00' : num < 10 ? `0${num}` : `${num}` }
-/**
- * @param {Date} date 
- * @returns {string}
- */
+
+/** @param {Date} date */
 function getYYYYMMDD(date){ return `${date.getFullYear()}-${to2(date.getMonth() + 1)}-${to2(date.getDate())}`}
-/**
- * @param {Date} date 
- * @returns {string}
- */
+
+/** @param {Date} date */
 function getHHMM(date) { return `${getYYYYMMDD(date)} ${to2(date.getHours())}:00` }
+
+/** @param {Date} date */
+function getMMDD(date) { return `${to2(date.getMonth() + 1)}-${to2(date.getDate())}`}
 
 /**
  * @param {any[]} array 

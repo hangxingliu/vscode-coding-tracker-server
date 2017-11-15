@@ -1,3 +1,4 @@
+@import './_size.scss';
 @import './_color.scss';
 
 @import './_top_navbar.scss';
@@ -16,6 +17,9 @@ body.modal-open {
 
 .modal-container .modal-dialog {
 	margin-top: 5rem;
+	@include mediumScreen {
+		margin-top: 8rem;
+	}
 }
 
 .link-share {
@@ -37,3 +41,30 @@ body.modal-open {
 		}
 	}
 }
+
+#rangeDescription {
+	min-height: 2em;
+	padding-top: .5em;
+}
+#rangeCalendar {
+	// margin-top: 1rem;
+	.datepicker-inline {
+		width: auto;
+		.table-condensed {width: 100%}
+	}
+	
+	td.selected {
+		color: lighten($secondary-text-color, 20%);
+		background-color: lighten($accent-color, 45%);
+		border-radius: 0; 
+	}
+	td.active {
+		$radius: 4px;
+
+		background-color: $accent-color;
+		border-radius: 0;
+		&.start {border-top-left-radius: $radius; border-bottom-left-radius: $radius;}
+		&.end {border-top-right-radius: $radius; border-bottom-right-radius: $radius;}
+	}
+}
+
