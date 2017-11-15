@@ -28,6 +28,9 @@ processor:
         collapseWhitespace: true
     ejs: true
     pug: true
+    browser_sync: 
+        enable: true
+        proxy: 127.0.0.1:10345
     ejs_variables:
         enable: true
         files:

@@ -1,119 +1,23 @@
-//@ts-check
-/// <reference path="../types/type.d.ts" />
-
+#!/usr/bin/env node
+/**
+ * @license Apache-2.0
+ * 
+ * frontend build scripts
+ * version: 1.0.3-alpha
+ * date: 2017-10-16 02:15
+ */
+const a = '1.0.3-alpha';
 (function () {
-	let yaml = require('js-yaml'),
-		{ readFileSync } = require('fs-extra'),
-		{ join: joinPath } = require('path');
-	
-	/**
-	 * @param {string} filePath
-	 * @returns {ConfigObject}
-	 */
-	function reader(filePath) {
-		let configStr = readFileSync(filePath, 'utf8'),
-			config = yaml.safeLoad(configStr);
-		
-		if (!isString(config.name))
-			throw incompleteError(`config.name`, 'String');
-		
-		if (!isObject(config.src))
-			throw incompleteError(`config.src`, 'Object');
-		if (!isString(config.src.base))
-			throw incompleteError(`config.src.base`, 'String');
-		
-		if (!isStringOrStringArray(config.src.scripts))
-			throw incompleteError(`config.src.scripts`, 'String/String[]');
-		if (!isStringOrStringArray(config.src.styles))
-			throw incompleteError(`config.src.styles`, 'String/String[]');
-		
-		if (!isStringOrStringArray(config.src.assets))
-			throw incompleteError(`config.src.assets`, 'String/String[]');
-		if (!isStringOrStringArray(config.src.pages))
-			throw incompleteError(`config.src.pages`, 'String/String[]');
-
-		if (!isObject(config.dist))
-			throw incompleteError(`config.dist`, 'Object');
-		if (!isString(config.dist.base))
-			throw incompleteError(`config.dist.base`, 'String');
-		if (!isBoolean(config.dist.clean))
-			throw incompleteError(`config.dist.clean`, 'Boolean');
-		
-		let basePath = process.cwd(),
-			distBasePath = joinPath(basePath, config.dist.base),
-			srcBasePath = joinPath(basePath, config.src.base);
-
-		/**
-		 * @type {ConfigObject}
-		 */
-		//@ts-ignore
-		let result = {};
-
-		result.name = config.name;
-		result.src = srcBasePath;
-		result.dist = distBasePath;
-		result.clean_dist = !!config.dist.clean;
-
-		let assetsConfig = config.src.assets;
-		result.src_assets = (isString(assetsConfig) ? [assetsConfig] : assetsConfig)
-			.map(path => ({ name: path, from: joinPath(srcBasePath, path), to: joinPath(distBasePath, path) }));
-		
-		let pagesConfig = config.src.pages;
-		result.src_globs = (isString(pagesConfig) ? [pagesConfig] : pagesConfig);
-		
-		let scriptsConfig = config.src.scripts;
-		result.src_script_globs = (isString(scriptsConfig) ? [scriptsConfig] : scriptsConfig);
-		let stylesConfig = config.src.styles;
-		result.src_styles_globs = (isString(stylesConfig) ? [stylesConfig] : stylesConfig);
-		
-		/**
-		 * @type {ProcessorConfigObject}
-		 */
-		//@ts-ignore
-		let processor = {};
-		let configProcessor = config.processor || {};
-		
-		processor.sass = { enable: !!configProcessor.sass };
-		processor.less = { enable: !!configProcessor.less };
-		processor.autoprefixer = { enable: !!configProcessor.autoprefixer };
-		processor.ejs = { enable: !!configProcessor.ejs };
-		processor.pug = { enable: !!configProcessor.pug };
-
-		processor.html_minifier = isObjectHasEnableField(configProcessor.html_minifier)
-			? configProcessor.html_minifier
-			: { enable: !!configProcessor.html_minifier };
-		processor.browser_sync = isObjectHasEnableField(configProcessor.browser_sync)
-			? configProcessor.browser_sync
-			:{ enable: !!configProcessor.browser_sync };
-		processor.babel = isObjectHasEnableField(configProcessor.babel)
-			? configProcessor.babel
-			:{ enable: !!configProcessor.babel };
-		processor.ejs_variables =
-			isObjectHasEnableField(configProcessor.ejs_variables)
-				? configProcessor.ejs_variables
-				: { enable: !!configProcessor.ejs_variables };
-		processor.ejs_template_tags = isObjectHasEnableField(configProcessor.ejs_template_tags)
-			? configProcessor.ejs_template_tags
-			: { enable: !!configProcessor.ejs_template_tags };
-			
-		result.processor = processor;
-		return result;
-	
-	}
-	
-	function isObject(obj) { return obj && typeof obj == 'object'; }
-	function isString(obj) { return typeof obj == 'string'; }
-	function isBoolean(obj) { return typeof obj == 'boolean'; }
-	function isStringArray(obj) { 
-		if (!Array.isArray(obj)) return false;
-		for (let it of obj) if (typeof it != 'string') return false;
-		return true;
-	}
-	function isStringOrStringArray(obj) { return isString(obj) || isStringArray(obj); }
-	function incompleteError(name, type) {
-		return new Error(`Config is incomplete. "${name}" is not a ${type}!`);
-	}
-	function isObjectHasEnableField(obj) { return isObject(obj) && isBoolean(obj.enable); }
-	
-	module.exports = { read: reader };
+	function a(a) {throw i(a, 'String');}
+	function b(a) {throw i(a, 'Object');}
+	function c(a) {throw i(a, 'Boolean');}
+	function d(a) {throw i(a, 'String[]');}
+	function e(a) {throw i(a, 'Any[]');}
+	function f(a) {throw i(a, 'String/String[]');}
+	function g(a) {throw i(a, 'Hook Name Sting');}
+	function h(a) {throw i(a, 'True/Undefined (Not allow false)');}
+	function i(a, b) {
+		return new Error(`Config is incomplete. "config.${a}" is not a ${b}!`);
+	}const j = { WATCHIFY: { delay: 100, ignoreWatch: ['**/node_modules/**'], poll: !1 }, BROWSERIFY: { transform: [] } },k = ['before_all', 'after_build'],l = 'async_',m = k.map((a) => l + a),n = [].concat(m, k),o = { null: (a) => !a && 'object' == typeof a, object: (a) => a && 'object' == typeof a, string: (a) => 'string' == typeof a, boolean: (a) => 'boolean' == typeof a, array: (a) => Array.isArray(a), stringOrStringArray: (a) => o.string(a) || o.stringArray(a), stringArray: (a) => {if (!Array.isArray(a)) return !1;for (let b of a) if ('string' != typeof b) return !1;return !0;}, objectHasEnableField: (a) => o.object(a) && o.boolean(a.enable) },p = (a, b) => a && Object.keys(a).map((c) => b(c, a[c]));let q = require('js-yaml'),{ readFileSync: r } = require('fs-extra'),{ join: s } = require('path');
+	module.exports = { read: function (i) {let k = r(i, 'utf8'),m = q.safeLoad(k);o.string(m.name) || a(`name`), o.object(m.src) || b(`src`), o.object(m.dist) || b(`dist`), o.null(m.src.scripts) && (m.src.scripts = []), o.null(m.src.styles) && (m.src.styles = []), o.null(m.src.assets) && (m.src.assets = []), o.null(m.src.pages) && (m.src.pages = []), o.null(m.src.concat) && (m.src.concat = {}), o.null(m.hook) && (m.hook = {}), o.string(m.src.base) || a(`src.base`), o.stringOrStringArray(m.src.scripts) || f(`src.scripts`), o.stringOrStringArray(m.src.styles) || f(`src.styles`), o.stringOrStringArray(m.src.assets) || f(`src.assets`), o.stringOrStringArray(m.src.pages) || f(`src.pages`), p(m.src.concat, (a, b) => o.stringArray(b) || d(`src.concat["${a}"]`)), p(m.hook, (a) => 0 <= n.indexOf(a) || g(`hook["${a}"]`)), p(m.hook, (b, c) => o.string(c) || a(`hook["${b}"]`)), o.string(m.dist.base) || a(`dist.base`), o.boolean(m.dist.clean) || c(`dist.clean`);let t = process.cwd(),u = s(t, m.dist.base),v = s(t, m.src.base),w = {};w.name = m.name, w.src = v, w.dist = u, w.clean_dist = !!m.dist.clean;let x = m.src.assets;w.src_assets = (o.string(x) ? [x] : x).map((a) => ({ name: a, from: s(v, a), to: s(u, a) }));let y = m.src.pages;w.src_globs = o.string(y) ? [y] : y;let z = m.src.scripts;w.src_script_globs = o.string(z) ? [z] : z;let A = m.src.styles;w.src_styles_globs = o.string(A) ? [A] : A;let B = m.src.concat || {};w.concat = Object.keys(B).map((a) => ({ name: a, to: s(u, a), from: B[a].map((a) => s(v, a)) }));let C = m.hook || {},D = {};Object.keys(C).map((a) => {D[a.replace(l, '')] = { command: C[a], asynchronous: a.startsWith(l) };}), w.hook = D;let E = {},F = m.processor || {};E.watchify = Object.assign({}, j.WATCHIFY, F.watchify || {}), E.browserify = F.browserify || j.BROWSERIFY;let { transform: G } = E.browserify;return o.array(G) || e('processor.browserify.transform'), E.browserify.transform = G.map((a) => o.string(a) ? { name: a + '' } : a), ['watchify', 'browserify'].map((a) => !1 === E[a].enable ? h(`processor.${a}.enable`) : a).map((a) => delete E[a + ''].enable), ['sass', 'less', 'autoprefixer', 'ejs', 'ejs_variables', 'ejs_template_tags', 'pug', 'html_minifier', 'babel', 'source_map', 'browser_sync'].map((a) => ({ name: a, config: F[a] })).map(({ name: a, config: b }) => E[a] = o.objectHasEnableField(b) ? b : { enable: !!b }), w.processor = E, w;} };
 })();
