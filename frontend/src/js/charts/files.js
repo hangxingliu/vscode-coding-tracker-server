@@ -13,12 +13,12 @@ let {
 	GRID_NORMAL
 } = require('../utils/echartsUtils');
 
-const SELECTOR = '#chartFile';
-const SIZE = 5;
+const EACH_HEIGH = 50;
 
-/**
-* @type {string[]}
-*/
+const SIZE = 5;
+let limit = SIZE, autoSize = false;
+
+/** @type {string[]} */
 let fileNames = [];
 
 function tooltipFormatter(p, ticket, set) {
@@ -29,12 +29,31 @@ function tooltipFormatter(p, ticket, set) {
 }
 
 let base = require('./_base').createBaseChartClass();
-module.exports = { recommendedChartId: 'files', init: base.init, update };
+module.exports = { recommendedChartId: 'files', init, update };
+
+function init(dom, _limit = SIZE, _autoSize = false) { 
+	limit = _limit;
+	autoSize = _autoSize;
+	return base.init(dom);
+}
 
 function update(dataGroupByFile) {
 	let data = convertUnit2Hour(dataGroupByFile),
-		array = orderByWatchingTime(object2array(data)).slice(-SIZE),
-		displayFileNames = [];
+		array = orderByWatchingTime(object2array(data)),
+		displayFileNames = [],
+		charts = base.getCharts(),
+		//interval: 0 for force display all label
+		interval = undefined;
+	
+	if (limit > 0) {
+		array = array.slice(-limit);
+	}
+	if (limit <= 0 || autoSize) {
+		let height = (array.length + 1) * EACH_HEIGH;
+		$(base.getDOM()).height(height);
+		charts.resize({ height });
+		interval = 0;
+	}
 	
 	fileNames = array.map(it => decodeURIComponent(it.name));
 	displayFileNames = fileNames.map((name, i) =>
@@ -47,7 +66,7 @@ function update(dataGroupByFile) {
 			axisTick: { show: false }, axisLabel: AXIS_HOURS.axisLabel },
 		yAxis: {
 			type: 'category', nameLocation: 'start',
-			axisTick: { show: false }, axisLabel: { inside: true }, z: 1024,
+			axisTick: { show: false }, axisLabel: { inside: true, interval }, z: 1024,
 			data: displayFileNames },
 		grid: GRID_NORMAL,
 		tooltip: { trigger: 'item', formatter: tooltipFormatter},

@@ -1,0 +1,29 @@
+- 
+	var times = [
+		"00:00", "01:00", "02:00", "03:00", "04:00", "05:00",
+		"06:00", "07:00", "08:00", "09:00", "10:00", "11:00",
+		"12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
+		"18:00", "19:00", "20:00", "21:00", "22:00", "23:00",
+	];
+
+#dlg24HsFrom.modal.fade
+	.modal-dialog.modal-sm
+		.modal-content
+			.modal-header
+				h4.modal-title 
+					i.ion-calendar.mr-2
+					span 24 Hours From:
+			.modal-body
+				.input-group
+					.input-group-addon: i.ion-calendar
+					input.from-date.form-control(type='text', value='--')
+					//- .input-group-addon: i.ion-clock
+					select.from-time.form-control
+						each time in times
+							option(value=time)= time
+				#_24hsFromDescription.text-right
+				#_24hsFromCalendar
+			.modal-footer
+				button.btn.btn-secondary(type="button" data-dismiss="modal") Cancel
+				button#_24hsFromConfirm.btn.btn-success(type="button") OK
+			

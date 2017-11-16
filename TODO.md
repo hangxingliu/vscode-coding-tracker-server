@@ -6,7 +6,7 @@
 
 ---
 
-- [ ] report in one day
+- [x] report in one day
 - [ ] add lock file (support pm2 and multi-process launching)
 - [ ] add database compress tools (using defined string syntax)
 - [ ] add analyze cache to improve performance
@@ -15,7 +15,7 @@
 - [ ] custom chart color scheme
 - [ ] replace glyphicons to ionicons
 - [ ] more share charts
-- [ ] From issues:
-	- [ ] add 24 hours report for custom date
+- [x] From issues:
+	- [x] add 24 hours report for custom date
   - [ ] translation to Brazilian Portuguese
 - [x] add eslint to unit test to keeping code health

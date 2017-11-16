@@ -14,6 +14,7 @@ let {
 	GRID_NORMAL
 } = require('../utils/echartsUtils');
 
+const EACH_HEIGH = 50;
 
 /** @type {string[]} */
 let originalProjectNames = [], projectNames = [], shortProjectNames = [];
@@ -62,7 +63,7 @@ function update(dataGroupByProject) {
 		//interval: 0 for force display all label
 		interval = undefined;
 	if (limit <= 0) {
-		let height = 50 + array.length * 50
+		let height = (array.length + 1) * EACH_HEIGH;
 		$(dom).height(height);
 		charts.resize({ height });
 		interval = 0;

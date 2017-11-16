@@ -18,12 +18,12 @@ let Utils = {
 		return result; 	
 	},
 	
-	expandAndShortGroupByHoursObject: (obj, dayDate) => {
+	expandAndShortGroupByHoursObject: (obj, endDate) => {
 		var result = {}, i = 24,
-			cursorDate = new Date(dayDate),
+			cursorDate = new Date(endDate),
 			cursorDateString = '';
 		while (i--) {
-			cursorDateString = getHHMM(cursorDate);
+			cursorDateString = getYYYYMMDD_HHMM(cursorDate);
 			result[cursorDateString] = obj[cursorDateString] || getEmptyCodingWatchingObject();
 			cursorDate.setHours(cursorDate.getHours() - 1);
 		}
@@ -47,7 +47,7 @@ let Utils = {
 	getReadableTimeString,
 	getReadableTimeStringFromMap,
 
-	getYYYYMMDD, getMMDD,
+	getYYYYMMDD, getMMDD, getHH00,
 	getChartDom,
 
 	basename
@@ -87,10 +87,13 @@ function to2(num) { return num == 0 ? '00' : num < 10 ? `0${num}` : `${num}` }
 function getYYYYMMDD(date){ return `${date.getFullYear()}-${to2(date.getMonth() + 1)}-${to2(date.getDate())}`}
 
 /** @param {Date} date */
-function getHHMM(date) { return `${getYYYYMMDD(date)} ${to2(date.getHours())}:00` }
+function getYYYYMMDD_HHMM(date) { return `${getYYYYMMDD(date)} ${to2(date.getHours())}:00` }
 
 /** @param {Date} date */
 function getMMDD(date) { return `${to2(date.getMonth() + 1)}-${to2(date.getDate())}`}
+
+/** @param {Date} date */
+function getHH00(date) { return `${to2(date.getHours())}:00`}
 
 /**
  * @param {any[]} array 

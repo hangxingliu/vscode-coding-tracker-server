@@ -10,7 +10,7 @@ let $page = $('.page-overview');
 let chartSummary = require('../charts/summary');
 let chart24hs = require('../charts/24hours');
 let chartProjects = require('../charts/projects');
-let chartFiles = require('../charts/file');
+let chartFiles = require('../charts/files');
 let chartComputers = require('../charts/computer');
 let chartLanguages = require('../charts/languages');
 /** @type {EChartsInstance[]} */

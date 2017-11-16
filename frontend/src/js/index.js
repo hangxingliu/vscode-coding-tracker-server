@@ -17,6 +17,7 @@ function App() {
 	
 	router.init([
 		require('./routes/overview'),
+		require('./routes/24hours'),
 		require('./routes/projects'),
 		require('./routes/languages'),
 	]).followRouterInURL('overview');
