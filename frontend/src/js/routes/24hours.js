@@ -1,6 +1,5 @@
 let utils = require('../utils/utils'),
 	resizer = require('../utils/resizer'),
-	router = require('../router'),
 	reportFilter = require('../reportFilter'),
 	API = require('../api'),
 	{ URL } = API,
@@ -54,7 +53,7 @@ function request() {
 }
 
 /** @param {Date} date */
-function onDateFilterChange(date) { 
+function onDateFilterChange(date) {
 	latestDate = new Date(date.getTime() + ONE_DAY - 1);
 	$txtFrom.text(utils.getMMDD(date) + ' ' +utils.getHH00(date));
 	request();
@@ -70,8 +69,8 @@ function on24HoursResponse(data) {
 }
 
 /**
- * @param {WatchingCodingObject} totalObject 
- * @param {JQuery} $dom 
+ * @param {WatchingCodingObject} totalObject
+ * @param {JQuery} $dom
  */
 function showTotalTimes(totalObject, $dom) {
 	let totalHoursMap = utils.convertUnit2Hour({

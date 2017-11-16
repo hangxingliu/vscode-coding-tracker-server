@@ -1,11 +1,5 @@
 /// <reference path="echarts.d.ts" />
 
-declare var global: {
-	app: {
-		openProjectReport(projectName: string): void;
-		share: Object;
-	}
-};
 declare var echarts: EChartsStatic;
 
 type WatchingCodingObject = {

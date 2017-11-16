@@ -16,7 +16,6 @@ let {
 
 let timeLabels = [];
 
-const SELECTOR = '#chartLast24Hs';
 function tooltipFormatter(p, ticket, set){
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
 	if (p.componentType == 'markLine') //average
@@ -37,7 +36,7 @@ function update(dataGroupByDate) {
 	let data = convertUnit2Hour(dataGroupByDate),
 		array = orderByName(object2array(data));
 	timeLabels = array.map(it => it.name);
-	
+
 	base.getCharts().setOption({
 		xAxis: { data: array.map(it => it.name.slice(11)) },//slice(11) remove yyyy-mm-dd
 		yAxis: merge(AXIS_HOURS, { boundaryGap: [0, 0.2] }),

@@ -1,6 +1,5 @@
 let utils = require('../utils/utils'),
 	resizer = require('../utils/resizer'),
-	router = require('../router'),
 	reportFilter = require('../reportFilter'),
 	API = require('../api'),
 	{ URL } = API;
@@ -11,9 +10,6 @@ let $rangeButtons = $page.find('.range-block [data-range]');
 let chartLanguages = require('../charts/languages_detailed');
 /** @type {EChartsInstance[]} */
 let charts = [];
-
-/** @type {ReportFilter} */
-let requestFilter = null;
 
 module.exports = { name: utils.basename(__filename, '.js'), start, stop };
 
@@ -43,7 +39,7 @@ function start() {
 
 /** @param {ReportFilter} filter */
 function request(filter) {
-	requestFilter = Object.assign({}, filter);
+	void filter; // keep this variable in here
 	API.requestSilent(URL.languages(), data =>
 		chartLanguages.update({data: data.groupBy.language}));
 }

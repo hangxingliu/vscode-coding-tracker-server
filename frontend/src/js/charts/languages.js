@@ -15,8 +15,6 @@ let {
 const COLORS = ['#a5d6a7', '#80cbc4', '#90caf9', '#80deea', '#ef9a9a', '#ffcc80', '#bcaaa4', '#b0bec5'];
 const COLORS_OTHER = ['#a5d6a7', '#80cbc4', '#90caf9', '#80deea', '#ef9a9a', '#d6d6d6'];
 
-const SELECTOR = '#chartLanguage';
-
 let otherLanguages = '';
 function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
@@ -41,14 +39,14 @@ function update(dataGroupByLanguage) {
 		array[i0].name = 'other';
 		array.length = i0 + 1;
 	}
-	
+
 	base.getCharts().setOption({
 		color: i1 > i0 ? COLORS_OTHER : COLORS,
 		grid: GRID_NORMAL,
 		tooltip: { trigger: 'item', formatter: tooltipFormatter },
 		series: [
 			createEChartsSeries('pie', 'watching')
-				.setLabelBold()	
+				.setLabelBold()
 				.setLabels(array.map(it => it.name))
 				.setValues(getEachFieldToFixed2(array, 'watching'))
 				.toObject()

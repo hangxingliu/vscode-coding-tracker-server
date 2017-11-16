@@ -16,9 +16,9 @@ let hadSetupUI = false;
 /** @type {(from: Date, to: Date) => any} */
 let callback = null;
 
-$dlg.on('show.bs.modal', () => {});
-$dlg.on('shown.bs.modal', () => {});
-$dlg.on('hidden.bs.modal', () => {});
+// $dlg.on('show.bs.modal', () => {});
+// $dlg.on('shown.bs.modal', () => {});
+// $dlg.on('hidden.bs.modal', () => {});
 
 module.exports = { show };
 

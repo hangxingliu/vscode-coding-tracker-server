@@ -13,7 +13,6 @@ let {
 } = require('../utils/echartsUtils');
 
 const COLORS = ['#4caf50', '#2196f3', '#ffeb3b', '#f44336', '#9c27b0', '#009688', '#ff9800', '#795548'];
-const SELECTOR = '#chartComputer';
 
 function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
@@ -34,8 +33,8 @@ function update(dataGroupByComputer) {
 		tooltip: { trigger: 'item', formatter: tooltipFormatter },
 		series: [
 			createEChartsSeries('pie', 'watching')
-				.setLabelBold()	
-				.setLabels(array.map(it => it.name))	
+				.setLabelBold()
+				.setLabels(array.map(it => it.name))
 				.setValues(getEachFieldToFixed2(array, 'watching'))
 				.toObject()
 		]

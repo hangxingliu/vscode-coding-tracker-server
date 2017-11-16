@@ -2,11 +2,11 @@
 
 function App() {
 	require('./ui/versionAndWelcome');
+	require('./api').init();
+	require('./i18n/index');
+	require('./reportFilter');
 
 	let Utils = require('./utils/utils'),
-		api = require('./api').init(),
-		i18n = require('./i18n/index'),
-		reportFilter = require('./reportFilter'),
 		router = require('./router'),
 		share = require('./share');
 
@@ -14,7 +14,7 @@ function App() {
 	 * @type {APIResponse}
 	 */
 	let basicReportData = null;
-	
+
 	router.init([
 		require('./routes/overview'),
 		require('./routes/24hours'),
@@ -24,7 +24,7 @@ function App() {
 
 	// requestBasicReportData();
 	// requestLast24hsReportData();
-	
+
 	// export functions
 	this.share = share;
 
@@ -42,7 +42,7 @@ function App() {
 		let today = new Date(),
 			startDate = new Date(today);
 		startDate.setDate(startDate.getDate() - 7 + 1);
-		
+
 		let groupByDayData = $.extend(true, {}, basicReportData.groupBy.day),
 			summaryData = Utils.expandGroupByDaysObject(groupByDayData, startDate, today);
 		return summaryData;
