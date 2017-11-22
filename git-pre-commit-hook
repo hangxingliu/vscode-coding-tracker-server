@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-npm run test-no-eslint-tsc -s -- --reporter=list
+npm run test -s -- --reporter=list
 CODE=$?
 if [[ "$CODE" == "0" ]]; then
 	echo -e "\e[1;32m  npm test success! \e[0m"
