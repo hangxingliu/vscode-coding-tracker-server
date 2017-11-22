@@ -9,9 +9,8 @@ type AnalyzeGroupByEnum = {
 	FILE: 32;
 	PROJECT: 128;
 	COMPUTER: 256;
-	VCS_REPO: 512;
-	VCS_BRANCH: 1024;
-	ALL: 2047;
+	VCS: 512;
+	ALL: 1023;
 	NONE: 0;
 };
 type AnalyzeCoreInstance = {
@@ -38,8 +37,7 @@ type AnalyzeResult = {
 		day?: HasNameAndTimeObject[];
 		project?: HasNameAndTimeObject[];
 		computer?: HasNameAndTimeObject[];
-		repo?: HasNameAndTimeObject[];
-		branch?: HasNameAndTimeObject[];
+		vcs?: HasNameAndTimeObject[];
 	}
 };
 type HasCodingWatchingObject = { coding: number; watching: number; }
