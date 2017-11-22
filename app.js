@@ -22,7 +22,7 @@ require('colors');
 
 var Express = require('express'),
 	Fs = require('fs-extra');
-	
+
 var log = require('./lib/Log'),
 	version = require('./lib/Version'),
 	welcome = require('./lib/Welcome'),
@@ -32,7 +32,6 @@ var log = require('./lib/Log'),
 	tokenChecker = require('./lib/TokenMiddleware'),
 	reporter = require('./lib/analyze/ReportMiddleware'),
 	reporterV2 = require('./lib/analyze/ReportMiddlewareV2'),
-	upgrade = require('./lib/UpgradeDatabaseFiles'),
 	randomToken = require('./lib/RandomToken'),
 	Program = require('./lib/Launcher');
 
@@ -61,7 +60,7 @@ app.use('/report', Express.static(`${__dirname}/frontend/dist`));
 //@ts-ignore
 if (global.DEBUG) {
 	log.info('Debug mode be turned on!');
-	//Using visitor log record (if under the debug mode)	
+	//Using visitor log record (if under the debug mode)
 	app.use(require('morgan')('dev'));
 }
 
@@ -85,7 +84,7 @@ app.use('/ajax/test', (req, res) => res.json({ success: 'test success!' }).end()
 app.use('/ajax/kill', (req, res) => {
 	return !Program.local ? returnError(res, 'this server is not a local server, could not be kill') :
 		(res.json({ success: 'killed' }).end(),
-			log.success(`Server killed by "/ajax/kill" API`), 
+			log.success(`Server killed by "/ajax/kill" API`),
 			process.nextTick(() => process.exit(0)));
 })
 
@@ -97,12 +96,12 @@ app.post('/ajax/upload', (req, res) => {
 	//Check upload version
 	if (versionCheckResult !== true)
 		return log.error(versionCheckResult), returnError(res, versionCheckResult);
-	
+
 	//Check params
 	params = checkParams(params);
 	//Params are invalid
 	if (params.error)
-		return returnError(res, params.error);	
+		return returnError(res, params.error);
 
 	res.json({ success: 'upload success' });
 	res.end();
@@ -111,7 +110,7 @@ app.post('/ajax/upload', (req, res) => {
 
 //add 404 and 500 response to express server
 errorHandler(app);
- 
+
 
 //--------------------------------------
 //|            Launch Server           |
@@ -119,11 +118,9 @@ errorHandler(app);
 
 //If output folder is not exists then mkdirs
 Fs.existsSync(Program.output) || Fs.mkdirsSync(Program.output);
-//upgrade exists old database files
-upgradeOldDatabaseFiles(Program.output);
 //Launch express web server
 Program.local ?
-	app.listen(Program.port, '127.0.0.1', afterServerStarted) :	
+	app.listen(Program.port, '127.0.0.1', afterServerStarted) :
 	app.listen(Program.port, afterServerStarted);
 
 
@@ -134,15 +131,9 @@ function bindReportAPIToServer() {
 	app.use('/ajax/report-v2', reporterV2.init(Program.output));
 }
 
-function upgradeOldDatabaseFiles(databaseFolder) {
-	var upgradeResult = upgrade.upgrade(databaseFolder);
-	upgradeResult.count == 0 || log.info(`**********\nupgrade old version database file version to ${version.storage}\n` +
-		`  there are ${upgradeResult.count} old version database files be upgrade\n**********`);
-}
-
 function afterServerStarted() {
 	log.success(`Server started!\n` +
-		`-------------------\n` +	
+		`-------------------\n` +
 		`Listening port    : ${Program.port}\n` +
 		`API/Upload token  : ${Program.token}\n` +
 		`Report Permission : ${Program.publicReport ? 'public' : 'private'}\n` +
