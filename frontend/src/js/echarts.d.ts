@@ -81,6 +81,13 @@ type EChartsObject = {
 	} | string, value: string | Array<any>): string | Array<any>
 };
 
+type EChartSeriesItem = {
+	type: "line" | "bar" | "pie" | "scatter" | "effectScatter" | "radar" | "tree" | "treemap" |
+	"boxplot" | "candlestick" | "heatmap" | "map" | "parallel" | "lines" | "graph" | "sankey" |
+	"funnel" | "gauge" | "pictorialBar" | "themeRiver" | "custom";
+	[x: string]: any;
+};
+
 type EChartOption = {
 	title?: EChartTitleOption,
 	legend?: Object,
@@ -99,7 +106,7 @@ type EChartOption = {
 	parallel?: Object,
 	parallelAxis?: Object,
 	timeline?: Object,
-	series?: Array<Object>,
+	series?: Array<EChartSeriesItem>,
 	color?: Array<Object>,
 	backgroundColor?: string,
 	textStyle?: Object,

@@ -1,0 +1,14 @@
+mixin chartBlock(id)
+	div(data-chart=id style="height: 250px")
+
+//====mixin==========
+//===========HTML====
+
+div.page-vcs(style="display: none")
+	.row
+		.col-12
+			.card.my-2
+				.card-body
+					h4.card-title(data-i18n="title_vcs") Version Control System
+					.card-text
+						+chartBlock("vcs")

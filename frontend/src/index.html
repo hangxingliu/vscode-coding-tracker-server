@@ -8,12 +8,12 @@
 	<meta name="description" content="<%= description %>">
 	<meta name="author" content="<%= author %>">
 	<title><%= title.index %></title>
-	
+
 	<link href="../lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="../lib/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.min.css" rel="stylesheet">
 	<link href="../lib/ionicons/css/ionicons.min.css" rel="stylesheet">
 	<link href="sass/index.css" rel="stylesheet">
-	
+
 </head>
 <body>
 
@@ -21,7 +21,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-12 col-md-3 col-xl-2 layout-sidebar">
-				<%- include("modules/sidebar.pug") %>		
+				<%- include("modules/sidebar.pug") %>
 			</div>
 			<main class="col-12 col-md-9 col-xl-10 mt-2 layout-content" role="main">
 				<div class="body-include-welcome">
@@ -32,7 +32,8 @@
 						<%- include("modules/page/projects_index.pug") %>
 						<%- include("modules/page/projects_sub.pug") %>
 						<%- include("modules/page/languages.pug") %>
-					</div>	
+						<%- include("modules/page/vcs.pug") %>
+					</div>
 				</div>
 				<div class="row">
 					<%- include("modules/bottom_info") %>
@@ -55,10 +56,10 @@
 	<script src="../lib/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="../lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 	<script src="../lib/echarts/dist/echarts.min.js"></script>
-	
+
 	<script src="js/index.js"></script>
 	<script async defer src="https://buttons.github.io/buttons.js"></script>
-	
+
 </body>
 
 </html>

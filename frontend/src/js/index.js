@@ -20,6 +20,7 @@ function App() {
 		require('./routes/24hours'),
 		require('./routes/projects'),
 		require('./routes/languages'),
+		require('./routes/vcs'),
 	]).followRouterInURL('overview');
 
 	// requestBasicReportData();
