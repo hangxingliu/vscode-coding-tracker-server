@@ -38,11 +38,11 @@ let base = require('./_base').createBaseChartClass(charts => {
 module.exports = { recommendedChartId: 'projects', update, init };
 
 /**
- * @param {HTMLElement} _dom 
- * @param {(proj: string) => any} [_onClick=null] 
- * @param {number} [_limit=-1] 
+ * @param {HTMLElement} _dom
+ * @param {(proj: string) => any} [_onClick=null]
+ * @param {number} [_limit=-1]
  */
-function init(_dom, _onClick = null, _limit = -1) { 
+function init(_dom, _onClick = null, _limit = -1) {
 	limit = _limit;
 	onClick = _onClick;
 	return base.init(dom = _dom);
@@ -68,7 +68,7 @@ function update(dataGroupByProject) {
 		charts.resize({ height });
 		interval = 0;
 	}
-	
+
 	charts.setOption({
 		legend: { data: [''] },
 		xAxis: {

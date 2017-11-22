@@ -11,8 +11,8 @@ module.exports = {
 };
 
 /**
- * @param {string} type 
- * @param {string} name 
+ * @param {string} type
+ * @param {string} name
  * @returns  {EChartsSeriesCreator}
  */
 function createEChartsSeries(type, name) {
@@ -29,14 +29,14 @@ function createEChartsSeries(type, name) {
 
 		setTooltip: formatter => object.tooltip = { formatter },
 		setLabelBold: () => object.label = { normal: { textStyle: { fontWeight: 'bold' } } },
-		
+
 		setLabels: labels => object.data
 			? object.data.forEach((it, i) => it.name = labels[i])
 			: (object.data = labels.map(name => ({ name }))),
 		setValues: values => object.data
 			? object.data.forEach((it, i) => it.value = values[i])
 			: (object.data = values.map(value => ({ value }))),
-		
+
 		add: (...options) => $.extend(true, object, ...options)
 	};
 

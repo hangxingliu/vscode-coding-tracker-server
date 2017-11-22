@@ -12,7 +12,7 @@ let URL = {
 	hoursDetailed: (date) => getBaseURLFor24Hours('hours-detailed', date || new Date()),
 	languages: () => getBaseURL('languages', getFilter()),
 	vcs: () => getBaseURL('vcs', getFilter()),
-	project: (projectName) => 
+	project: (projectName) =>
 		getBaseURL('project', getFilter()) + '&project=' + encodeURIComponent(projectName)
 };
 
@@ -25,7 +25,7 @@ let API = {
 
 	/**
 	 * @param {string} url
-	 * @param {(data: any) => void} callback
+	 * @param {(data: APIResponse) => void} callback
 	 * @param {boolean} [silentWithoutDialog]
 	 */
 	request: (url, callback, silentWithoutDialog) => {
@@ -36,6 +36,11 @@ let API = {
 			error: displayError
 		});
 	},
+
+	/**
+	 * @param {string} url
+	 * @param {(data: APIResponse) => void} callback
+	 */
 	requestSilent: (url, callback) => API.request(url, callback, true)
 
 };
@@ -51,9 +56,9 @@ function getBaseURL(name, filter) {
 
 /**
  * @param {string} name
- * @param {Date} [whichDay] 
+ * @param {Date} [whichDay]
  */
-function getBaseURLFor24Hours(name, whichDay) { 
+function getBaseURLFor24Hours(name, whichDay) {
 	let ts = whichDay.getTime(), date = whichDay.getDate();
 	let from = new Date(ts), to = new Date(ts);
 	from.setDate(date - 1);
@@ -73,7 +78,7 @@ function displayError(error) {
 		if (response.error)
 			info += `\nError:\n${obj2str(response.error, '  ')}`;
 		else
-			info += `\nResponse:\n${obj2str(response, '  ')}`;	
+			info += `\nResponse:\n${obj2str(response, '  ')}`;
 	}
 	if (!info)
 		info = error;
