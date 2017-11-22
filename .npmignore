@@ -1,5 +1,7 @@
 test/temp
 test/playground
+test/resources
+test/log
 
 # ignore test tracking data files
 database
@@ -18,6 +20,3 @@ jsconfig.json
 
 # ignore log file included npm log
 *.log
-
-# ignore unit test resources folder
-test/resources

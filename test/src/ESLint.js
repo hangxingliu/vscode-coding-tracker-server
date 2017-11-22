@@ -13,9 +13,16 @@ const FILES = [
 const TEST_SLOW_TIME = 60 * 1000;
 const TEST_TIMEOUT_TIME = 120 * 1000;
 
+const LOG_FOLDER = `${__dirname}/../log`;
+const LOG_FILE = `${LOG_FOLDER}/eslint.log`;
+
+let path = require('path');
+let fs = require('fs-extra');
+
+fs.existsSync(LOG_FOLDER) || fs.mkdirsSync(LOG_FOLDER);
+
 // Check this unit test is running in project root folder
 function runningInProjectRoot() {
-	let path = require('path');
 	try {
 		if (require(path.join(process.cwd(), 'package.json')).name
 			!= 'vscode-coding-tracker-server')
@@ -23,15 +30,15 @@ function runningInProjectRoot() {
 	} catch (ex) {
 		throw new Error(`Please run "${__filename}" unit test in project root folder`);
 	}
-}	
+}
 
 //>>>>>>>>>>>>>>>>>>>> Main Function
 
 function main() {
 	this.slow(TEST_SLOW_TIME);
 	this.timeout(TEST_TIMEOUT_TIME);
-	
-	let ESLint = require('eslint');		
+
+	let ESLint = require('eslint');
 	//@ts-ignore
 	let eslint = new ESLint.CLIEngine({ useEslintrc: true });
 
@@ -39,19 +46,25 @@ function main() {
 	let results = eslint.executeOnFiles(FILES).results;
 	// filter: get warning/error file
 	results = results.filter(item => item.messages.length);
-	
+
+	let message = '';
 	if (results.length) {
 		let problemCount = 0, location = "";
+		message = 'ESLint Error:\n';
 		results.forEach(result => {
 			result.messages.forEach(problem => {
 				problemCount++;
 				location = `${result.filePath}:${problem.line}:${problem.column}`;
-				console.error(`  ESLint error: ${problem.ruleId} in ${location}`);
-			})
+				message += `  ${problem.ruleId}: ${location}\n`;
+			});
 		});
+		fs.writeFileSync(LOG_FILE, message);
+		process.nextTick(() => console.error(message));
+
 		throw new Error(`There has ${problemCount} problems in ${results.length} files. ` +
-			`You can get detailed information by running eslint`);
+			`You can get detailed information by running eslint.`);
 	}
+	fs.writeFileSync(LOG_FILE, message);
 }
 
 if (process.argv.indexOf('--no-eslint') < 0) {
@@ -59,4 +72,4 @@ if (process.argv.indexOf('--no-eslint') < 0) {
 		it('# running in project root directory', runningInProjectRoot);
 		it('# no warning and error', main);
 	});
-}	
+}

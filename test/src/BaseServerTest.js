@@ -1,7 +1,24 @@
+//@ts-check
+
 let killAll = require('tree-kill'),
 	fs = require('fs-extra'),
 	request = require('request'),
-	Async = require('async');
+	Async = require('async'),
+	createValidate = require('./_ResponseValidator');
+
+const LOG_FOLDER = `${__dirname}/../log`;
+const LOG_SERVER_FILE = `${LOG_FOLDER}/server-stdout-stderr.log`;
+const LOG_RESPONSE_FILE = `${LOG_FOLDER}/response.log`;
+
+const LOG_SERVER = [];
+const LOG_RESPONSE = [];
+
+//Create log folder
+fs.existsSync(LOG_FOLDER) || fs.mkdirsSync(LOG_FOLDER);
+//Create empty log files
+fs.writeFileSync(LOG_SERVER_FILE, '');
+fs.writeFileSync(LOG_RESPONSE_FILE, '');
+
 
 const PORT = 24680,
 	TOKEN = 'token123456',
@@ -26,20 +43,26 @@ const UPLOAD_RECORDS = [
 ];
 const UPLOAD_COMMON = { token: TOKEN, version: '3.0', pcid: 'test' };
 
+const RESPONSE_ERROR = 'obj.error';
+const RESPONSE_SUCCESS = 'obj.success';
+
 let server;
 //Clean resource database
 fs.removeSync(DATABASE_FOLDER);
 
-describe('Start Server', function() {
+describe('Start server', function() {
 	it('#Start Server', function(then){
 		this.slow(1000);
 		var goThen = true;
 		server = require('child_process').spawn('node',
-			['app.js', '-p', `${PORT}`, '-t', `${TOKEN}`, '-o', DATABASE_FOLDER, '--local'],
+			['app.js', '-p', `${PORT}`, '-t', `${TOKEN}`, '-o', DATABASE_FOLDER, '--local', '--debug'],
 			{ cwd: `${__dirname}/../../` });
 		server.stdout.setEncoding('utf8');
+		server.stderr.setEncoding('utf8');
+		server.stderr.on('data', data => LOG_SERVER.push(data));
 		server.stdout.on('data', data => {
-			if (data.indexOf('Server started!') >= 0 && goThen) {
+			LOG_SERVER.push(data);
+			if (typeof data == 'string' && data.indexOf('Server started!') >= 0 && goThen) {
 				goThen = false;
 				return then();
 			}
@@ -48,69 +71,60 @@ describe('Start Server', function() {
 });
 
 describe('Request test', () => {
-	it('#Welcome information', then => {
-		request.get(TEST_BASE_URL, {},
-			testGroup(CONNECT, IS_200, IS_JSON, JSON_EVAL('obj.localServerMode === true'), then));
-	});
-	it('#Static resources', then => {
-		request.get(TEST_STATIC_RESOURCE, {},
-			testGroup(CONNECT, IS_200, IS_HTML, REGEX(/jquery\.min\.js/), then));
-	});
+
+	it('#Welcome information', then =>
+		get(TEST_BASE_URL, {}, then).isJSON().test('obj.localServerMode === true'));
+
+	it('#Static resources', then =>
+		get(TEST_STATIC_RESOURCE, {}, then).isHTML().regexp(/jquery\.min\.js/));
+
 	describe('Token test', () => {
-		it('#Token test (GET Invalid)', then => {
-			request.get(TEST_API_TOKEN, { qs: { token: 'WrongToken' } },
-				testGroup(CONNECT, IS_403, IS_JSON, JSON_ERROR, then));
-		});
-		it('#Token test (POST Invalid)', then => {
-			request.post(TEST_API_TOKEN, { form: { token: 'WrongToken' } },
-				testGroup(CONNECT, IS_403, IS_JSON, JSON_ERROR, then));
-		});
-		it('#Token test (GET)', then => {
-			request.get(TEST_API_TOKEN, { qs: { token: TOKEN } },
-				testGroup(CONNECT, IS_200, IS_JSON, JSON_SUCCESS, then));
-		});
-		it('#Token test (POST)', then => {
-			request.post(TEST_API_TOKEN, { form: { token: TOKEN } },
-				testGroup(CONNECT, IS_200, IS_JSON, JSON_SUCCESS, then));
-		});
+		it('#Token test (GET Invalid)', then =>
+			get(TEST_API_TOKEN, { qs: { token: 'WrongToken' } }, then, true, 403).isJSON().exist(RESPONSE_ERROR));
+
+		it('#Token test (POST Invalid)', then =>
+			post(TEST_API_TOKEN, { form: { token: 'WrongToken' } }, then, true, 403).isJSON().exist(RESPONSE_ERROR));
+
+		it('#Token test (GET)', then =>
+			get(TEST_API_TOKEN, { qs: { token: TOKEN } }, then).isJSON().exist(RESPONSE_SUCCESS));
+
+		it('#Token test (POST)', then =>
+			post(TEST_API_TOKEN, { form: { token: TOKEN } }, then).isJSON().exist(RESPONSE_SUCCESS));
+
 	});
 
 	describe('Upload test', () => {
-		it('#has not version', then => {
-			request.post(TEST_UPLOAD, { form: { token: TOKEN } },
-				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/empty/), then));
-		});
-		it('#wrong version1', then => {
-			request.post(TEST_UPLOAD, { form: { token: TOKEN, version: '1.2.3' } },
-				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/unsupported/), then));
-		});
-		it('#wrong version2', then => {
-			request.post(TEST_UPLOAD, { form: { token: TOKEN, version: '4.0.3' } },
-				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/unsupported/), then));
-		});
-		it('#wrong version3', then => {
-			request.post(TEST_UPLOAD, { form: { token: TOKEN, version: 'version' } },
-				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/unsupported/), then));
-		});
-		it('#missing params', then => {
-			request.post(TEST_UPLOAD, { form: { token: TOKEN, version: '3.0', type: 0 } },
-				testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/missing/), then));
-		});
-		it('#params not an integer', then => {
-			request.post(TEST_UPLOAD, {
+		it('#has not version', then =>
+			post(TEST_UPLOAD, { form: { token: TOKEN } }, then)
+				.isJSON().exist(RESPONSE_ERROR).regexp(/empty/));
+		it('#wrong version1', then =>
+			post(TEST_UPLOAD, { form: { token: TOKEN, version: '1.2.3' } }, then)
+				.isJSON().exist(RESPONSE_ERROR).regexp(/unsupported/));
+
+		it('#wrong version2', then =>
+			post(TEST_UPLOAD, { form: { token: TOKEN, version: '4.0.3' } }, then)
+				.isJSON().exist(RESPONSE_ERROR).regexp(/unsupported/));
+
+		it('#wrong version3', then =>
+			post(TEST_UPLOAD, { form: { token: TOKEN, version: 'version' } }, then)
+				.isJSON().exist(RESPONSE_ERROR).regexp(/unsupported/));
+
+		it('#missing params', then =>
+			post(TEST_UPLOAD, { form: { token: TOKEN, version: '3.0', type: 0 } }, then)
+				.isJSON().exist(RESPONSE_ERROR).regexp(/missing/));
+
+		it('#params not an integer', then =>
+			post(TEST_UPLOAD, {
 				form: {
 					token: TOKEN, version: '3.0', type: 0, time: Date.now(), long: '?',
 					lang: 'javascript', file: 'file', proj: 'proj', pcid: 'test'
 				}
-			}, testGroup(CONNECT, IS_JSON, JSON_ERROR, REGEX(/long/), REGEX(/integer/), then));
-		});
-		it('#success', then => {
-			Async.mapLimit(UPLOAD_RECORDS, 1, (record, then) => {
-				let form = Object.assign({}, record, UPLOAD_COMMON);
-				request.post(TEST_UPLOAD, { form },
-					testGroup(CONNECT, IS_JSON, JSON_SUCCESS, then))
-			}, then);	
-		});
+			}, then).isJSON().exist(RESPONSE_ERROR).regexp(/long/).regexp(/integer/));
+
+		it('#success', then =>
+			Async.mapLimit(UPLOAD_RECORDS, 1, (record, then) =>
+				post(TEST_UPLOAD, { form: Object.assign({}, record, UPLOAD_COMMON) }, then)
+					.isJSON().exist(RESPONSE_SUCCESS), then));
 
 		it('#success storage to file', function (then) {
 			this.retries(10);
@@ -125,119 +139,92 @@ describe('Request test', () => {
 			}, 100);
 		});
 	});
+
 	describe('Analyze test', () => {
-		it('#recent', then => {
-			request.get(TEST_REPORT_RECENT, { qs: { token: TOKEN } },
-				testGroup(CONNECT, IS_200, IS_JSON,
-					JSON_EVAL('obj.total.coding > 0'),
-					JSON_EVAL('obj.total.watching > 0'),
-					JSON_EVAL('obj.groupBy.computer.test'),
-					JSON_EVAL('obj.groupBy.project.proj && obj.groupBy.project.old_proj'),
-					JSON_EVAL('obj.groupBy.file["test.html"] && obj.groupBy.file["index.js"]'),
-					JSON_EVAL('obj.groupBy.language.html && obj.groupBy.language.javascript'),
-					JSON_EVAL('Object.keys(obj.groupBy.day).length > 0'),
-					then));
-		});
-		it('#last24hs', then => {
-			request.get(TEST_REPORT_LAST_24HS, { qs: { token: TOKEN } },
-				testGroup(CONNECT, IS_200, IS_JSON,
-					JSON_EVAL('obj.total.coding > 0'),
-					JSON_EVAL('obj.total.watching > 0'),
-					JSON_EVAL('Object.keys(obj.groupBy.hour).length > 0'),
-					then));
-		});
-		it('#project (missing parameter)', then => {
-			request.get(TEST_REPORT_PROJECT, { qs: { token: TOKEN } },
-				testGroup(CONNECT, IS_400, JSON_ERROR, REGEX(/missing parameter/), then));
-		});
-		it('#project', then => {
-			request.get(TEST_REPORT_PROJECT, { qs: { token: TOKEN, project: 'proj' } },
-				testGroup(CONNECT, IS_200, IS_JSON,
-					JSON_EVAL('obj.total.coding > 0'),
-					JSON_EVAL('obj.total.watching > 0'),
-					JSON_EVAL('obj.groupBy.computer.test'),
-					// has proj but not old_proj
-					JSON_EVAL('obj.groupBy.project.proj && !obj.groupBy.project.old_proj'),
-					// has files in project "proj" but not files in project "old_proj"
-					JSON_EVAL('obj.groupBy.file["test.html"] && obj.groupBy.file["index.js"] && !obj.groupBy.file["index.html"]'),
-					JSON_EVAL('obj.groupBy.language.html && obj.groupBy.language.javascript'),
-					JSON_EVAL('Object.keys(obj.groupBy.day).length > 0'),
-					then));
-		});
+		it('#recent', then =>
+			get(TEST_REPORT_RECENT, { qs: { token: TOKEN } }, then).isJSON()
+				.test('obj.total.coding > 0')
+				.test('obj.total.watching > 0')
+				.test('obj.groupBy.computer.test')
+				.test('obj.groupBy.project.proj && obj.groupBy.project.old_proj')
+				.test('obj.groupBy.file["test.html"] && obj.groupBy.file["index.js"]')
+				.test('obj.groupBy.language.html && obj.groupBy.language.javascript')
+				.test('Object.keys(obj.groupBy.day).length > 0'));
+
+		it('#last24hs', then =>
+			get(TEST_REPORT_LAST_24HS, { qs: { token: TOKEN } }, then)
+				.test('obj.total.coding > 0')
+				.test('obj.total.watching > 0')
+				.test('Object.keys(obj.groupBy.hour).length > 0'));
+
+		it('#project (missing parameter)', then =>
+			get(TEST_REPORT_PROJECT, { qs: { token: TOKEN } }, then)
+				.status4xx().exist(RESPONSE_ERROR).regexp(/missing parameter/));
+
+		it('#project', then =>
+			get(TEST_REPORT_PROJECT, { qs: { token: TOKEN, project: 'proj' } }, then)
+				.test('obj.total.coding > 0')
+				.test('obj.total.watching > 0')
+				.test('obj.groupBy.computer.test')
+				// has proj but not old_proj
+				.test('obj.groupBy.project.proj && !obj.groupBy.project.old_proj')
+				// has files in project "proj" but not files in project "old_proj"
+				.test('obj.groupBy.file["test.html"] && obj.groupBy.file["index.js"] && !obj.groupBy.file["index.html"]')
+				.test('obj.groupBy.language.html && obj.groupBy.language.javascript')
+				.test('Object.keys(obj.groupBy.day).length > 0'));
 	});
 
 	describe('kill test', () => {
 		it('#call kill method', then => {
-			request.get(TEST_KILL, { qs: { token: TOKEN } },
-				testGroup(CONNECT, IS_JSON, JSON_SUCCESS, then));
+			get(TEST_KILL, { qs: { token: TOKEN } }, then).test(RESPONSE_SUCCESS);
 		});
 		it('#had kill', function(then){
 			this.retries(10);
-			request.get(TEST_KILL, { qs: { token: TOKEN} },
-				testGroup(CONNECT_ERROR, then));
+			get(TEST_KILL, { qs: { token: TOKEN } }, then, false);
 		});
 	});
 
 	//End Request test
 });
 
-
-
-describe('Stop Server', () => {
+describe('Stop server', () => {
 	it('#Stop Server', then => {
 		killAll(server.pid, 'SIGTERM', then);
-	});	
+	});
 });
 
+describe('Write log to file', () => {
+	it('#Write server output log', then =>
+		fs.writeFile(LOG_SERVER_FILE, LOG_SERVER.join('\n'), then));
+	it('#Write response log', then =>
+		fs.writeFile(LOG_RESPONSE_FILE, LOG_RESPONSE.join('\n'), then));
+})
 
-//-------------------------------------------------
-function CONNECT(err) { if (err) throw err; }
-function CONNECT_ERROR(err) { if (!err) throw new Error(`request connected, but expectation is not!`);}
-function IS_200(err, res) { STATUS_CODE(200)(err, res) }
-function IS_403(err, res) { STATUS_CODE(403)(err, res) }
-function IS_400(err, res) { STATUS_CODE(400)(err, res) }
-function IS_404(err, res) { STATUS_CODE(404)(err, res) } //eslint-disable-line no-unused-vars
-function IS_500(err, res) { STATUS_CODE(500)(err, res) } //eslint-disable-line no-unused-vars
-function IS_JSON(err, res) { CONTENT_TYPE('application/json')(err, res); }
-function IS_HTML(err, res) { CONTENT_TYPE('text/html')(err, res); }
-function CONTENT_TYPE(needContentType) {
-	return (err, res) => {
-		var contentType = res.headers['content-type'];
-		if (!contentType) throw new Error(`response has not content type header`);
-		if (contentType.indexOf(needContentType) == -1) throw new Error(`response content type is not ${needContentType}`);
-	};
-}
-function STATUS_CODE(code) {
-	return (err, res) => { if (res.statusCode != code) throw new Error(`response code is ${res.statusCode} but not ${code}!`) };
-}
-function REGEX(regex) {
-	return (err, res, bd) => { if (!bd.match(regex)) throw new Error(`result could not match "${regex.source}"`) }
-}
-function JSON_SUCCESS(err, res, bd) { JSON_EVAL('obj.success')(err, res, bd)}
-function JSON_ERROR(err, res, bd) { JSON_EVAL('obj.error')(err, res, bd)}
-function JSON_EVAL(express) {
-	return (err, res, bd) => {
-		try {
-			//eslint-disable-next-line no-unused-vars
-			var obj = JSON.parse(bd);
-		} catch (e) { throw new Error('result is illegal JSON object'); }
-		try {
-			var result = eval(express);
-		} catch (e) { throw new Error(`result object could not eval ${express}`);}
-		if (!result)
-			throw new Error(`${express} is fasly value`);
-	};	
-}
-function ECHO(err, res, bd) { console.log(bd); } //eslint-disable-line no-unused-vars
 
-//-------------------------------------------------
-function testGroup() {
-	var func = [];
-	for (let i = 0; i < arguments.length; i++)
-		func.push(arguments[i]);
-	var then = func.pop();
-	return (err, res, body) => {
-		func.forEach(fun => fun(err, res, body));
-		then();
-	};
+function get(url, param, then, connected = true, statusCode = 0) {
+	return req('get', url, param, then, connected, statusCode);
+}
+function post(url, param, then, connected = true, statusCode = 0) {
+	return req('post', url, param, then, connected, statusCode);
+}
+function req(method, url, param, then, connected = true, statusCode = 0) {
+	let v = validate(connected, statusCode);
+	process.nextTick(() => request(url, Object.assign({ method }, param), v.done(then)));
+	return v;
+}
+function validate(connected = true, statusCode = 0) {
+	let v = createValidate().test((err, res, body) => {
+		//log
+		if (err) {
+			LOG_RESPONSE.push(`error: ${err.message}\n${err.stack}\n`);
+		} else {
+			LOG_RESPONSE.push((res ? res.statusCode : '0') + ':');
+			LOG_RESPONSE.push(body);
+			LOG_RESPONSE.push('\n');
+		}
+		return true;
+	});
+	v = connected ? v.connected() : v.connectFailed();
+	if(statusCode) v = v.status(statusCode);
+	return v;
 }

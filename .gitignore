@@ -1,20 +1,17 @@
 # ignore local test database
 /database
 
-# ignore unit test temporary files
+# ignore unit test assets
 test/temp
-
-# ignore playground
+test/resources
 test/playground
+test/log
 
 # ignore yarn.lock
 yarn.lock
 
 # ignore log file included npm log
 *.log
-
-# ignore unit test resources folder
-test/resources
 
 # Logs
 logs
