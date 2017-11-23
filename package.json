@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha test/src/*.js",
-    "test-no-eslint-tsc": "mocha test/src/*.js --no-eslint --no-tsc",
+	"test-no-eslint-tsc": "mocha test/src/*.js --no-eslint --no-tsc",
+	"generate-js": "node ./frontend/src/js/utils/echartsUtils.generator.js",
     "build": "node ./build/build.js",
     "watch": "node ./build/build.js -w",
     "build-live": "node ./build/build.js -w",

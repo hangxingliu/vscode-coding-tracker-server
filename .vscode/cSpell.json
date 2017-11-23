@@ -21,6 +21,7 @@
         "mkdirs",
         "MMDD",
         "pcid",
+        "Rect",
         "repo",
         "resizer",
         "YYMDD",

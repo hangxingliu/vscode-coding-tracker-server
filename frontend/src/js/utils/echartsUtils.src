@@ -1,0 +1,38 @@
+# Format examples:
+#
+# func funcName = param => $prop1.prop2
+# func funcName = param push=> $prop1.prop2
+# func funcName = const value => $prop1.prop2
+# func funcName = const value push=> $prop1.prop2
+# func funcName = param => {xxx: param} => $prop1.prop2
+# func funcName = param => {xxx: param} push=> $prop1.prop2
+#
+
+func showMaxMarkPoint = name, formatter = null, addons = null
+	=> Object.assign({ type: 'max', name },
+		formatter ? { label: { normal: { formatter } } } : {}, addons || {})
+	push=> $markPoint.data
+
+
+func showAverageLine = name, formatter = null, addons = null
+	=> Object.assign({ type: 'average', name },
+		formatter ? { label: { normal: { formatter } } } : {}, addons || {})
+	push=> $markLine.data
+
+func setLineSmooth = const true => $smooth
+
+func setMarkPointAsWideRect
+	 = const 'rect' => $markPoint.symbol
+	+= const [80, 30] => $markPoint.symbolSize
+	+= const [0, '-60%'] => $markPoint.symbolOffset
+
+func setLineColor = color => $lineStyle.normal.color
+func setItemColor = color => $itemStyle.normal.color
+func setAreaColor = color => $areaStyle.normal.color
+
+func setTooltip = formatter => $tooltip.formatter
+
+func setLabelFormatter = formatter => $label.normal.formatter
+
+func setLabelBold = const 'bold' => $label.normal.textStyle.fontWeight
+
