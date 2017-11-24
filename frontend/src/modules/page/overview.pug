@@ -4,11 +4,9 @@ mixin chartBlock(id)
 mixin totallyIndicator(id)
 	h6.card-subtitle.text-muted.mb-3.mt-1(id=id)
 		span(data-i18n="title_totally_1") Totally: watching for
-		span(name="watching") ----
-		| &nbsp;
-		span(data-i18n="title_totally_2") coding for
-		span(name="coding") ----
-		| &nbsp;
+		span.mx-1(name="watching") ----
+		span.ml-2(data-i18n="title_totally_2") coding for
+		span.mx-1(name="coding") ----
 		span(data-i18n="title_totally_3")
 
 
