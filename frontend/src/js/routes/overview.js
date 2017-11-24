@@ -1,11 +1,14 @@
+//@ts-check
+
 let utils = require('../utils/utils'),
 	resizer = require('../utils/resizer'),
 	router = require('../router'),
 	reportFilter = require('../reportFilter'),
 	API = require('../api'),
 	{ URL } = API;
-	
+
 let $page = $('.page-overview');
+let $btnShare = $('#btnShareSummary');
 
 let chartSummary = require('../charts/summary');
 let chart24hs = require('../charts/24hours');
@@ -22,9 +25,9 @@ let requestFilter = null;
 module.exports = { name: utils.basename(__filename, '.js'), start, stop };
 
 function stop() { charts.map(chart => chart.dispose()); $page.hide(); }
-function start() { 
+function start() {
 	$page.show();
-	
+
 	charts = [
 		chartProjects.init(utils.getChartDom(chartProjects.recommendedChartId, $page)[0],
 			project => router.to('projects', project), 5)
@@ -35,18 +38,18 @@ function start() {
 		chartComputers,
 		chartLanguages
 	].map(c => c.init(utils.getChartDom(c.recommendedChartId, $page)[0])));
-		
+
 	resizer.removeSubscriber();
 	resizer.subscribe(charts);
 
 	reportFilter.removeSubscribers();
 	reportFilter.subscribe(request);
-	
+
 	request(reportFilter.getFilter());
 }
 
 /** @param {ReportFilter} filter */
-function request(filter) { 
+function request(filter) {
 	requestFilter = Object.assign({}, filter);
 	API.requestSilent(URL.overview(), onOverviewResponse);
 	API.requestSilent(URL.hours(), on24HoursResponse);
@@ -59,7 +62,7 @@ function on24HoursResponse(data) {
 }
 
 /** @param {APIResponse} data */
-function onOverviewResponse(data) { 
+function onOverviewResponse(data) {
 	chartSummary.update(getSummaryDataFromResponse(data))
 	showTotalTimes(data.total, $('#counterSummary'));
 
@@ -74,14 +77,18 @@ function onOverviewResponse(data) {
 function getSummaryDataFromResponse(data) {
 	let groupByDayData = $.extend(true, {}, data.groupBy.day),
 		summaryData = utils.expandGroupByDaysObject(groupByDayData, requestFilter.from, requestFilter.to);
+
+	$btnShare.off('click').on('click', () => require('../ui/share').shareSummary(summaryData, data.total));
 	return summaryData;
 }
 /**
- * @param {WatchingCodingObject} totalObject 
- * @param {JQuery} $dom 
+ * @param {CodingWatchingObject} totalObject
+ * @param {JQuery} $dom
  */
 function showTotalTimes(totalObject, $dom) {
-	let totalHoursMap = utils.convertUnit2Hour({ total: totalObject });
-	let data = utils.getReadableTimeStringFromMap(totalHoursMap).total;
-	$dom.find('[name]').each((i, e) => $(e).text(data[$(e).attr('name')]));
+	let data = {
+		watching: utils.getReadableTime(totalObject.watching),
+		coding: utils.getReadableTime(totalObject.coding),
+	};
+	$dom.find('[name]').each((i, e) => { $(e).text(data[$(e).attr('name')]) });
 }

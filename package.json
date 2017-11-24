@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha test/src/*.js",
-	"test-no-eslint-tsc": "mocha test/src/*.js --no-eslint --no-tsc",
-	"generate-js": "node ./frontend/src/js/utils/echartsUtils.generator.js",
+    "test-no-eslint-tsc": "mocha test/src/*.js --no-eslint --no-tsc",
+    "generate-js": "node ./frontend/src/js/utils/echartsUtils.generator.js",
     "build": "node ./build/build.js",
     "watch": "node ./build/build.js -w",
     "build-live": "node ./build/build.js -w",
@@ -51,6 +51,7 @@
     "babel-eslint": "^8.0.2",
     "bootstrap": "^4.0.0-beta.2",
     "bootstrap-datepicker": "^1.7.1",
+    "downloadjs": "^1.4.7",
     "echarts": "^3.7.2",
     "eslint": "*",
     "ionicons": "^2.0.1",

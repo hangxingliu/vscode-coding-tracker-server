@@ -2,15 +2,11 @@
 /// <reference path="../index.d.ts" />
 
 let {
-	convertUnit2Hour,
-	getReadableTimeString,
+	getReadableTime,
 	orderByWatchingTime,
-	getEachFieldToFixed2,
-} = require('../utils/utils'), {
-	createEChartsSeries,
-	AXIS_HOURS,
-	GRID_NORMAL
-} = require('../utils/echartsUtils');
+} = require('../utils/utils'),
+	echarts = require('../utils/echartsUtils');
+
 
 const EACH_HEIGH = 75;
 // https://www.materialui.co/colors
@@ -31,7 +27,7 @@ function tooltipFormatter(p, ticket, set) {
 	let i = p.dataIndex;
 	if (i >= items.length) return setText(null);
 	let item = items[i];
-	let text = `You spent <b>${getReadableTimeString(p.value)}</b> on <br/>`;
+	let text = `You spent <b>${getReadableTime(p.value)}</b> on <br/>`;
 	if (!item.type)
 		return setText(text + 'Project without VCS');
 	return setText(text += `branch <b> ${item.branch}</b> of<br/> project <b>${item.path}</b> `)
@@ -55,7 +51,7 @@ function init(_dom, _onClick) {
 
 /** @param {AdvancedVCSInfo[]} vcsArray */
 function update(vcsArray) {
-	items = orderByWatchingTime(convertUnit2Hour(vcsArray));
+	items = orderByWatchingTime(vcsArray);
 
 	let colors = items.map(it => {
 		if (!it.type) return COLOR_NONE;
@@ -73,9 +69,7 @@ function update(vcsArray) {
 
 	charts.setOption({
 		legend: { data: [''] },
-		xAxis: {
-			type: 'value', nameLocation: 'end', position: 'top',
-			axisTick: { show: false }, axisLabel: AXIS_HOURS.axisLabel },
+		xAxis: echarts.createTotalDurationXAxisForBar(items[items.length - 1].watching),
 		yAxis: [{
 			type: 'category', nameLocation: 'start',
 			axisTick: { show: false },
@@ -96,14 +90,14 @@ function update(vcsArray) {
 				padding: [30, 0, 0, 0]
 			},
 			z: 1024,
-			data: items.map(it => getReadableTimeString(it.watching))
+			data: items.map(it => getReadableTime(it.watching))
 		}],
-		grid: GRID_NORMAL,
+		grid: echarts.createPaddingGrid(15, 20, 0, 0),
 		tooltip: { trigger: 'item', formatter: tooltipFormatter},
 		series: [
-			createEChartsSeries('bar', 'watching')
+			echarts.createSeries('bar', 'watching')
 				.setItemColor(data => colors[data.dataIndex][0])
-				.setValues(getEachFieldToFixed2(items, 'watching'))
+				.setValues(items.map(it=>it.watching))
 				.toObject()
 		]
 	});

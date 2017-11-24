@@ -2,21 +2,17 @@
 /// <reference path="../index.d.ts" />
 
 let {
-	convertUnit2Hour,
+	getReadableTime,
 	orderByWatchingTime,
 	object2array,
-	getEachFieldToFixed2
-} = require('../utils/utils'), {
-	createEChartsSeries,
-		AXIS_HOURS,
-		GRID_NORMAL,
-} = require('../utils/echartsUtils');
+} = require('../utils/utils'),
+	echarts = require('../utils/echartsUtils');
 
 function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
 	let i = p.dataIndex;
 	if (i >= fileNames.length) return setText(null);
-	return setText(`You spent<br/> (<b>${p.value}</b> hours)<br/> on <u>${fileNames[i]}</u>`);
+	return setText(`You spent<br/> (<b>${getReadableTime(p.value)}</b>)<br/> on <u>${fileNames[i]}</u>`);
 }
 
 /**
@@ -33,7 +29,8 @@ function update({ top = 10, data = null }) {
 		data = dataCache; //Read from cache
 	else
 		dataCache = data; //Write to cache
-	let array = orderByWatchingTime(object2array(convertUnit2Hour(data))),
+
+	let array = orderByWatchingTime(object2array(data)),
 		displayFileNames = [];
 	if (top > 0) array = array.slice(-top);
 
@@ -44,24 +41,22 @@ function update({ top = 10, data = null }) {
 
 	fileNames = array.map(it => decodeURIComponent(it.name));
 	displayFileNames = fileNames.map((name, i) =>
-		name + ` (${Number(array[i].watching).toFixed(2)} hs)`);
-	
+		name + ` (${getReadableTime(array[i].watching)})`);
+
 	chart.setOption({
 		legend: { data: [''] },
-		xAxis: {
-			type: 'value', nameLocation: 'end', position: 'top',
-			axisTick: { show: false }, axisLabel: AXIS_HOURS.axisLabel },
+		xAxis: echarts.createTotalDurationXAxisForBar(array[array.length - 1].watching),
 		yAxis: {
 			type: 'category', nameLocation: 'start',
 			// interval: 0 for force display all label
 			axisTick: { show: false }, axisLabel: { inside: true, interval: 0 }, z: 2048,
 			data: displayFileNames },
-		grid: GRID_NORMAL,
+		grid: echarts.createPaddingGrid(15, 20, 0, 0),
 		tooltip: { trigger: 'item', formatter: tooltipFormatter},
 		series: [
-			createEChartsSeries('bar', 'watching')
+			echarts.createSeries('bar', 'watching')
 				.setItemColor('#E4F6FE')
-				.setValues(getEachFieldToFixed2(array ,'watching'))
+				.setValues(array.map(it=>it.watching))
 				.add({ itemStyle: { normal: {borderColor: '#CAEDFD'}}})
 				.toObject()
 		]

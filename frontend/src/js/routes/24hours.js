@@ -1,3 +1,5 @@
+//@ts-check
+
 let utils = require('../utils/utils'),
 	resizer = require('../utils/resizer'),
 	reportFilter = require('../reportFilter'),
@@ -35,6 +37,7 @@ function start() {
 		[chartProjects],
 		[chartFiles, 10, true],
 		[chart24hs]
+	//@ts-ignore
 	].map(([c, ...p]) => c.init(utils.getChartDom(c.recommendedChartId, $page)[0], ...p));
 
 	resizer.removeSubscriber();
@@ -69,13 +72,13 @@ function on24HoursResponse(data) {
 }
 
 /**
- * @param {WatchingCodingObject} totalObject
+ * @param {CodingWatchingObject} totalObject
  * @param {JQuery} $dom
  */
 function showTotalTimes(totalObject, $dom) {
-	let totalHoursMap = utils.convertUnit2Hour({
-		total: totalObject
-	});
-	let data = utils.getReadableTimeStringFromMap(totalHoursMap).total;
-	$dom.find('[name]').each((i, e) => $(e).text(data[$(e).attr('name')]));
+	let data = {
+		watching: utils.getReadableTime(totalObject.watching),
+		coding: utils.getReadableTime(totalObject.coding),
+	};
+	$dom.find('[name]').each((i, e) => { $(e).text(data[$(e).attr('name')]) });
 }

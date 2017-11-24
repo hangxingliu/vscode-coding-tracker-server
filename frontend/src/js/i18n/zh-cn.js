@@ -1,11 +1,11 @@
 module.exports = {
-	formatTime: (hours = 0, minutes = 0, seconds = 0) => { 
+	formatTime: (hours = 0, minutes = 0, seconds = 0) => {
 		let result = [];
 		if (hours > 0) result.push(`${hours}小时`);
 		if (minutes > 0) result.push(`${minutes}分钟`);
 		if (seconds > 0) result.push(`${seconds}秒`);
 		if (result.length == 0)
-			return `0秒`;
+			return `0`;
 		return result.join(' ');
 	},
 
@@ -26,7 +26,7 @@ module.exports = {
 	title_license: '开源协议',
 	title_components: '相关组件',
 	title_connect: '链接',
-	
+
 	title_server_version: '服务器版本:',
 	title_storage_version: '存储文件版本:',
 
@@ -36,7 +36,7 @@ module.exports = {
 	title_totally_1: '合计: ',
 	title_totally_2: '小时. 专注时间:',
 	title_totally_3: '小时',
-	
+
 	full_report: '完整报告',
 
 	option_7_days: '7天',
@@ -51,8 +51,8 @@ module.exports = {
 	link_github_repo_extension: 'Github仓库(VSCode插件端代码)',
 	link_vscode_marketplace: 'VSCode插件市场',
 
-	show_welcome: '欢迎/帮助信息',	
-	
+	show_welcome: '欢迎/帮助信息',
+
 	//Welcome Info
 	welcome_subtitle: '这是VSCode Coding Tracker的编程情况报告页面, 你能在这儿看到你日常的编程情况统计',
 	welcome_intro: '简介:',

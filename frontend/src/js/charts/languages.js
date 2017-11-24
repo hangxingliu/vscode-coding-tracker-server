@@ -2,15 +2,11 @@
 /// <reference path="../index.d.ts" />
 
 let {
-	convertUnit2Hour,
-	getReadableTimeString,
+	getReadableTime,
 	orderByWatchingTime,
 	object2array,
-	getEachFieldToFixed2
-} = require('../utils/utils'), {
-	createEChartsSeries,
-	GRID_NORMAL
-} = require('../utils/echartsUtils');
+} = require('../utils/utils'),
+	echarts = require('../utils/echartsUtils');
 
 const COLORS = ['#a5d6a7', '#80cbc4', '#90caf9', '#80deea', '#ef9a9a', '#ffcc80', '#bcaaa4', '#b0bec5'];
 const COLORS_OTHER = ['#a5d6a7', '#80cbc4', '#90caf9', '#80deea', '#ef9a9a', '#d6d6d6'];
@@ -19,15 +15,14 @@ let otherLanguages = '';
 function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
 	return setText(`You spent<br/> <b>${p.percent}%</b> time` +
-		`<br/>(<b>${getReadableTimeString(p.value)}</b>)<br/> on ${p.name == 'other' ? otherLanguages : p.name} `);
+		`<br/>(<b>${getReadableTime(p.value)}</b>)<br/> on ${p.name == 'other' ? otherLanguages : p.name} `);
 }
 
 let base = require('./_base').createBaseChartClass();
 module.exports = { recommendedChartId: 'languages', init: base.init, update };
 
 function update(dataGroupByLanguage) {
-	let data = convertUnit2Hour(dataGroupByLanguage),
-		array = orderByWatchingTime(object2array(data), true/*DESC*/);
+	let array = orderByWatchingTime(object2array(dataGroupByLanguage), true/*DESC*/);
 
 	let i0 = 5, i1 = array.length;
 	for (let i = i0 + 1; i < i1; i++) {
@@ -42,13 +37,13 @@ function update(dataGroupByLanguage) {
 
 	base.getCharts().setOption({
 		color: i1 > i0 ? COLORS_OTHER : COLORS,
-		grid: GRID_NORMAL,
+		grid: echarts.createPaddingGrid(20, 50, 0, 50),
 		tooltip: { trigger: 'item', formatter: tooltipFormatter },
 		series: [
-			createEChartsSeries('pie', 'watching')
+			echarts.createSeries('pie', 'watching')
 				.setLabelBold()
 				.setLabels(array.map(it => it.name))
-				.setValues(getEachFieldToFixed2(array, 'watching'))
+				.setValues(array.map(it=>it.watching))
 				.toObject()
 		]
 	});

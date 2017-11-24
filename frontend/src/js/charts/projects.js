@@ -2,17 +2,12 @@
 /// <reference path="../index.d.ts" />
 
 let {
-	convertUnit2Hour,
-	getReadableTimeString,
+	getReadableTime,
 	orderByWatchingTime,
 	object2array,
-	getEachFieldToFixed2,
 	getShortProjectName,
-} = require('../utils/utils'), {
-	createEChartsSeries,
-	AXIS_HOURS,
-	GRID_NORMAL
-} = require('../utils/echartsUtils');
+} = require('../utils/utils'),
+	echarts = require('../utils/echartsUtils');
 
 const EACH_HEIGH = 50;
 
@@ -27,7 +22,7 @@ function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
 	let i = p.dataIndex;
 	if (i >= projectNames.length) return setText(null);
-	return setText(`You spent <b>${getReadableTimeString(p.value)}</b><br/> on <u>${projectNames[i]}</u>`);
+	return setText(`You spent <b>${getReadableTime(p.value)}</b><br/> on <u>${projectNames[i]}</u>`);
 }
 
 let base = require('./_base').createBaseChartClass(charts => {
@@ -49,15 +44,14 @@ function init(_dom, _onClick = null, _limit = -1) {
 }
 
 function update(dataGroupByProject) {
-	let data = convertUnit2Hour(dataGroupByProject),
-		array = orderByWatchingTime(object2array(data));
+	let array = orderByWatchingTime(object2array(dataGroupByProject));
 
 	if(limit > 0) array = array.slice(-limit);
 
 	originalProjectNames = array.map(it => it.name);
 	projectNames = array.map(it => decodeURIComponent(it.name));
 	shortProjectNames = projectNames.map((name, i) =>
-		getShortProjectName(name) + `(${getReadableTimeString(array[i].watching)})`);
+		getShortProjectName(name) + `(${getReadableTime(array[i].watching)})`);
 
 	let charts = base.getCharts(),
 		//interval: 0 for force display all label
@@ -71,19 +65,18 @@ function update(dataGroupByProject) {
 
 	charts.setOption({
 		legend: { data: [''] },
-		xAxis: {
-			type: 'value', nameLocation: 'end', position: 'top',
-			axisTick: { show: false }, axisLabel: AXIS_HOURS.axisLabel },
+		xAxis: echarts.createTotalDurationXAxisForBar(array[array.length - 1].watching),
 		yAxis: {
 			type: 'category', nameLocation: 'start',
 			axisTick: { show: false }, axisLabel: { inside: true, interval}, z: 1024,
-			data: shortProjectNames },
-		grid: GRID_NORMAL,
+			data: shortProjectNames
+		},
+		grid: echarts.createPaddingGrid(15, 20, 0, 0),
 		tooltip: { trigger: 'item', formatter: tooltipFormatter},
 		series: [
-			createEChartsSeries('bar', 'watching')
+			echarts.createSeries('bar', 'watching')
 				.setItemColor('#fff59d')
-				.setValues(getEachFieldToFixed2(array ,'watching'))
+				.setValues(array.map(it => it.watching))
 				.toObject()
 		]
 	});

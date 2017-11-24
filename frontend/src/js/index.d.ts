@@ -2,7 +2,7 @@
 
 declare var echarts: EChartsStatic;
 
-type WatchingCodingObject = {
+type CodingWatchingObject = {
 	watching: number;
 	coding: number;
 	[key: string]: any;
@@ -39,7 +39,6 @@ type APIResponse = {
 		vcs: CodingWatchingMap;
 	}
 }
-type CodingWatchingObject = { coding: number; watching: number };
 type CodingWatchingMap = {
 	[name: string]: CodingWatchingObject;
 };
@@ -50,7 +49,8 @@ type IRoute = {
 	name: string;
 	start: (param: string) => void;
 	stop: () => void;
-	update: (param: string) => void;
+	update?: (param: string) => void;
+	[x: string]: any;
 };
 type IRoutesMap = { [x: name]: IRoute };
 

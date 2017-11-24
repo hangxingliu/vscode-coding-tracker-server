@@ -1,4 +1,14 @@
 module.exports = {
+	formatTime: (hours = 0, minutes = 0, seconds = 0) => {
+		let result = [];
+		if (hours > 0) result.push(`${hours}小時`);
+		if (minutes > 0) result.push(`${minutes}分鐘`);
+		if (seconds > 0) result.push(`${seconds}秒`);
+		if (result.length == 0)
+			return `0`;
+		return result.join(' ');
+	},
+
 	title_summary: '編程時間總結',
 	title_24hs: '24小時總結',
 	title_projects: '項目耗時',
@@ -8,15 +18,15 @@ module.exports = {
 	title_computers: '按計算機分類',
 	title_welcome: '歡迎來到報告頁面',
 
-	title_share: '分享',	
-	
+	title_share: '分享',
+
 	title_author: '作者',
 	title_version: '版本',
 	title_help: '幫助',
 	title_license: '開源協議',
 	title_components: '相關組件',
 	title_connect: '鏈接',
-	
+
 	title_server_version: '服務器版本:',
 	title_storage_version: '存儲文件版本:',
 
@@ -26,7 +36,7 @@ module.exports = {
 	title_totally_1: '合計:',
 	title_totally_2: '小時. 專注時間:',
 	title_totally_3: '小時',
-	
+
 	full_report: '完整報告',
 
 	option_7_days: '7天',
@@ -41,8 +51,8 @@ module.exports = {
 	link_github_repo_extension: 'Github倉庫(VSCode插件端代碼)',
 	link_vscode_marketplace: 'VSCode插件市場',
 
-	show_welcome: '歡迎/幫助信息',	
-	
+	show_welcome: '歡迎/幫助信息',
+
 	//Welcome Info
 	welcome_subtitle: '這是VSCode Coding Tracker的編程情況報告頁面, 你能在這兒看到你日常的編程情況統計',
 	welcome_intro: '簡介:',

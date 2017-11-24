@@ -2,28 +2,30 @@
 /// <reference path="../index.d.ts" />
 
 let {
-	convertUnit2Hour,
 	orderByName,
+	getReadableTime,
 	object2array,
-	getEachFieldToFixed2,
-	merge
-} = require('../utils/utils'), {
-	createEChartsSeries,
-		AXIS_HOURS,
-		GRID_NORMAL,
-} = require('../utils/echartsUtils');
+	maxInArray,
+	ONE_HOUR
+} = require('../utils/utils'),
+	echarts = require('../utils/echartsUtils');
 
-function tooltipFormatter0(p, ticket, set){
-	let setText = text => (setTimeout(set, 1, ticket, text), text);
+function tooltipFormatter(p, ticket, set){
+	let setText = text => (setTimeout(set, 1, ticket, text), text),
+		getDurationText = ms => getReadableTime(ms);
 	if (p.componentType == 'markLine') //average
-		return setText(`Average ${p.seriesName} for <b>${p.value}</b> hours`);
+		return setText(`Average ${p.seriesName} for <b>${getDurationText(p.value)}</b>`);
 	else if (p.componentType == 'markPoint')
-		return setText(`Longest ${p.seriesName} for <b>${p.value}</b> hours` +
+		return setText(`Longest ${p.seriesName} for <b>${getDurationText(p.value)}</b>` +
 			`<br/>in ${dateLabels[p.data.coord[0]]}`)
 	else if (Array.isArray(p) && p.length == 2)
 		return setText(`In ${p[0].name}:<br/>` +
-			p.map(it => `${it.seriesName} for <b>${it.value}</b> hours`).join('<br/>'));
+			p.map(it => `${it.seriesName} for <b>${getDurationText(it.value)}</b>`).join('<br/>'));
 	return setText(null);
+}
+
+function markFormatter(p) {
+	return getReadableTime(p.data.value);
 }
 
 let dateLabels = [];
@@ -32,35 +34,37 @@ let base = require('./_base').createBaseChartClass();
 module.exports = { recommendedChartId: 'project_summary', init: base.init, update };
 
 function update(data) {
-	let array = orderByName(object2array(convertUnit2Hour(data)));
+	let array = orderByName(object2array(data));
 	dateLabels = array.map(it => it.name);
-	
+
+	let maxDurationItem = maxInArray(array, (a, b) => a.watching > b.watching ? a : b),
+		maxDuration = (maxDurationItem || { watching: ONE_HOUR }).watching;
+
 	let chart = base.getCharts();
 	chart.resize({ height: 250 });
 
 	chart.setOption({
 		xAxis: { data: dateLabels },
-		yAxis: merge(AXIS_HOURS, { boundaryGap: [0, 0.2] }),
-		grid: GRID_NORMAL,
-		tooltip: { trigger: 'axis', formatter: tooltipFormatter0 },
+		yAxis: echarts.createEachDurationAxis(maxDuration),
+		grid: echarts.createPaddingGrid(10, 50, 0, 0),
+		tooltip: { trigger: 'axis', formatter: tooltipFormatter },
 		series: [
-			createEChartsSeries('line', 'watching')
-				.showMaxMarkPoint('max time')
-				.showAverageLine('average time')
+			echarts.createSeries('line', 'watching')
+				.showMaxMarkPoint('max time', markFormatter)
+				.setMarkPointAsWideRect()
+				.showAverageLine('average time', markFormatter)
 				.setLineSmooth()
 				.setLineColor('#66bb6a')
 				.setItemColor('#66bb6a')
 				.setAreaColor('#c8e6c9')
-				.setValues(getEachFieldToFixed2(array, 'watching'))
+				.setValues(array.map(it=>it.watching))
 				.toObject(),
-			createEChartsSeries('line', 'coding')
-				.showMaxMarkPoint('max time')
-				.showAverageLine('average time')
+			echarts.createSeries('line', 'coding')
 				.setLineSmooth()
 				.setLineColor('#1b5e20')
 				.setItemColor('#1b5e20')
 				.setAreaColor('#388e3c')
-				.setValues(getEachFieldToFixed2(array ,'coding'))
+				.setValues(array.map(it=>it.coding))
 				.toObject()
 		]
 	});

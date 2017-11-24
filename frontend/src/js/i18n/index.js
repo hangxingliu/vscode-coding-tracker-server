@@ -19,7 +19,7 @@ $items.off('click').on('click', function() {
 	updateLanguageSelectorActive()
 });
 
-function updateLanguageSelectorActive() { 
+function updateLanguageSelectorActive() {
 	$items.removeClass('active');
 	$items.filter(`[data-lang="${language}"]`).addClass('active');
 }
@@ -27,14 +27,14 @@ function updateLanguageSelectorActive() {
 function updateUI() {
 	language = localStorage.getItem(STORAGE_NAME) || DEFAULT_LANG;
 	if (!(language in languages))
-		language = DEFAULT_LANG;	
+		language = DEFAULT_LANG;
 
 	let data = languages[language];
 	$('[data-i18n]').map((i, item) => {
 		let $item = $(item), name = $item.data('i18n');
 		if(englishDirectoryIsEmpty)
 			languages.en[name] = $item.text();
-		$item.text(data[name]);			
+		$item.text(data[name]);
 	});
 
 	englishDirectoryIsEmpty = false;
@@ -42,7 +42,7 @@ function updateUI() {
 
 function setLanguage(lang) {
 	if (!(lang in languages))
-		lang = DEFAULT_LANG;	
+		lang = DEFAULT_LANG;
 	localStorage.setItem(STORAGE_NAME, lang);
 	updateUI();
 }
@@ -51,9 +51,16 @@ function get(key) {
 	return languages[language][key];
 }
 
+/** @returns {string} */
+function getReadableTimeString(h, m, s) {
+	let func = languages[language].formatTime || languages['en'].formatTime;
+	return func(h, m, s);
+}
+
 module.exports = {
 	update: updateUI,
 	setLanguage,
 	get,
+	getReadableTimeString,
 	get language() { return language }
 };

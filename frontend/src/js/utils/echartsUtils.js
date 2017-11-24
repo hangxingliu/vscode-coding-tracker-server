@@ -104,7 +104,7 @@ function createSeries(type = '', name = '') {
 		if(!object.markPoint) object.markPoint = { data : [ _value ] };
 		else if(!object.markPoint.data ) object.markPoint.data  = [ _value ];
 		else object.markPoint.data .push(_value);
-
+	
 		return chains;
 	}
 	function showAverageLine(name, formatter = null, addons = null) {
@@ -112,12 +112,12 @@ function createSeries(type = '', name = '') {
 		if(!object.markLine) object.markLine = { data : [ _value ] };
 		else if(!object.markLine.data ) object.markLine.data  = [ _value ];
 		else object.markLine.data .push(_value);
-
+	
 		return chains;
 	}
 	function setLineSmooth() {
 		object.smooth = true;
-
+	
 		return chains;
 	}
 	function setMarkPointAsWideRect() {
@@ -125,41 +125,41 @@ function createSeries(type = '', name = '') {
 		else object.markPoint.symbol  = 'rect';
 		object.markPoint.symbolSize = [80, 30];
 		object.markPoint.symbolOffset = [0, '-60%'];
-
+	
 		return chains;
 	}
 	function setLineColor(color) {
 		if(!object.lineStyle) object.lineStyle = { normal: { color } };
 		else if(!object.lineStyle.normal) object.lineStyle.normal = { color };
 		else object.lineStyle.normal.color = color;
-
+	
 		return chains;
 	}
 	function setItemColor(color) {
 		if(!object.itemStyle) object.itemStyle = { normal: { color } };
 		else if(!object.itemStyle.normal) object.itemStyle.normal = { color };
 		else object.itemStyle.normal.color = color;
-
+	
 		return chains;
 	}
 	function setAreaColor(color) {
 		if(!object.areaStyle) object.areaStyle = { normal: { color } };
 		else if(!object.areaStyle.normal) object.areaStyle.normal = { color };
 		else object.areaStyle.normal.color = color;
-
+	
 		return chains;
 	}
 	function setTooltip(formatter) {
 		if(!object.tooltip) object.tooltip = { formatter };
 		else object.tooltip.formatter = formatter;
-
+	
 		return chains;
 	}
 	function setLabelFormatter(formatter) {
 		if(!object.label) object.label = { normal: { formatter } };
 		else if(!object.label.normal) object.label.normal = { formatter };
 		else object.label.normal.formatter = formatter;
-
+	
 		return chains;
 	}
 	function setLabelBold() {
@@ -167,7 +167,7 @@ function createSeries(type = '', name = '') {
 		else if(!object.label.normal) object.label.normal = { textStyle: { fontWeight: 'bold' } };
 		else if(!object.label.normal.textStyle) object.label.normal.textStyle = { fontWeight: 'bold' };
 		else object.label.normal.textStyle.fontWeight = 'bold';
-
+	
 		return chains;
 	}
 

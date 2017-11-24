@@ -1,8 +1,8 @@
 # TODO
 
-- [ ] show min line correct but not zero
+- [ ] show min line correct but not zero (and throw error)
 - [ ] show day in week in chart x axis if width less equal than 7 days
-- [ ] remove summary y axis mins (10h 0mins => 10h)
+- [x] remove summary y axis mins (10h 0mins => 10h)
 
 ---
 
@@ -13,7 +13,7 @@
 - [ ] add compare with yesterday and last week
 - [ ] more unit tests
 - [ ] custom chart color scheme
-- [ ] replace glyphicons to ionicons
+- [x] replace glyphicons to ionicons
 - [ ] more share charts
 - [x] From issues:
 	- [x] add 24 hours report for custom date

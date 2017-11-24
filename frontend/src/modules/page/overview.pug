@@ -3,10 +3,10 @@ mixin chartBlock(id)
 
 mixin totallyIndicator(id)
 	h6.card-subtitle.text-muted.mb-3.mt-1(id=id)
-		span(data-i18n="title_totally_1") Totally: watching for 
+		span(data-i18n="title_totally_1") Totally: watching for
 		span(name="watching") ----
 		| &nbsp;
-		span(data-i18n="title_totally_2") coding for 
+		span(data-i18n="title_totally_2") coding for
 		span(name="coding") ----
 		| &nbsp;
 		span(data-i18n="title_totally_3")
@@ -22,7 +22,7 @@ div.page-overview(style="display: none")
 				.card-body
 					h4.card-title
 						span(data-i18n="title_summary") Coding activity
-						a.text-accent-color.ml-1.link-share(href="#" onclick="app.shareSummary()") 
+						a#btnShareSummary.text-accent-color.ml-1.link-share(href="javascript:;")
 							span.ion-share
 					+totallyIndicator("counterSummary")
 					.card-text
@@ -31,11 +31,11 @@ div.page-overview(style="display: none")
 		.col-12
 			.card.my-2(style="height: 400px")
 				.card-body
-					h4.card-title(data-i18n="title_24hs") Recent 24 hours 
+					h4.card-title(data-i18n="title_24hs") Recent 24 hours
 					+totallyIndicator("counterLast24Hs")
 					.card-text
 						+chartBlock("24hs")
-					a.card-link.float-right.link-full-report(href="#") 
+					a.card-link.float-right.link-full-report(href="#")
 						span More 24 hours report
 						span.ion-more.ml-2
 	.row
@@ -43,22 +43,22 @@ div.page-overview(style="display: none")
 			.card.my-2(style="height: 400px")
 				.card-body
 					h4.card-title(data-i18n="title_projects") Projects
-					h6.card-subtitle.text-muted.mb-2.mt-1(data-i18n="title_projects_tip") 
+					h6.card-subtitle.text-muted.mb-2.mt-1(data-i18n="title_projects_tip")
 						| (click item in chart for details)
 					.card-text
 						+chartBlock("projects")
-					a.card-link.float-right.link-full-report(href="#" 
-						onclick="app.showAllProjects()") 
+					a.card-link.float-right.link-full-report(href="#"
+						onclick="app.showAllProjects()")
 						span Full report
 						span.ion-connection-bars.ml-2
 		.col-md-4
 			.card.my-2(style="height: 400px")
 				.card-body
-					h4.card-title(data-i18n="title_languages") Languages 
+					h4.card-title(data-i18n="title_languages") Languages
 					.card-text
 						+chartBlock("languages")
-					a.card-link.float-right.link-full-report(href="#" 
-						onclick="app.setAllLangs()") 
+					a.card-link.float-right.link-full-report(href="#"
+						onclick="app.setAllLangs()")
 						span Full report
 						span.ion-connection-bars.ml-2
 	.row
@@ -71,6 +71,6 @@ div.page-overview(style="display: none")
 		.col-md-4
 			.card.my-2
 				.card-body
-					h4.card-title(data-i18n="title_computers") Computers 
+					h4.card-title(data-i18n="title_computers") Computers
 					.card-text
 						+chartBlock("computers")
