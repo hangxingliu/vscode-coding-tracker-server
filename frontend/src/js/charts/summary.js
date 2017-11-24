@@ -10,6 +10,7 @@ let {
 } = require('../utils/utils'),
 	echarts = require('../utils/echartsUtils');
 
+/** @type {string[]} */
 let dateLabels = [];
 
 let base = require('./_base').createBaseChartClass();
@@ -25,31 +26,38 @@ function update(dataGroupByDate) {
 
 	dateLabels = array.map(it => it.name);
 
+	let series = [
+		echarts.createSeries('line', 'watching')
+			.showMaxMarkPoint('max time', markFormatter)
+			.setMarkPointAsWideRect()
+			.showAverageLine('average time', markFormatter)
+			.setLineSmooth()
+			.setLineColor('#66bb6a')
+			.setItemColor('#66bb6a')
+			.setAreaColor('#c8e6c9')
+			.setValues(array.map(it => it.watching))
+			.toObject(),
+
+		echarts.createSeries('line', 'coding')
+			.setLineSmooth()
+			.setLineColor('#1b5e20')
+			.setItemColor('#1b5e20')
+			.setAreaColor('#388e3c')
+			.setValues(array.map(it => it.coding))
+			.toObject()
+	];
+	//Remove max point and average line if no any data
+	if (maxDuration <= 0) {
+		series[0].markPoint.data = [];
+		series[0].markLine.data = [];
+	}
+
 	base.getCharts().setOption({
 		xAxis: { data: dateLabels, axisPointer: { type: 'shadow' } },
 		yAxis: echarts.createEachDurationAxis(maxDuration, false),
 		grid: echarts.createPaddingGrid(10, 25, 0, 0),
 		tooltip: { trigger: 'axis', formatter: tooltipFormatter },
-		series: [
-			echarts.createSeries('line', 'watching')
-				.showMaxMarkPoint('max time', markFormatter)
-				.setMarkPointAsWideRect()
-				.showAverageLine('average time', markFormatter)
-				.setLineSmooth()
-				.setLineColor('#66bb6a')
-				.setItemColor('#66bb6a')
-				.setAreaColor('#c8e6c9')
-				.setValues(array.map(it => it.watching))
-				.toObject(),
-
-			echarts.createSeries('line', 'coding')
-				.setLineSmooth()
-				.setLineColor('#1b5e20')
-				.setItemColor('#1b5e20')
-				.setAreaColor('#388e3c')
-				.setValues(array.map(it => it.coding))
-				.toObject()
-		]
+		series
 	});
 }
 

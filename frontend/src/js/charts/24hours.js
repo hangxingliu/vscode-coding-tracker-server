@@ -23,31 +23,38 @@ function update(dataGroupByDate) {
 	let maxDurationItem = maxInArray(array, (a, b) => a.watching > b.watching ? a : b),
 		maxDuration = (maxDurationItem || { watching: ONE_HOUR }).watching;
 
+	let series = [
+		echarts.createSeries('line', 'watching')
+			.showMaxMarkPoint('max time', markFormatter)
+			.setMarkPointAsWideRect()
+			.showAverageLine('average time', markFormatter)
+			.setLineSmooth()
+			.setLineColor('#29b6f6')
+			.setItemColor('#29b6f6')
+			.setAreaColor('#b3e5fc')
+			.setValues(array.map(it => it.watching))
+			.toObject(),
+
+		echarts.createSeries('line', 'coding')
+			.setLineSmooth()
+			.setLineColor('#01579b')
+			.setItemColor('#01579b')
+			.setAreaColor('#0288d1')
+			.setValues(array.map(it => it.coding))
+			.toObject()
+	];
+	//Remove max point and average line if no any data
+	if (maxDuration <= 0) {
+		series[0].markPoint.data = [];
+		series[0].markLine.data = [];
+	}
+
 	base.getCharts().setOption({
 		xAxis: { data: array.map(it => it.name.slice(11)) },//slice(11) remove yyyy-mm-dd
 		yAxis: echarts.createEachDurationAxis(maxDuration, true),
 		grid: echarts.createPaddingGrid(25, 25, 0, 15),
 		tooltip: { trigger: 'axis', formatter: tooltipFormatter},
-		series: [
-			echarts.createSeries('line', 'watching')
-				.showMaxMarkPoint('max time', markFormatter)
-				.setMarkPointAsWideRect()
-				.showAverageLine('average time', markFormatter)
-				.setLineSmooth()
-				.setLineColor('#29b6f6')
-				.setItemColor('#29b6f6')
-				.setAreaColor('#b3e5fc')
-				.setValues(array.map(it => it.watching))
-				.toObject(),
-
-			echarts.createSeries('line', 'coding')
-				.setLineSmooth()
-				.setLineColor('#01579b')
-				.setItemColor('#01579b')
-				.setAreaColor('#0288d1')
-				.setValues(array.map(it => it.coding))
-				.toObject()
-		]
+		series
 	});
 }
 

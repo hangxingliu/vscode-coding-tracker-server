@@ -6,6 +6,7 @@ let {
 	orderByWatchingTime,
 	object2array,
 	getShortProjectName,
+	ONE_HOUR
 } = require('../utils/utils'),
 	echarts = require('../utils/echartsUtils');
 
@@ -63,9 +64,10 @@ function update(dataGroupByProject) {
 		interval = 0;
 	}
 
+	let maxDuration = array.length ? array[array.length - 1].watching : ONE_HOUR;
 	charts.setOption({
 		legend: { data: [''] },
-		xAxis: echarts.createTotalDurationXAxisForBar(array[array.length - 1].watching),
+		xAxis: echarts.createTotalDurationXAxisForBar(maxDuration),
 		yAxis: {
 			type: 'category', nameLocation: 'start',
 			axisTick: { show: false }, axisLabel: { inside: true, interval}, z: 1024,

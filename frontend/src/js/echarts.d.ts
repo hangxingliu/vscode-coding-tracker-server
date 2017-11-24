@@ -86,7 +86,20 @@ type EChartSeriesItem = {
 	"boxplot" | "candlestick" | "heatmap" | "map" | "parallel" | "lines" | "graph" | "sankey" |
 	"funnel" | "gauge" | "pictorialBar" | "themeRiver" | "custom";
 	[x: string]: any;
+
+	label?: any,
+	itemStyle?: any,
+	lineStyle?: any,
+	areaStyle?: any,
+
+	markPoint?: IData,
+	markLine?: IData,
+	markArea?: IData,
 };
+type IData = {
+	data: any;
+	[x: string]: any;
+}
 
 type EChartOption = {
 	title?: EChartTitleOption,

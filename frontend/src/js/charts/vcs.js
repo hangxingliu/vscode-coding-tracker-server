@@ -4,6 +4,7 @@
 let {
 	getReadableTime,
 	orderByWatchingTime,
+	ONE_HOUR
 } = require('../utils/utils'),
 	echarts = require('../utils/echartsUtils');
 
@@ -67,9 +68,10 @@ function update(vcsArray) {
 	$(dom).height(height);
 	charts.resize({ height });
 
+	let maxDuration = items.length ? items[items.length - 1].watching : ONE_HOUR;
 	charts.setOption({
 		legend: { data: [''] },
-		xAxis: echarts.createTotalDurationXAxisForBar(items[items.length - 1].watching),
+		xAxis: echarts.createTotalDurationXAxisForBar(maxDuration),
 		yAxis: [{
 			type: 'category', nameLocation: 'start',
 			axisTick: { show: false },

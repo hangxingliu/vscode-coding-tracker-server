@@ -5,6 +5,7 @@ let {
 	getReadableTime,
 	orderByWatchingTime,
 	object2array,
+	ONE_HOUR
 } = require('../utils/utils'),
 	echarts = require('../utils/echartsUtils');
 
@@ -53,9 +54,10 @@ function update(dataGroupByFile) {
 	displayFileNames = fileNames.map((name, i) =>
 		name + `(${getReadableTime(array[i].watching)})`);
 
+	let maxDuration = array.length ? array[array.length - 1].watching : ONE_HOUR;
 	base.getCharts().setOption({
 		legend: { data: [''] },
-		xAxis: echarts.createTotalDurationXAxisForBar(array[array.length - 1].watching),
+		xAxis: echarts.createTotalDurationXAxisForBar(maxDuration),
 		yAxis: {
 			type: 'category', nameLocation: 'start',
 			axisTick: { show: false }, axisLabel: { inside: true, interval }, z: 1024,
