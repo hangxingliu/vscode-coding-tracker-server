@@ -3,6 +3,7 @@
 
 let {
 	getReadableTime,
+	getReadableDateDependentOnSize,
 	orderByName,
 	object2array,
 	maxInArray,
@@ -24,7 +25,7 @@ function update(dataGroupByDate) {
 	let maxDurationItem = maxInArray(array, (a, b) => a.watching > b.watching ? a : b),
 		maxDuration = (maxDurationItem || { watching: ONE_HOUR }).watching;
 
-	dateLabels = array.map(it => it.name);
+	dateLabels = getReadableDateDependentOnSize(array.map(it => it.name));
 
 	let series = [
 		echarts.createSeries('line', 'watching')

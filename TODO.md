@@ -1,7 +1,7 @@
 # TODO
 
-- [ ] show min line correct but not zero (and throw error)
-- [ ] show day in week in chart x axis if width less equal than 7 days
+- [x] show min line correct but not zero (and throw error)
+- [x] show abbr of days of the week in chart x axis if width less equal than 14 days
 - [x] remove summary y axis mins (10h 0mins => 10h)
 
 ---

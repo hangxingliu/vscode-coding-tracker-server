@@ -4,6 +4,7 @@
 let {
 	orderByName,
 	getReadableTime,
+	getReadableDateDependentOnSize,
 	object2array,
 	maxInArray,
 	ONE_HOUR
@@ -35,7 +36,8 @@ module.exports = { recommendedChartId: 'project_summary', init: base.init, updat
 
 function update(data) {
 	let array = orderByName(object2array(data));
-	dateLabels = array.map(it => it.name);
+
+	dateLabels = getReadableDateDependentOnSize(array.map(it => it.name));
 
 	let maxDurationItem = maxInArray(array, (a, b) => a.watching > b.watching ? a : b),
 		maxDuration = (maxDurationItem || { watching: ONE_HOUR }).watching;

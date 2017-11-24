@@ -14,17 +14,7 @@ const ONE_HOUR = 60 * ONE_MINUTE;
 let Utils = {
 
 	expandGroupByDaysObject,
-	expandAndShortGroupByHoursObject: (obj, endDate) => {
-		var result = {}, i = 24,
-			cursorDate = new Date(endDate),
-			cursorDateString = '';
-		while (i--) {
-			cursorDateString = getYYYYMMDD_HHMM(cursorDate);
-			result[cursorDateString] = obj[cursorDateString] || getEmptyCodingWatchingObject();
-			cursorDate.setHours(cursorDate.getHours() - 1);
-		}
-		return result;
-	},
+	expandAndShortGroupByHoursObject,
 
 	ONE_SECOND,
 	ONE_MINUTE,
@@ -41,6 +31,8 @@ let Utils = {
 	getShortProjectName,
 
 	getReadableTime,
+	getReadableDateDependentOnSize,
+	getReadableDateWithAbbr,
 
 	getYYYYMMDD, getMMDD, getHH00,
 	getChartDom,
@@ -59,14 +51,30 @@ function expandGroupByDaysObject(obj, startDate, endDate) {
 	startDate = new Date(startDate);
 	if (startDate.getTime() > endDate.getTime())
 		throw new Error('startDate could not bigger than endDate');
-	var endDateString = getYYYYMMDD(endDate),
+	let endDateString = getYYYYMMDD(endDate),
 		cursorDateString = '';
-	var result = {};
+	let result = {};
 	do {
 		cursorDateString = getYYYYMMDD(startDate)
 		result[cursorDateString] = obj[cursorDateString] || getEmptyCodingWatchingObject();
 		startDate.setDate(startDate.getDate() + 1);
 	} while (endDateString > cursorDateString);
+	return result;
+}
+
+/**
+ * @param {CodingWatchingMap} obj
+ * @returns {CodingWatchingMap}
+ */
+function expandAndShortGroupByHoursObject(obj, endDate) {
+	let result = {}, i = 24,
+		cursorDate = new Date(endDate),
+		cursorDateString = '';
+	while (i--) {
+		cursorDateString = getYYYYMMDD_HHMM(cursorDate);
+		result[cursorDateString] = obj[cursorDateString] || getEmptyCodingWatchingObject();
+		cursorDate.setHours(cursorDate.getHours() - 1);
+	}
 	return result;
 }
 
@@ -193,4 +201,25 @@ function getReadableTime(ms, noHours = false, ignoreSeconds = true) {
 	if (ignoreSeconds && (m > 0 || h > 0) )
 		s = 0;
 	return i18n.getReadableTimeString(h, m, s);
+}
+
+/** @param {string[]} yyyymmddArray */
+function getReadableDateDependentOnSize(yyyymmddArray) {
+	if (yyyymmddArray.length <= 14)
+		return yyyymmddArray.map(getReadableDateWithAbbr);
+	if (yyyymmddArray.length <= 31)
+		return yyyymmddArray.map(v => v.slice(5));//remove year
+	return yyyymmddArray;
+}
+
+/**
+ * For example: '2017-11-24' => '11-24 Fri.' (dependent by i18n)
+ * @param {string} yyyymmddString
+ */
+function getReadableDateWithAbbr(yyyymmddString) {
+	// TODO: 1 => 1st 2 => 2nd 3 => 3rd 4 => 4th ...
+	let [y, m, d] = yyyymmddString.split('-');
+	let date = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+	let abbr = i18n.getAbbrOfDayOfTheWeek(date);
+	return `${abbr} ${m}-${d}`;
 }

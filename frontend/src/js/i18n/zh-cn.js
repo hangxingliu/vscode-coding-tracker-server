@@ -8,6 +8,7 @@ module.exports = {
 			return `0`;
 		return result.join(' ');
 	},
+	daysOfTheWeek: ['日', '一', '二', '三', '四', '五', '六'],
 
 	title_summary: '编程时间总结',
 	title_24hs: '24小时总结',

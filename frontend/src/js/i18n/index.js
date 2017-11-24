@@ -57,10 +57,17 @@ function getReadableTimeString(h, m, s) {
 	return func(h, m, s);
 }
 
+/** @param {Date|number} date */
+function getAbbrOfDayOfTheWeek(date) {
+	let index = typeof date == 'number' ? date : date.getDay();
+	return (languages[language].daysOfTheWeek || languages['en'].daysOfTheWeek)[index] || '';
+}
+
 module.exports = {
 	update: updateUI,
 	setLanguage,
 	get,
 	getReadableTimeString,
+	getAbbrOfDayOfTheWeek,
 	get language() { return language }
 };

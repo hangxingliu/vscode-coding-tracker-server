@@ -7,5 +7,6 @@ module.exports = {
 		if (result.length == 0)
 			return `0`;
 		return result.join(' ');
-	}
+	},
+	daysOfTheWeek: ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'],
 };
