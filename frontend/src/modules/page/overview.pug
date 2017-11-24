@@ -35,7 +35,8 @@ div.page-overview(style="display: none")
 					+totallyIndicator("counterLast24Hs")
 					.card-text
 						+chartBlock("24hs")
-					a.card-link.float-right.link-full-report(href="#")
+					a.card-link.float-right.link-full-report(href="javascript:;"
+						data-route="24hours")
 						span More 24 hours report
 						span.ion-more.ml-2
 	.row
@@ -47,8 +48,8 @@ div.page-overview(style="display: none")
 						| (click item in chart for details)
 					.card-text
 						+chartBlock("projects")
-					a.card-link.float-right.link-full-report(href="#"
-						onclick="app.showAllProjects()")
+					a.card-link.float-right.link-full-report(href="javascript:;"
+						data-route="projects")
 						span Full report
 						span.ion-connection-bars.ml-2
 		.col-md-4
@@ -57,8 +58,8 @@ div.page-overview(style="display: none")
 					h4.card-title(data-i18n="title_languages") Languages
 					.card-text
 						+chartBlock("languages")
-					a.card-link.float-right.link-full-report(href="#"
-						onclick="app.setAllLangs()")
+					a.card-link.float-right.link-full-report(href="javascript:;"
+						data-route="languages")
 						span Full report
 						span.ion-connection-bars.ml-2
 	.row

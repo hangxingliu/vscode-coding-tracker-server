@@ -1,11 +1,8 @@
 include _report_range_dropdown_menu.pug
 
-mixin range(range, text)
-	a.dropdown-item(href='#', data-range=range)= text
-
 #reportRangeDropdown.dropdown.mr-auto.d-none.d-md-block
 	a.btn.btn-outline-secondary.btn-block.dropdown-toggle(
-		href='#', data-toggle='dropdown',
+		href='javascript:;', data-toggle='dropdown',
 		aria-haspopup='true', aria-expanded='false')
 		i.ion.ion-calendar
 		| &nbsp;&nbsp;
@@ -41,6 +38,6 @@ mixin range(range, text)
 		//- 		i.ion.ion-gear-b
 		//- 		| Settings
 		li.nav-item
-			a.btn-show-welcome.nav-link(href="#")
+			a.btn-show-welcome.nav-link(href="javascript:;")
 				i.ion.ion-help
 				| Help

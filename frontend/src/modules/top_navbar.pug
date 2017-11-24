@@ -1,9 +1,9 @@
 include _report_range_dropdown_menu.pug
 
 mixin language(lang, text)
-    a.dropdown-item(href='#', data-lang=lang)= text
+    a.dropdown-item(href='javascript:;', data-lang=lang)= text
 
-header(class=['navbar', 'navbar-expand', 'navbar-dark'], 
+header(class=['navbar', 'navbar-expand', 'navbar-dark'],
     class=['flex-column', 'flex-md-row', 'align-items-center'],
     class=['bg-primary-color-dark', 'layout-navbar'])
     a.navbar-brand.mr-0.mr-md-2(href='#', aria-label='VSCode Coding Tracker Report')
@@ -12,7 +12,7 @@ header(class=['navbar', 'navbar-expand', 'navbar-dark'],
     ul.navbar-nav-scroll.navbar-nav.ml-auto
         li#reportRangeDropdown4Mobile.nav-item.dropdown.mr-auto.d-md-none
             a.nav-item.nav-link.dropdown-toggle.text-primary-color-text(
-                href='#', data-toggle='dropdown',
+                href='javascript:;', data-toggle='dropdown',
                 aria-haspopup='true', aria-expanded='false')
                 i.ion.ion-calendar.mr-1.d-none.d-sm-inline
                 span.d-none.d-sm-inline Range: &nbsp;
@@ -20,7 +20,7 @@ header(class=['navbar', 'navbar-expand', 'navbar-dark'],
             +reportRangeDropdownMenu
         li#selectI18N.nav-item.dropdown
             a.nav-item.nav-link.dropdown-toggle.text-primary-color-text(
-                href='#', data-toggle='dropdown', 
+                href='javascript:;', data-toggle='dropdown',
                 aria-haspopup='true', aria-expanded='false')
                 i.ion.ion-earth.d-none.d-sm-inline
                 | &nbsp;&nbsp;Languages
@@ -35,7 +35,7 @@ header(class=['navbar', 'navbar-expand', 'navbar-dark'],
             aria-controls="sidebarNav",aria-expanded="false",
             aria-label="Toggle sidebar")
             i.ion.ion-navicon
-     
+
 //-          +select('selectReportDateRange', 'glyphicon-calendar')
 //-              option(data-i18n="option_7_days", value='7', selected='') 7 days
 //-              option(data-i18n="option_30_days", value='30') 30 days
