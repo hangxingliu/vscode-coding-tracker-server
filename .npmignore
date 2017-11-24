@@ -1,3 +1,6 @@
+# ignore frontend source map files
+frontend/dist/**/*.map
+
 test/temp
 test/playground
 test/resources

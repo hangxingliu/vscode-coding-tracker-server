@@ -1,3 +1,6 @@
+# ignore frontend source map files
+frontend/dist/**/*.map
+
 # ignore local test database
 /database
 
