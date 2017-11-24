@@ -1,8 +1,6 @@
 # TODO
 
-- [x] show min line correct but not zero (and throw error)
-- [x] show abbr of days of the week in chart x axis if width less equal than 14 days
-- [x] remove summary y axis mins (10h 0mins => 10h)
+- [ ] Write changelog for 0.5.0
 
 ---
 
@@ -19,3 +17,6 @@
 	- [x] add 24 hours report for custom date
   - [ ] translation to Brazilian Portuguese
 - [x] add eslint to unit test to keeping code health
+- [x] show min line correct but not zero (and throw error)
+- [x] show abbr of days of the week in chart x axis if width less equal than 14 days
+- [x] remove summary y axis mins (10h 0mins => 10h)
