@@ -22,7 +22,7 @@ VSCode Coding Tracker extension server side program.
 
 ## Screenshot
 
-![screenshots1](screenshots/1.png)
+![screenshots_2](screenshots/2.jpg)
 
 ## How To Install And Use
 
@@ -77,7 +77,7 @@ It is **necessary** to read [CONTRIBUTING.md](CONTRIBUTING.md) before **contribu
 
 ## Files manifest
 
-redirect to [FILES.md](FILES.md)
+redirect to [FILES.md](docs/FILES.md)
 
 ## Author
 

@@ -12,8 +12,7 @@
     "build-live": "node ./build/build.js -w",
     "start": "node ./app",
     "server": "node ./app",
-    "dev-test-server": "node ./app -p 8080 -o ~/.coding-tracker",
-    "install-git-hooks": "cp ./git-pre-commit-hook ./.git/hooks/pre-commit -f"
+    "install-git-hooks": "cp ./bash_scripts/git-pre-commit-hook ./.git/hooks/pre-commit -vf"
   },
   "bin": {
     "coding-tracker-server": "app.js"

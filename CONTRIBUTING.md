@@ -52,7 +52,7 @@ Actually, you can refer this commit about adding Russian translations by [Dolgis
 	- distributional frontend files (after building) in folder `frontend/dist`
 3. libraries used in frontend in folder `frontend/lib`
 
-Detailed files manifest: [FILES.md](FILES.md)
+Detailed files manifest: [FILES.md](docs/FILES.md)
 
 ### Before editing codes
 

@@ -4,6 +4,9 @@
 
 ---
 
+- [ ] combined report for multi-projects
+- [ ] setting about timezone and which day is first day of the week
+- [ ] full i18n for each languages
 - [x] report in one day
 - [ ] add lock file (support pm2 and multi-process launching)
 - [ ] add database compress tools (using defined string syntax)
