@@ -50,7 +50,7 @@ VSCode Coding Tracker extension server side program.
 
 ## Current Version
 
-### 0.5.0 (2017/11/27)
+### 0.5.0 (2017/11/26)
 
 0. Support collect and report version control system(Git) activities.
 1. More report charts. Better i18n, date format and time format.
