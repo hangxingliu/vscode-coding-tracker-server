@@ -36,12 +36,9 @@ Of course, you can commit a PR to this project in "Pull Request" page if you bel
 ## Internationalize (Translation)
 
 1. create a translation js file in `frontend/src/js/i18n/`
-2. add a line likes `'language_code': require('./i18n/language_code')` into `frontend/src/js/i18n.js`
+2. add a line likes `'language_code': require('./language_code')` into `frontend/src/js/i18n/index.js`
 3. add a item likes `option(value='language_code') Language Name` into `frontend/src/modules/top_navbar.pug`
 4. you can build frontend codes and have a look.
-
-Actually, you can refer this commit about adding Russian translations by [Dolgishev Viktor (@vdolgishev)][vdolgishev]:   
-<https://github.com/hangxingliu/vscode-coding-tracker-server/commit/b16499f3d9a1fbe4061fbe1a9617240c71e4e220>
 
 ## Editing, Building, Running and Testing
 

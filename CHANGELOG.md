@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### 0.5.0 (2017/11/27)
+
+0. Support collect and report version control system(Git) activities.
+1. More report charts. Better i18n, date format and time format.
+2. Custom report date range. Custom start time for 24hours report.
+3. New report page using Bootstrap4 with multiple child report pages.
+4. Upgrade upload and storage protocol to 4.0. Improve storage action.
+5. Breaking change in frontend structure (charts, i18n, routes, ui, utils ...).
+
 ### 0.4.1 (2017/07/19)
 
 0. add Russian translation (Thank [Dolgishev Viktor (@vdolgishev)][vdolgishev])

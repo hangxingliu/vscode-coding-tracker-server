@@ -50,20 +50,14 @@ VSCode Coding Tracker extension server side program.
 
 ## Current Version
 
-### 0.4.1 (2017/07/19)
+### 0.5.0 (2017/11/27)
 
-0. add Russian translation (Thank [Dolgishev Viktor (@vdolgishev)][vdolgishev])
-1. fix a fatal bug (Storing data file without version in first line)
-2. fix a small bug about default language item. and some wrong spelling in codes.
-
-### 0.4.0
-
-0. full projects and languages report
-1. detailed report of specified project (each day coding times and echo file coding times)
-2. i18n support (English, 简体中文, 繁體中文)(And waiting for your translation)
-3. add startup welcome/help info
-4. support share now (you can share your coding activities as chart image with your friend)
-5. optimized loading dialog, chart, tooltip of chart and frontend codes (include new builder scripts) display
+0. Support collect and report version control system(Git) activities.
+1. More report charts. Better i18n, date format and time format.
+2. Custom report date range. Custom start time for 24hours report.
+3. New report page using Bootstrap4 with multiple child report pages.
+4. Upgrade upload and storage protocol to 4.0. Improve storage action.
+5. Breaking change in frontend structure (charts, i18n, routes, ui, utils ...).
 
 more version information: [CHANGELOG.md](CHANGELOG.md)
 
