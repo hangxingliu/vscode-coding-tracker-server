@@ -12,7 +12,8 @@
     "build-live": "node ./build/build.js -w",
     "start": "node ./app",
     "server": "node ./app",
-    "install-git-hooks": "cp ./bash_scripts/git-pre-commit-hook ./.git/hooks/pre-commit -vf"
+	"install-git-hooks": "cp ./bash_scripts/git-pre-commit-hook ./.git/hooks/pre-commit -vf",
+	"new-version": "bash ./bash_scripts/new-version-tag"
   },
   "bin": {
     "coding-tracker-server": "app.js"
