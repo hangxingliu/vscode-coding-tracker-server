@@ -6,14 +6,12 @@
  	Such as:
  		@returns {(value: number) => number}
 */
-const TEMPORARY_CLOSING = true;
-
 // Code Review by tsc (Typescript Check)
 // No warning and error allow!
 
 const TEMP_DIRECTORY = `${__dirname}/../temp`;
 const CWD = `${__dirname}/../../`;
-const COMMAND = `tsc`;
+const COMMAND = `${__dirname}/../../node_modules/typescript/bin/tsc`;
 
 const TEST_SLOW_TIME = 60 * 1000;
 const TEST_TIMEOUT_TIME = 120 * 1000;
@@ -22,7 +20,7 @@ const TEST_TIMEOUT_TIME = 120 * 1000;
 let { exec } = require('child_process'),
 	{ removeSync } = require('fs-extra');
 
-if (!TEMPORARY_CLOSING && process.argv.indexOf('--no-tsc') < 0) {
+if (process.argv.indexOf('--no-tsc') < 0) {
 	describe('Typescript', function () {
 		it('# type check', function (done) {
 			this.slow(TEST_SLOW_TIME);
@@ -40,4 +38,4 @@ if (!TEMPORARY_CLOSING && process.argv.indexOf('--no-tsc') < 0) {
 			});
 		});
 	});
-}	
+}

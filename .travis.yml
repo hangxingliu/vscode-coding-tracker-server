@@ -4,7 +4,7 @@ node_js:
   - "8"
 
 before_script:
-  - npm install mocha eslint typescript -g
+  - npm install mocha eslint -g
 
 notifications:
   email: false
