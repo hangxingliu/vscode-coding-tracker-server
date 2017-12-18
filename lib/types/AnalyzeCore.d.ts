@@ -32,13 +32,14 @@ type AnalyzeFilterRules = {
 type AnalyzeResult = {
 	total: HasCodingWatchingObject,
 	groupBy: {
-		hour?: HasNameAndTimeObject[];
-		file?: HasNameAndTimeObject[];
-		day?: HasNameAndTimeObject[];
-		project?: HasNameAndTimeObject[];
-		computer?: HasNameAndTimeObject[];
-		vcs?: HasNameAndTimeObject[];
+		hour?: HasCodingWatchingObjectMap;
+		file?: HasCodingWatchingObjectMap;
+		day?: HasCodingWatchingObjectMap;
+		project?: HasCodingWatchingObjectMap;
+		computer?: HasCodingWatchingObjectMap;
+		vcs?: HasCodingWatchingObjectMap;
 	}
 };
 type HasCodingWatchingObject = { coding: number; watching: number; }
 type HasNameAndTimeObject = { name: string; } & HasCodingWatchingObject;
+type HasCodingWatchingObjectMap = { [name: string]: HasCodingWatchingObject; };
