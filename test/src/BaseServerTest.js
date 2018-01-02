@@ -4,7 +4,7 @@ let killAll = require('tree-kill'),
 	fs = require('fs-extra'),
 	request = require('request'),
 	Async = require('async'),
-	createValidate = require('./_ResponseValidator');
+	createValidate = require('./_HTTPResponseValidator');
 
 const LOG_FOLDER = `${__dirname}/../log`;
 const LOG_SERVER_FILE = `${LOG_FOLDER}/server-stdout-stderr.log`;
