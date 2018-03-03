@@ -13,13 +13,8 @@ const FILES = [
 const TEST_SLOW_TIME = 60 * 1000;
 const TEST_TIMEOUT_TIME = 120 * 1000;
 
-const LOG_FOLDER = `${__dirname}/../log`;
-const LOG_FILE = `${LOG_FOLDER}/eslint.log`;
-
-let path = require('path');
-let fs = require('fs-extra');
-
-fs.existsSync(LOG_FOLDER) || fs.mkdirsSync(LOG_FOLDER);
+let path = require('path'),
+	logFile = require('./utils/LogFile').createLogFile('eslint');
 
 // Check this unit test is running in project root folder
 function runningInProjectRoot() {
@@ -34,7 +29,7 @@ function runningInProjectRoot() {
 
 //>>>>>>>>>>>>>>>>>>>> Main Function
 
-function main() {
+function main(then) {
 	this.slow(TEST_SLOW_TIME);
 	this.timeout(TEST_TIMEOUT_TIME);
 
@@ -58,13 +53,16 @@ function main() {
 				message += `  ${problem.ruleId}: ${location}\n`;
 			});
 		});
-		fs.writeFileSync(LOG_FILE, message);
+		logFile.appendLine(message);
+		logFile.write(then);
+
 		process.nextTick(() => console.error(message));
 
 		throw new Error(`There has ${problemCount} problems in ${results.length} files. ` +
 			`You can get detailed information by running eslint.`);
 	}
-	fs.writeFileSync(LOG_FILE, message);
+	logFile.appendLine(message);
+	logFile.write(then);
 }
 
 if (process.argv.indexOf('--no-eslint') < 0) {
