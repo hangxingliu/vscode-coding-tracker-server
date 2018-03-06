@@ -1,6 +1,11 @@
 # ignore frontend source map files
 frontend/dist/**/*.map
 
+# ignore utilities binary output files
+utilities/*.out
+# c++ clang:
+.usages_clang
+
 # ignore local test database
 /database
 
