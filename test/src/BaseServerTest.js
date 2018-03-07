@@ -10,7 +10,7 @@ let killAll = require('tree-kill'),
 const PORT = 24680,
 	TOKEN = 'token123456',
 	TEST_BASE_URL = `http://127.0.0.1:${PORT}`,
-	DATABASE_FOLDER = `${__dirname}/../resources/database`;
+	DATABASE_FOLDER = `${__dirname}/../resources/data-simple`;
 
 const TEST_STATIC_RESOURCE = `${TEST_BASE_URL}/report/`,
 	TEST_API_TOKEN = `${TEST_BASE_URL}/ajax/test`,
@@ -183,6 +183,6 @@ describe('Stop server', () => {
 describe('Write log to file', () => {
 	it('#Write server output log', then => serverLog.write(then));
 	it('#Write HTTP response log', then => Http.writeLogToFile(then));
-})
+});
 
 

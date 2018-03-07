@@ -11,7 +11,7 @@ utilities/*.out
 
 # ignore unit test assets
 test/temp
-test/resources
+test/resources/data-simple
 test/playground
 test/log
 
