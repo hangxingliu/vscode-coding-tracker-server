@@ -16,7 +16,7 @@ module.exports = {
 	title_license: 'Лицензия',
 	title_components: 'Компоненты',
 	title_connect: 'Ссылки',
-	
+
 	title_server_version: 'Версия сервера:',
 	title_storage_version: 'Версия хранилища:',
 
@@ -24,9 +24,8 @@ module.exports = {
 	title_last_xx_days: 'Последние',
 
 	title_totally_1: 'Всего: ',
-	title_totally_2: 'ч. просмотра; ',
-	title_totally_3: 'ч. печатания',
-	
+	title_totally_2: 'просмотра; ',
+
 	full_report: 'Полный отчет',
 
 	option_7_days: '7 дней',
@@ -37,17 +36,18 @@ module.exports = {
 	word_all: 'Все',
 	word_day: 'дней',
 
+	show_welcome: 'welcome info',
+
+	// link in the bottom
 	link_github_repo_server: 'репозиторий сервера',
 	link_github_repo_extension: 'репозиторий расширения',
 	link_vscode_marketplace: 'VSCode расширения',
 
-	show_welcome: 'welcome info',	
-	
-	//Welcome Info
-  welcome_subtitle: '',
+	// welcome Info
+	welcome_subtitle: '',
 	welcome_intro: 'Введение:',
 	welcome_watching_time: 'Время просмотра(включая время печатания)',
-	welcome_coding_time: 'Время, потраченное на печатание', 
+	welcome_coding_time: 'Время, потраченное на печатание',
 	welcome_tips: 'Подсказки:',
 	welcome_tips_click_hover_title: 'Нажмите или наведите мышь на диаграмму',
 	welcome_tips_click_hover: 'Наведите для детальной информации. Кликните по столбцу с проектом для получения детального отчета по проекту.',
@@ -59,7 +59,7 @@ module.exports = {
 	welcome_btn_close: 'OK. Спрятать эту информацию',
 	welcome_reopen: 'Вы можете открыть это окно снова кликнув по кнопке "welcome info"',
 
-	//share
+	// share
 	share_content: 'Текст',
 	share_font_size: 'Размер текста',
 	share_mark_line: 'Добавить линию',

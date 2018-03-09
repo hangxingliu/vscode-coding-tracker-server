@@ -18,6 +18,7 @@ module.exports = {
 	title_files: '文件耗时',
 	title_computers: '按计算机分类',
 	title_welcome: '欢迎来到报告页面',
+	title_vcs: '按版本控制系统分类(git)',
 
 	title_share: '分享',
 
@@ -35,8 +36,7 @@ module.exports = {
 	title_last_xx_days: '最近',
 
 	title_totally_1: '合计: ',
-	title_totally_2: '小时. 专注时间:',
-	title_totally_3: '小时',
+	title_totally_2: '专注时间:',
 
 	full_report: '完整报告',
 
@@ -48,13 +48,14 @@ module.exports = {
 	word_all: '全部',
 	word_day: '天',
 
+	show_welcome: '欢迎/帮助信息',
+
+	// link in the bottom
 	link_github_repo_server: 'Github仓库(服务器端代码)',
 	link_github_repo_extension: 'Github仓库(VSCode插件端代码)',
 	link_vscode_marketplace: 'VSCode插件市场',
 
-	show_welcome: '欢迎/帮助信息',
-
-	//Welcome Info
+	// welcome Info
 	welcome_subtitle: '这是VSCode Coding Tracker的编程情况报告页面, 你能在这儿看到你日常的编程情况统计',
 	welcome_intro: '简介:',
 	welcome_watching_time: '你使用(查看)VSCode的时长 (包括Coding time)',
@@ -70,7 +71,7 @@ module.exports = {
 	welcome_btn_close: 'OK. 隐藏这个欢迎信息',
 	welcome_reopen: '你可以点击页面底部的"欢迎/帮助信息"以重新显示这个信息',
 
-	//share
+	// share
 	share_content: '分享文本',
 	share_font_size: '字号',
 	share_mark_line: '标记线',

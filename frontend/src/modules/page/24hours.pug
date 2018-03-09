@@ -9,7 +9,6 @@ mixin totallyIndicator(id)
 		span.mx-1(name="watching") ----
 		span.ml-2(data-i18n="title_totally_2") coding for
 		span.mx-1(name="coding") ----
-		span(data-i18n="title_totally_3")
 
 
 //====mixin==========
@@ -22,7 +21,8 @@ div.page-24hours(style="display: none")
 				.card-body
 					h4.card-title
 						i.ion-clock.mr-2
-						span(data-i18n="title_24hs_from") 24 hours from
+						span(data-i18n="title_24hs") 24 hours
+						| &nbsp;from&nbsp;
 						b: a.filter-24hs.text-info(href="javascript:;")
 							span.txt 11-14 19:00
 							i.ml-2.ion-arrow-down-b
@@ -35,7 +35,8 @@ div.page-24hours(style="display: none")
 				.card-body
 					h4.card-title
 						i.ion-folder.mr-2
-						span(data-i18n="title_24hs_from") Projects:
+						span(data-i18n="title_projects") Projects
+						| :
 					.card-text
 						+chartBlock("projects")
 		.col-12.col-lg-6
@@ -43,6 +44,9 @@ div.page-24hours(style="display: none")
 				.card-body
 					h4.card-title
 						i.ion-document.mr-2
-						span(data-i18n="title_24hs_from") Files (Top 10):
+						span(data-i18n="title_files") Files
+						| (
+						span(data-i18n="word_top")
+						| 10):
 					.card-text
 						+chartBlock("files")
