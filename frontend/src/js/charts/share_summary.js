@@ -2,13 +2,13 @@
 /// <reference path="../index.d.ts" />
 
 let {
-	getReadableTime,
 	orderByName,
 	object2array,
-	maxInArray,
-	ONE_HOUR
+	maxInArray
 } = require('../utils/utils'),
-	echarts = require('../utils/echartsUtils');
+	echarts = require('../utils/echartsUtils'),
+	dateTime = require('../utils/datetime'),
+	{ ONE_HOUR, getReadableTime } = dateTime;
 
 const DEFAULT_POINTS = [];
 

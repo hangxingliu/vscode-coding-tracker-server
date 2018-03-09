@@ -2,12 +2,12 @@
 /// <reference path="../index.d.ts" />
 
 let {
-	getReadableTime,
 	orderByWatchingTime,
-	object2array,
-	ONE_HOUR
+	object2array
 } = require('../utils/utils'),
-	echarts = require('../utils/echartsUtils');
+	echarts = require('../utils/echartsUtils'),
+	dateTime = require('../utils/datetime'),
+	{ ONE_HOUR, getReadableTime } = dateTime;
 
 function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);

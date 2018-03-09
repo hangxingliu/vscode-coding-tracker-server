@@ -2,13 +2,13 @@
 /// <reference path="../index.d.ts" />
 
 let {
-	getReadableTime,
 	orderByWatchingTime,
 	object2array,
-	getShortProjectName,
-	ONE_HOUR
+	getShortProjectName
 } = require('../utils/utils'),
-	echarts = require('../utils/echartsUtils');
+	echarts = require('../utils/echartsUtils'),
+	dateTime = require('../utils/datetime'),
+	{ ONE_HOUR, getReadableTime } = dateTime;
 
 const EACH_HEIGH = 50;
 

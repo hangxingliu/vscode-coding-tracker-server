@@ -1,26 +1,28 @@
 //@ts-check
 
 let utils = require('../utils/utils'),
+	dateTime = require('../utils/datetime'),
 	resizer = require('../utils/resizer'),
 	reportFilter = require('../reportFilter'),
 	API = require('../api'),
 	{ URL } = API,
 	filterDialog = require('../ui/24hsFromDialog');
 
+// components in this sub-page
 let $page = $('.page-24hours'),
 	$filterFrom = $page.find('.filter-24hs'),
 	$txtFrom = $filterFrom.find('.txt');
 
+// 3 charts in this sub-page
 let chart24hs = require('../charts/24hours');
 let chartProjects = require('../charts/projects');
 let chartFiles = require('../charts/files');
+
 /** @type {EChartsInstance[]} */
 let charts = [];
 
 /** @type {Date} */
-let latestDate = null;
-
-const ONE_DAY = 24 * 3600 * 1000;
+let startDate = null, endDate = null;
 
 module.exports = { name: utils.basename(__filename, '.js'), start, stop };
 
@@ -46,25 +48,30 @@ function start() {
 	reportFilter.removeSubscribers();
 	reportFilter.subscribe(request);
 
-	let initEarliestDate = new Date(Date.now() - ONE_DAY);
-	initEarliestDate.setHours(initEarliestDate.getHours() + 1, 0, 0, 0);
-	onDateFilterChange(initEarliestDate);
+	startDate = dateTime.getStartOfHour();
+	startDate.setHours(startDate.getHours() - 23);
+	onDateFilterChange(startDate);
 }
 
 function request() {
-	API.requestSilent(URL.hoursDetailed(latestDate), on24HoursResponse);
+	API.requestSilent(URL.hoursDetailed(startDate, endDate), on24HoursResponse);
 }
 
-/** @param {Date} date */
-function onDateFilterChange(date) {
-	latestDate = new Date(date.getTime() + ONE_DAY - 1);
-	$txtFrom.text(utils.getMMDD(date) + ' ' +utils.getHH00(date));
+/** @param {Date} _startDate */
+function onDateFilterChange(_startDate) {
+	startDate = _startDate;
+
+	endDate = new Date(startDate);
+	endDate.setHours(endDate.getHours() + 23);
+	endDate = dateTime.getEndOfHour(endDate);
+
+	$txtFrom.text(dateTime.getMMDD(startDate) + ' ' +dateTime.getHH00(startDate));
 	request();
 }
 
 /** @param {APIResponse} data */
 function on24HoursResponse(data) {
-	chart24hs.update(utils.expandAndShortGroupByHoursObject(data.groupBy.hour, latestDate));
+	chart24hs.update(utils.expandAndShortGroupByHoursObject(data.groupBy.hour, endDate));
 	showTotalTimes(data.total, $('#counterCustom24Hs'));
 
 	chartProjects.update(data.groupBy.project);
@@ -77,8 +84,8 @@ function on24HoursResponse(data) {
  */
 function showTotalTimes(totalObject, $dom) {
 	let data = {
-		watching: utils.getReadableTime(totalObject.watching),
-		coding: utils.getReadableTime(totalObject.coding),
+		watching: dateTime.getReadableTime(totalObject.watching),
+		coding: dateTime.getReadableTime(totalObject.coding),
 	};
 	$dom.find('[name]').each((i, e) => { $(e).text(data[$(e).attr('name')]) });
 }

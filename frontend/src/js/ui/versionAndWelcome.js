@@ -1,3 +1,5 @@
+//@ts-check
+
 const VERSION_KEY = 'coding-tracker-version';
 
 let $welcomeInfo = $('#welcomeInfo'),
@@ -15,7 +17,7 @@ function showWelcome() { $welcomeInfo.slideDown(); }
 function init() {
 	$.get('/', info => {
 		currentServerVersion = info.serverVersion;
-		$('#version [name]').each((i, e) => $(e).text(info[$(e).attr('name')]))
+		$('#version [name]').each((i, e) => { $(e).text(info[$(e).attr('name')]); })
 		localStorage.getItem(VERSION_KEY) != currentServerVersion && showWelcome();
 	});
 }

@@ -2,14 +2,13 @@
 /// <reference path="../index.d.ts" />
 
 let {
-	getReadableTime,
-	getReadableDateDependentOnSize,
 	orderByName,
 	object2array,
-	maxInArray,
-	ONE_HOUR
+	maxInArray
 } = require('../utils/utils'),
-	echarts = require('../utils/echartsUtils');
+	echarts = require('../utils/echartsUtils'),
+	dateTime = require('../utils/datetime'),
+	{ ONE_HOUR, getReadableTime } = dateTime;
 
 /** @type {string[]} */
 let dateLabels = [];
@@ -25,7 +24,7 @@ function update(dataGroupByDate) {
 	let maxDurationItem = maxInArray(array, (a, b) => a.watching > b.watching ? a : b),
 		maxDuration = (maxDurationItem || { watching: ONE_HOUR }).watching;
 
-	dateLabels = getReadableDateDependentOnSize(array.map(it => it.name));
+	dateLabels = dateTime.getReadableDateDependentOnSize(array.map(it => it.name));
 
 	let series = [
 		echarts.createSeries('line', 'watching')

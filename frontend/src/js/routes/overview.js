@@ -1,6 +1,7 @@
 //@ts-check
 
 let utils = require('../utils/utils'),
+	dateTime = require('../utils/datetime'),
 	resizer = require('../utils/resizer'),
 	router = require('../router'),
 	reportFilter = require('../reportFilter'),
@@ -52,7 +53,12 @@ function start() {
 function request(filter) {
 	requestFilter = Object.assign({}, filter);
 	API.requestSilent(URL.overview(), onOverviewResponse);
-	API.requestSilent(URL.hours(), on24HoursResponse);
+
+	let now = dateTime.now(),
+		endDate = dateTime.getEndOfHour(now),
+		startDate = dateTime.getStartOfHour(now);
+	startDate.setHours(startDate.getHours() - 23);
+	API.requestSilent(URL.hours(startDate, endDate), on24HoursResponse);
 }
 
 /** @param {APIResponse} data */
@@ -87,8 +93,8 @@ function getSummaryDataFromResponse(data) {
  */
 function showTotalTimes(totalObject, $dom) {
 	let data = {
-		watching: utils.getReadableTime(totalObject.watching),
-		coding: utils.getReadableTime(totalObject.coding),
+		watching: dateTime.getReadableTime(totalObject.watching),
+		coding: dateTime.getReadableTime(totalObject.coding),
 	};
 	$dom.find('[name]').each((i, e) => { $(e).text(data[$(e).attr('name')]) });
 }

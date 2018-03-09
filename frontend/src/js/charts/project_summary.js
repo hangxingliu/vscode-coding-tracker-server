@@ -3,13 +3,12 @@
 
 let {
 	orderByName,
-	getReadableTime,
-	getReadableDateDependentOnSize,
 	object2array,
-	maxInArray,
-	ONE_HOUR
+	maxInArray
 } = require('../utils/utils'),
-	echarts = require('../utils/echartsUtils');
+	echarts = require('../utils/echartsUtils'),
+	dateTime = require('../utils/datetime'),
+	{ ONE_HOUR, getReadableTime } = dateTime;
 
 function tooltipFormatter(p, ticket, set){
 	let setText = text => (setTimeout(set, 1, ticket, text), text),
@@ -37,7 +36,7 @@ module.exports = { recommendedChartId: 'project_summary', init: base.init, updat
 function update(data) {
 	let array = orderByName(object2array(data));
 
-	dateLabels = getReadableDateDependentOnSize(array.map(it => it.name));
+	dateLabels = dateTime.getReadableDateDependentOnSize(array.map(it => it.name));
 
 	let maxDurationItem = maxInArray(array, (a, b) => a.watching > b.watching ? a : b),
 		maxDuration = (maxDurationItem || { watching: ONE_HOUR }).watching;

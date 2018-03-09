@@ -8,12 +8,12 @@ const BASE = '/ajax/report-v2';
 let APIToken = '';
 let URL = {
 	overview: () => getBaseURL('overview', getFilter()),
-	hours: (date) => getBaseURLFor24Hours('hours', date || new Date()),
-	hoursDetailed: (date) => getBaseURLFor24Hours('hours-detailed', date || new Date()),
 	languages: () => getBaseURL('languages', getFilter()),
 	vcs: () => getBaseURL('vcs', getFilter()),
-	project: (projectName) =>
-		getBaseURL('project', getFilter()) + '&project=' + encodeURIComponent(projectName)
+	project: proj => getBaseURL('project', getFilter()) + '&project=' + encodeURIComponent(proj),
+
+	hours: (startDate, endDate) => getGroupByHoursURL('hours', startDate, endDate),
+	hoursDetailed: (startDate, endDate) => getGroupByHoursURL('hours-detailed', startDate, endDate),
 };
 
 let API = {
@@ -56,14 +56,10 @@ function getBaseURL(name, filter) {
 
 /**
  * @param {string} name
- * @param {Date} [whichDay]
+ * @param {Date} [endDate]
  */
-function getBaseURLFor24Hours(name, whichDay) {
-	let ts = whichDay.getTime(), date = whichDay.getDate();
-	let from = new Date(ts), to = new Date(ts);
-	from.setDate(date - 1);
-	to.setDate(date + 1);
-	return `${BASE}/${name}?token=${APIToken}&from=${from.getTime()}&to=${to.getTime()}`;
+function getGroupByHoursURL(name, startDate, endDate) {
+	return `${BASE}/${name}?token=${APIToken}&from=${startDate.getTime()}&to=${endDate.getTime()}`;
 }
 
 

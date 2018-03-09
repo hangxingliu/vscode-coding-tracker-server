@@ -2,11 +2,11 @@
 /// <reference path="../index.d.ts" />
 
 let {
-	getReadableTime,
 	orderByWatchingTime,
 	object2array,
 } = require('../utils/utils'),
-	echarts = require('../utils/echartsUtils');
+	echarts = require('../utils/echartsUtils'),
+	dateTime = require('../utils/datetime');
 
 const COLORS = ['#a5d6a7', '#80cbc4', '#90caf9', '#80deea', '#ef9a9a', '#ffcc80', '#bcaaa4', '#b0bec5'];
 const COLORS_OTHER = ['#a5d6a7', '#80cbc4', '#90caf9', '#80deea', '#ef9a9a', '#d6d6d6'];
@@ -15,7 +15,7 @@ let otherLanguages = '';
 function tooltipFormatter(p, ticket, set) {
 	let setText = text => (setTimeout(set, 1, ticket, text), text);
 	return setText(`You spent<br/> <b>${p.percent}%</b> time` +
-		`<br/>(<b>${getReadableTime(p.value)}</b>)<br/> on ${p.name == 'other' ? otherLanguages : p.name} `);
+		`<br/>(<b>${dateTime.getReadableTime(p.value)}</b>)<br/> on ${p.name == 'other' ? otherLanguages : p.name} `);
 }
 
 let base = require('./_base').createBaseChartClass();

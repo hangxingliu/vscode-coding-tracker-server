@@ -2,11 +2,11 @@
 /// <reference path="../index.d.ts" />
 
 let {
-	getReadableTime,
-	orderByWatchingTime,
-	ONE_HOUR
+	orderByWatchingTime
 } = require('../utils/utils'),
-	echarts = require('../utils/echartsUtils');
+	echarts = require('../utils/echartsUtils'),
+	dateTime = require('../utils/datetime'),
+	{ ONE_HOUR, getReadableTime } = dateTime;
 
 
 const EACH_HEIGH = 75;

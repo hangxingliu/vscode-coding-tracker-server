@@ -1,7 +1,7 @@
 //@ts-check
 /// <reference path="./index.d.ts" />
 
-let { getYYYYMMDD, getMMDD } = require('./utils/utils');
+let dateTime = require('./utils/datetime');
 let customRangeDlg = require('./ui/customDateRangeDialog');
 
 const CUSTOM = '20';
@@ -25,7 +25,10 @@ function installReportRangeComponent() {
 		let rangeId = $(this).attr('data-range');
 		if (rangeId == CUSTOM)
 			return customRangeDlg.show((from, to) => {
-				$currentRange.text(getMMDD(from) + ' ~ ' + getMMDD(to));
+				from = dateTime.getStartOfDay(from);
+				to = dateTime.getEndOfDay(to);
+
+				$currentRange.text(dateTime.getMMDD(from) + ' ~ ' + dateTime.getMMDD(to));
 				setCustomRange(from, to);
 			});
 
@@ -42,10 +45,16 @@ function setRange(_rangeId) {
 	let rangeId = parseInt(_rangeId);
 	if (isNaN(rangeId)) return;
 
-	let to = new Date();
-	let from = new Date(to.getTime());
+	// from and to are start of today and end of today by default
+	let from = dateTime.getStartOfDay();
+	let to = dateTime.getEndOfDay(from);
+
 	if (rangeId < 10) {
-		from.setDate(from.getDate() - (RECENT_DAYS[rangeId] || -1) + 1);
+		// Recent xx days
+		if (!(rangeId in RECENT_DAYS))
+			return console.error(`FATAL: ${rangeId} is not a valid RECENT_DAYS`);
+		from = dateTime.subtractDays(from, RECENT_DAYS[rangeId] - 1);
+
 	} else if (rangeId == 11 || rangeId == 12) {
 		// This week or last week
 		from.setDate(from.getDate() - from.getDay());
@@ -54,6 +63,7 @@ function setRange(_rangeId) {
 			from.setDate(from.getDate() - 7);
 			to.setDate(to.getDate() - 7);
 		}
+
 	} else if (rangeId == 13) {
 		// This month
 		from.setDate(1); // This month: 1th
@@ -67,8 +77,9 @@ function setRange(_rangeId) {
 
 		to.setDate(0); // Last month: last day
 	} else {
-		return;
+		return; // invalid
 	}
+
 	filter.to = to;
 	filter.from = from;
 	notifySubscribers();
@@ -85,7 +96,7 @@ function setVCSRepo(repo) {
 	notifySubscribers();
 }
 function notifySubscribers() {
-	let debug = `report filter: [${getYYYYMMDD(filter.from)}, ${getYYYYMMDD(filter.to)}]`;
+	let debug = `report filter: [${dateTime.getYYYYMMDD(filter.from)}, ${dateTime.getYYYYMMDD(filter.to)}]`;
 	if (filter.project) debug += ` proj: ${filter.project}`;
 	if (filter.vcsRepo) debug += ` proj: ${filter.vcsRepo}`;
 	console.log(debug);

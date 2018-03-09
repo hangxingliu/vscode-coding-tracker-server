@@ -3,6 +3,7 @@
 /// <reference path="../echarts.d.ts" />
 
 let utils = require('../utils/utils'),
+	dateTime = require('../utils/datetime'),
 	resizer = require('../utils/resizer'),
 	chartShareSummary = require('../charts/share_summary'),
 	form = require('../utils/form'),
@@ -75,8 +76,8 @@ function shareSummary(data, total) {
 
 	let days = Object.keys(data).length,
 		range = reportFilter.getRangeDescription().toLowerCase();
-	let totalDuration = utils.getReadableTime(total.watching),
-		averageDuration = utils.getReadableTime(total.watching / days);
+	let totalDuration = dateTime.getReadableTime(total.watching),
+		averageDuration = dateTime.getReadableTime(total.watching / days);
 
 	formData.text = `My Coding Report`;
 	formData.subtext = `${totalDuration} in ${range}. (Average: ${averageDuration}/day)`;
