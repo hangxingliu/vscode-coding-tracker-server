@@ -127,6 +127,9 @@ Program.local ?
 function returnError(res, errInfo) { res.json({ error: errInfo || 'Unknown error' }).end() }
 
 function bindReportAPIToServer() {
+	/// @deprecated ReportMiddleware is deprecated now.
+	///   Please use /ajax/report-v2 interface.
+	///   /ajax/report interface and ReportMiddleware.js will be remove in 1.0.0
 	app.use('/ajax/report', reporter.init(Program.output));
 	app.use('/ajax/report-v2', reporterV2.init(Program.output));
 }
