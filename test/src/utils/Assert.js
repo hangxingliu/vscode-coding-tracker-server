@@ -7,17 +7,112 @@ module.exports = {
 	Assert, Invoke
 };
 
+/** @param {any} value  */
 function Assert(value) {
-	let chains = { isTrue, isFalse };
-	void value;
+	let throwAsserionError = (message, expected, actual) => {
+		throw new AssertionError({ message, expected, actual }) };
+
+	let chains = {
+		isTrue, isFalse, isUndefind, equals, equalsInJSON, fieldsEqual,
+		differentFrom, greaterThan, lessThan,
+
+		isString, isNumber, isObject, isTypeof,
+		isArray, length,
+		containsKeys,
+
+		allKeys, allKeyValueTuples, child, sort, convertBy,
+
+		// aliases:
+		field: child
+	};
 	return chains;
-	function isTrue() {
-		assert.deepStrictEqual(value, true);
+
+
+	function isTrue() { return equals(true); }
+	function isFalse() { return equals(false); }
+	function isUndefind() { return equals(undefined); }
+	function isString() { return isTypeof('string'); }
+	function isNumber() { return isTypeof('number'); }
+	function isObject() { return isTypeof('object'); }
+
+	/** @param {string} type */
+	function isTypeof(type) {
+		assert.deepStrictEqual(typeof value, type);
 		return chains;
 	}
-	function isFalse() {
-		assert.deepStrictEqual(value, false);
+
+	function equals(expected) {
+		assert.deepStrictEqual(value, expected);
 		return chains;
+	}
+	function differentFrom(expected) {
+		assert.notDeepStrictEqual(value, expected);
+		return chains;
+	}
+
+	/** @type {any} */
+	function equalsInJSON(expected) {
+		assert.deepStrictEqual(JSON.stringify(value), JSON.stringify(expected));
+		return chains;
+	}
+
+	function greaterThan(expected) {
+		if(value > expected)
+			return chains;
+			throwAsserionError(`value is not greater than ${expected}`, `greather than ${expected}`, value);
+	}
+	function lessThan(expected) {
+		if(value < expected)
+			return chains;
+		throwAsserionError(`value is not less than ${expected}`, `less than ${expected}`, value);
+	}
+
+	/** @param {{[fieldName: string]: any}} equalMap */
+	function fieldsEqual(equalMap) {
+		for (let fieldName in equalMap)
+			assert.deepStrictEqual(value[fieldName], equalMap[fieldName]);
+		return chains;
+	}
+
+	function isArray() {
+		if (!Array.isArray(value))
+			throwAsserionError('Value is not an array', 'An Array', value);
+		return chains;
+	}
+
+	/** @param {number} len */
+	function length(len) {
+		if (!('length' in value))
+			throwAsserionError('`length` is missing in value', 'has `length` field', value);
+		if (value.length !== len)
+			throwAsserionError(`value.length != ${len}`, len, value.length);
+		return chains;
+	}
+
+	/** @param {string[]} keys */
+	function containsKeys(...keys) {
+		for (let k of keys)
+			if (!(k in value))
+				throwAsserionError(`\`${k}\` is missing in value`, `{ "${k}": any, ... }`, value);
+		return chains;
+	}
+
+	function allKeys() { return convertBy(value => Object.keys(value)); }
+	function allKeyValueTuples() { return convertBy(value => Object.keys(value).map(k => ({ k, v: value[k] })));}
+	function sort() {
+		isArray();
+		return convertBy(value => Object.assign([], value).sort());
+	}
+
+	/** @param {string} fieldName */
+	function child(fieldName) {
+		containsKeys(fieldName);
+		return convertBy(value => value[fieldName]);
+	}
+
+	/** @param {(any) => any} handler */
+	function convertBy(handler) {
+		return Assert(handler(value));
 	}
 }
 
