@@ -2,6 +2,7 @@ interface AnalyzeCoreClass {
     new (dbPath: string): AnalyzeCoreInstance;
 	GroupBy: AnalyzeGroupByEnum;
 }
+
 type AnalyzeGroupByEnum = {
 	DAY: 1;
 	HOUR: 2;
@@ -13,14 +14,7 @@ type AnalyzeGroupByEnum = {
 	ALL: 1023;
 	NONE: 0;
 };
-type AnalyzeCoreInstance = {
-	setFilter(filterRules: AnalyzeFilterRules): void;
-	setGroupBy(groupBy: number): void;
-	analyze(startDayDate: Date, endDayDate: Date): boolean;
-	getError(): string[];
-	getWarning(): string[];
-	getResult(): AnalyzeResult;
-};
+
 type AnalyzeFilterRules = {
 	project?: string[];
 	computer?: string[];
@@ -29,6 +23,16 @@ type AnalyzeFilterRules = {
 	repo?: string[];
 	branch?: string[];
 };
+
+type AnalyzeCoreInstance = {
+	setFilter(filterRules: AnalyzeFilterRules): void;
+	setGroupBy(groupBy: number): void;
+	analyze(startDayDate: Date, endDayDate: Date, expandToWholeDay?: boolean): boolean;
+	getError(): string[];
+	getWarning(): string[];
+	getResult(): AnalyzeResult;
+};
+
 type AnalyzeResult = {
 	total: HasCodingWatchingObject,
 	groupBy: {
@@ -40,6 +44,7 @@ type AnalyzeResult = {
 		vcs?: HasCodingWatchingObjectMap;
 	}
 };
+
 type HasCodingWatchingObject = { coding: number; watching: number; }
 type HasNameAndTimeObject = { name: string; } & HasCodingWatchingObject;
 type HasCodingWatchingObjectMap = { [name: string]: HasCodingWatchingObject; };

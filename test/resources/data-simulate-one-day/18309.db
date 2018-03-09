@@ -1,0 +1,24 @@
+4.0
+
+#
+# This test database be related to unit test "analyze/AnalyzeExpandToWholeDay.js"
+#
+# One day in 2018-03-09 (9th March 2018) (GMT+0800, CST)
+#
+# This day begins at 1520524800000 ends at (1520611200000 - 1)
+# 12:00 is 1520568000000
+#
+
+# one day start 09:00 GMT+0800 (CST)
+0 1520557200000 31990 markdown TODO.md %2Fprojects%2Ftest pc1 git::master 10 0 0 0
+2 1520557202000 20000 markdown TODO.md %2Fprojects%2Ftest pc1 git::master 10 0 0 0
+
+# afternoon coding 14:30 GMT+0800 (CST)
+0 1520577000000 41990 javascript index.js %2Fprojects%2Ftest pc1 git::master 80 0 0 0
+2 1520577002500 25000 javascript index.js %2Fprojects%2Ftest pc1 git::master 80 0 0 0
+
+# commit at night 21:00 GMT+0800 (CST)
+0 1520600400000 20500 markdown README.md %2Fprojects%2Ftest pc1 git::master 80 0 0 0
+2 1520600405000 10000 markdown README.md %2Fprojects%2Ftest pc1 git::master 80 0 0 0
+
+# test expandToWholeDay
