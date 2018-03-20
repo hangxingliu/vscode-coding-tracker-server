@@ -10,7 +10,6 @@ let utils = require('../utils/utils'),
 	reportFilter = require('../reportFilter'),
 	download = require('downloadjs');
 
-/** @type {JQuery}*/
 let $dialog = $('#dlgShare'),
 	$btnDownload = $dialog.find('.btn-download'),
 	$btnMarkline = $dialog.find('.btn-markline'),
@@ -130,5 +129,5 @@ function onClickMarkLineBtn() {
 	console.log(lines);
 	chartShareSummary.update(dataGroupByDate, formData);
 }
-function markFormatter(p) { return utils.getReadableTime(p.data.value); }
+function markFormatter(p) { return dateTime.getReadableTime(p.data.value); }
 
