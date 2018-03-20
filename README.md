@@ -10,15 +10,14 @@
 <img src="https://img.shields.io/travis/hangxingliu/vscode-coding-tracker-server/develop.svg?style=flat-square&label=dev" />
 </a>
 
-VSCode Coding Tracker extension server side program. 
-> See more:   
-> VSCode Coding Tracker extension   
-> [GitHub repo](https://github.com/hangxingliu/vscode-coding-tracker)   
-> [VSCode Extensions Marketplace](https://marketplace.visualstudio.com/items?itemName=hangxingliu.vscode-coding-tracker)
-> 
-> ---
-> That repository be separate from above extension repository.
-> So you could find more older commit information in that repository. 
+VSCode Coding Tracker extension server side program.    
+
+> Links:  
+> [Extension side Github repo](https://github.com/hangxingliu/vscode-coding-tracker)   
+> [VSCode extensions marketplace](https://marketplace.visualstudio.com/items?itemName=hangxingliu.vscode-coding-tracker)   
+>
+> Give me coffee for coding better via [Paypal](https://www.paypal.me/hangxingliu)   
+> *Your support encourage me to make my vscode extensions better and better! (and add more and more features)*
 
 ## Screenshot
 
@@ -41,7 +40,7 @@ VSCode Coding Tracker extension server side program.
 > `--local`: It means server bind address on `127.0.0.1` when server listening.
 > **(Other computer could not upload data and visit report page in this mode)**
 >
-> `--random-port`: It means server will using a 8 length random string as API/upload token
+> `--random-token`: It means server will using a 8 length random string as API/upload token
 >  **even if you giving a token by `-t` option**
 >
 > `--public-report`: It means anyone could visit report page without token
@@ -49,6 +48,10 @@ VSCode Coding Tracker extension server side program.
 > **more options information you could find by using command `node app --help`**
 
 ## Current Version
+
+### 0.6.0 (2017/03/xx)
+
+**Coming soon ...**
 
 ### 0.5.0 (2017/11/26)
 
@@ -61,15 +64,15 @@ VSCode Coding Tracker extension server side program.
 
 more version information: [CHANGELOG.md](CHANGELOG.md)
 
-## Editing, Modifying and Building codes
-
-Goto chapter *Editing, Building, Running and Testing* in [CONTRIBUTING.md](CONTRIBUTING.md).
-
 ## Contributing
 
 It is **necessary** to read [CONTRIBUTING.md](CONTRIBUTING.md) before **contributing codes/translations or building codes**
 
-## Files manifest
+### Editing/Modifying/Buidling codes
+
+Goto chapter *Editing, Building, Running and Testing* in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+### Files manifest
 
 redirect to [FILES.md](docs/FILES.md)
 

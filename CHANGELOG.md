@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.6.0 (2017/03/xx)
+
+**Coming soon ...**
+
 ### 0.5.0 (2017/11/26)
 
 0. Support collect and report version control system(Git) activities.

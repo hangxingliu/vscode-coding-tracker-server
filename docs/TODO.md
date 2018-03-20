@@ -1,10 +1,9 @@
 # TODO
 
-- [ ] Write changelog for 0.5.1
+- [ ] Write changelog for 0.6.0
 
 ---
 
-- [ ] add vcs export dialog
 - [ ] combined report for multi-projects
 - [ ] setting about timezone and which day is first day of the week
 - [ ] fix i18n in side menu
@@ -16,6 +15,8 @@
 - [ ] more unit tests
 - [ ] custom chart color scheme
 - [ ] more share charts
+- [ ] update bootstrap to 4.0.0
+- [x] add vcs export dialog
 - [x] report in one day
 - [x] replace glyphicons to ionicons
 - [x] add eslint to unit test to keeping code health
