@@ -1,8 +1,15 @@
 //@ts-check
 
+/*
+	This is router of sub-page `projects` (Projects Report)
+*/
+const click = 'click';
+
 let utils = require('../utils/utils'),
 	resizer = require('../utils/resizer'),
 	form = require('../utils/form'),
+	dateTime = require('../utils/datetime'),
+	csvDialog = require('../ui/exportCSVDialog'),
 	router = require('../router'),
 	reportFilter = require('../reportFilter'),
 	API = require('../api'),
@@ -20,18 +27,32 @@ let charts = [];
 
 /** @type {ReportFilter} */
 let requestFilter = null;
-let projectName = '';
+let currentProjectName = '';
 
-let $rangeButtons = $pageOneProject.find('.range-block [data-range]');
+/** @type {CodingWatchingMap} */
+let projectsData = {};
+/** @type {CodingWatchingMap} */
+let filesData = {};
+
+
+/** Files: "All" "Top 5" "Top 10" ... */
+let $rangeButtons = $pageOneProject.find('.range-block [data-range]'),
+	$btnExportProjects = $('#btnExportProjects'),
+	$btnExportFiles = $('#btnExportFiles');
 
 module.exports = { name: utils.basename(__filename, '.js'), start, stop, update };
 
-function stop() { 
+function stop() {
 	$pageIndex.hide();
 	$pageOneProject.hide();
-	$rangeButtons.off('click');
+
+	$rangeButtons.off(click);
+	$btnExportProjects.off(click);
+	$btnExportFiles.off(click);
+
 	charts.map(chart => chart.dispose());
 }
+
 function start(_projectName) {
 	charts = [
 		chartProjects.init(utils.getChartDom(chartProjects.recommendedChartId, $pageIndex)[0],
@@ -45,36 +66,45 @@ function start(_projectName) {
 	resizer.subscribe(charts);
 
 	reportFilter.removeSubscribers();
-	reportFilter.subscribe(() => projectName ? showOneProject() : showAllProjects());
+	reportFilter.subscribe(() => currentProjectName ? showOneProject() : showAllProjects());
 
-	$rangeButtons.on('click', updateRange);
+	// add event listener for buttons
+	$rangeButtons.on(click, updateRange);
+	$btnExportProjects.on(click, exportCSVProjects);
+	$btnExportFiles.on(click, exportCSVFiles);
 
 	update(_projectName);
 }
+
 function update(proj) {
 	console.log(proj);
-	(projectName = proj) ? showOneProject() : showAllProjects();
+	(currentProjectName = proj) ? showOneProject() : showAllProjects();
 }
 
-function showAllProjects() { 
+function showAllProjects() {
 	$pageIndex.show();
 	$pageOneProject.hide();
-	
+
 	requestFilter = Object.assign({}, reportFilter.getFilter());
-	API.requestSilent(URL.overview(), data => chartProjects.update(data.groupBy.project));
+	API.requestSilent(URL.overview(), data => {
+		projectsData = data.groupBy.project;
+		chartProjects.update(projectsData);
+	});
 }
+
 function showOneProject() {
 	$pageIndex.hide();
-	$pageOneProject.show(); 
+	$pageOneProject.show();
 
-	let projPath = decodeURIComponent(projectName);
+	let projPath = decodeURIComponent(currentProjectName);
 	let projName = utils.getShortProjectName(projPath);
 	form.fill($pageOneProject, { projName, projPath });
 
 	requestFilter = Object.assign({}, reportFilter.getFilter());
-	API.requestSilent(URL.project(projectName), data => {
+	API.requestSilent(URL.project(currentProjectName), data => {
+		filesData = data.groupBy.file;
 		chartSummaryForProject.update(getSummaryDataFromResponse(data))
-		chartFilesInProject.update({ data: data.groupBy.file })
+		chartFilesInProject.update({ data: filesData })
 	});
 }
 
@@ -85,12 +115,40 @@ function getSummaryDataFromResponse(data) {
 	return summaryData;
 }
 
-const CLASS_RANGE_DEFAULT = 'btn-default';
-const CLASS_RANGE_SELECTED = 'btn-primary';
+/**
+ * When you click buttons "Files in this project": "All", "Top 5", ...
+ */
 function updateRange() {
+	const classDefault = 'btn-default', classSelected = 'btn-primary';
+
 	let top = parseInt($(this).attr('data-range'));
-	$rangeButtons.removeClass(CLASS_RANGE_SELECTED).addClass(CLASS_RANGE_DEFAULT);
+	$rangeButtons.removeClass(classSelected).addClass(classDefault);
 	$rangeButtons.filter(`[data-range=${top}]`)
-		.addClass(CLASS_RANGE_SELECTED).removeClass(CLASS_RANGE_DEFAULT);
+		.addClass(classSelected).removeClass(classDefault);
 	chartFilesInProject.update({ top });
+}
+
+function exportCSVProjects() {
+	const headers = ['Name', 'Path', 'Cost'];
+	let rows = utils.orderByWatchingTime(utils.object2array(projectsData), true);
+	let data = rows.map(row => {
+		let path = row.name;
+		let cost = dateTime.getReadableTime(projectsData[path].watching);
+
+		path = decodeURIComponent(path);
+		return [ utils.getShortProjectName(path), path, cost ];
+	});
+	csvDialog.showExportDialog(csvDialog.getFileNameFromFilter(), headers, data);
+}
+function exportCSVFiles() {
+	const headers = ['File', 'Cost'];
+	let rows = utils.orderByWatchingTime(utils.object2array(filesData), true);
+	let data = rows.map(row => {
+		let cost = dateTime.getReadableTime(filesData[row.name].watching);
+		return [ decodeURIComponent(row.name), cost ];
+	});
+
+	let defaultFile = utils.getShortProjectName(decodeURIComponent(currentProjectName));
+	defaultFile = defaultFile.replace(/\W/g, '-').toLowerCase()	+ '_' + csvDialog.getFileNameFromFilter();
+	csvDialog.showExportDialog(defaultFile, headers, data);
 }

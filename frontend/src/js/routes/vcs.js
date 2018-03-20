@@ -1,7 +1,11 @@
 //@ts-check
 
+const click = 'click';
+
 let utils = require('../utils/utils'),
 	resizer = require('../utils/resizer'),
+	dateTime = require('../utils/datetime'),
+	csvDialog = require('../ui/exportCSVDialog'),
 	reportFilter = require('../reportFilter'),
 	API = require('../api'),
 	{ URL } = API;
@@ -11,6 +15,11 @@ let $page = $('.page-vcs');
 let chartVCS = require('../charts/vcs');
 /** @type {EChartsInstance[]} */
 let charts = [];
+
+/** @type {CodingWatchingMap} */
+let VCSData = {};
+
+let $btnExportVCS = $('#btnExportGit');
 
 module.exports = { name: utils.basename(__filename, '.js'), start, stop };
 
@@ -32,6 +41,8 @@ function start() {
 	reportFilter.removeSubscribers();
 	reportFilter.subscribe(request);
 
+	$btnExportVCS.off(click).on(click, exportCSVGit);
+
 	request(reportFilter.getFilter());
 }
 
@@ -39,7 +50,7 @@ function start() {
 function request(filter) {
 	void filter; // keep this variable in here
 	API.requestSilent(URL.vcs(), data =>
-		chartVCS.update(getAdvancedVCSInfoArray(data.groupBy.vcs)));
+		chartVCS.update(getAdvancedVCSInfoArray(VCSData = data.groupBy.vcs)));
 }
 
 /**
@@ -61,4 +72,26 @@ function getAdvancedVCSInfoArray(data) {
 		}, data[vcsString]));
 	});
 	return result;
+}
+
+function exportCSVGit() {
+	const headers = ['Project', 'Path', 'Branch', 'Cost'];
+	let rows = utils.orderByWatchingTime(utils.object2array(VCSData), true);
+	console.log(rows);
+
+	let data = rows.map(row => {
+		let time = VCSData[row.name].watching;
+		let cost = dateTime.getReadableTime(time);
+
+		let vcs = row.name.split(':').map(it => decodeURIComponent(it || ''));
+		let [, path, branch] = vcs;
+		return [
+			path ? utils.getShortProjectName(path) : 'others',
+			path || 'without VCS',
+			branch || '',
+			cost
+		];
+	});
+	let defaultFile = 'vcs_' + csvDialog.getFileNameFromFilter();
+	csvDialog.showExportDialog(defaultFile, headers, data);
 }

@@ -25,7 +25,12 @@ let fileNames = [];
 let base = require('./_base').createBaseChartClass();
 module.exports = { recommendedChartId: 'project_files', init: base.init, update };
 
-function update({ top = 10, data = null }) {
+/**
+ * @param {{top?: number, data?: any}} attr
+ */
+function update(attr) {
+	let { top = 10, data = null } = attr;
+
 	if (data == null)
 		data = dataCache; //Read from cache
 	else

@@ -22,7 +22,9 @@ let Utils = {
 
 	basename,
 
-	maxInArray
+	maxInArray,
+
+	escapeHtml
 };
 module.exports = Utils;
 
@@ -122,11 +124,12 @@ function orderByWatchingTime(array, desc = false) {
 }
 /**
  * convert object to array. each array item has a "name" field
- * @param {Object} object
- * @returns Object[]
+ * @template T
+ * @param {{[x: string]: T}} object
+ * @returns {({name: string}&T)[]}
  */
 function object2array(object) {
-	return Object.keys(object).map(name => { object[name].name = name; return object[name]; });
+	return Object.keys(object).map(name => Object.assign({name}, object[name]));
 }
 
 
@@ -148,4 +151,14 @@ function generateChartOption(name, type, data, ...options) {
  */
 function merge(...objects) {
 	return $.extend(true, {}, ...objects);
+}
+
+/** @param {string} str */
+function escapeHtml(str) {
+	return str
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#039;");
 }

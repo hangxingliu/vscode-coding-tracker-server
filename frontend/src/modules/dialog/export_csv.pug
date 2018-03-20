@@ -1,0 +1,24 @@
+#dlgExportCSV.modal.fade
+	.modal-dialog.modal-lg
+		.modal-content
+			.modal-header
+				h4.modal-title(data-i18n="title_export_csv") Export CSV
+				button.close(type="button" data-dismiss="modal" aria-label="Close")
+					span(aria-hidden="true") &times;
+			.modal-body
+				.container-fluid
+					.row.mb-4: .col-12
+						label.d-block.d-sm-none(for="txtExportCSVName") Filename:
+						.input-group
+							span.d-none.d-sm-block.input-group-addon Filename:
+							input.form-control(type="text" id="txtExportCSVName")
+							span.input-group-addon .csv
+					.row.mb-4: .col-12
+						.text-muted.mb-2
+							b Preview:
+							span.ml-2(id="txtExportRowNum")
+							span.ml-1 columns in total
+						.table-responsive
+							table.table(id="tableExportPreview" style="white-space: nowrap")
+					.row: .col-xs-12
+						button.btn-download.btn.btn-success.pull-right(id="btnExportDownload") Download CSV file

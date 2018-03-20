@@ -7,14 +7,14 @@ mixin btn(_type, range)
 
 mixin range()
 	.pull-right.range-block
-		+btn("btn-success", 0): span(data-i18n="word_all") All 
+		+btn("btn-success", 0): span(data-i18n="word_all") All
 		+btn("btn-default", 5)
 			span(data-i18n="word_top") Top
 			| &nbsp;5
-		+btn("btn-default", 10) 
+		+btn("btn-default", 10)
 			span(data-i18n="word_top") Top
 			| &nbsp;10
-		+btn("btn-default", 20) 
+		+btn("btn-default", 20)
 			span(data-i18n="word_top") Top
 			| &nbsp;20
 
@@ -23,7 +23,11 @@ div.page-languages(style="display: none")
 		.col-12
 			.card.my-2
 				.card-body
-					h4.card-title(data-i18n="title_languages") Group by languages
+					.head.d-flex.justify-content-between
+						h4.card-title(data-i18n="title_languages") Group by languages
+						a#btnExportLangauges.text-accent-color.link-share(href="javascript:;")
+							span Export CSV
+							span.ion-archive.ml-2
 					.card-text
 						+range()
 					.card-text

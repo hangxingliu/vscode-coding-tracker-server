@@ -30,7 +30,12 @@ let dataCache = null;
 let base = require('./_base').createBaseChartClass();
 module.exports = { recommendedChartId: 'languages', init: base.init, update };
 
-function update({ top = 0, data = null}) {
+/**
+ * @param {{top?: number, data?: any}} attr
+ */
+function update(attr) {
+	let { top = 0, data = null } = attr;
+
 	if (data) dataCache = data;
 	else data = dataCache;
 

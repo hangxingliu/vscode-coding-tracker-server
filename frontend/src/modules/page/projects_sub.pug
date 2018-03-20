@@ -7,14 +7,14 @@ mixin btn(_type, range)
 
 mixin filesRange()
 	.pull-right.mt-n8px.range-block
-		+btn("btn-default", 0): span(data-i18n="word_all") All 
+		+btn("btn-default", 0): span(data-i18n="word_all") All
 		+btn("btn-default", 5)
 			span(data-i18n="word_top") Top
 			| &nbsp;5
-		+btn("btn-primary", 10) 
+		+btn("btn-primary", 10)
 			span(data-i18n="word_top") Top
 			| &nbsp;10
-		+btn("btn-default", 20) 
+		+btn("btn-default", 20)
 			span(data-i18n="word_top") Top
 			| &nbsp;20
 
@@ -23,11 +23,15 @@ div.page-projects-sub(style="display: none")
 		.col-12
 			.card.my-2
 				.card-body
-					h4.card-title(name="projName")
+					.head.d-flex.justify-content-between
+						h4.card-title(name="projName")
+						a#btnExportFiles.text-accent-color.link-share(href="javascript:;")
+							span Export CSV
+							span.ion-archive.ml-2
 					h6.card-subtitle.text-muted.mb-2.ml-4(name="projPath")
 					.card-text
 						+chartBlock('project_summary', '250px')
-					.card-text.mt-2.mb-1(data-i18n="title_files_in_proj") 
+					.card-text.mt-2.mb-1(data-i18n="title_files_in_proj")
 						| Files in this project:
 					.card-text
 						+filesRange()
