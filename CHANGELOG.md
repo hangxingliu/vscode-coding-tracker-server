@@ -2,6 +2,10 @@
 
 ### 0.6.0 (2017/03/xx)
 
+1. Fix incorrect 24 hours report.
+2. Fix some wrong i18n on the UI
+3. Support export/download report data as CSV format
+
 **Coming soon ...**
 
 ### 0.5.0 (2017/11/26)
