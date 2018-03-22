@@ -3,13 +3,16 @@
 /*
 	This is router of sub-page `projects` (Projects Report)
 */
+
 const click = 'click';
+const storageKeyAssociated = 'coding-tacker-associated-proj';
 
 let utils = require('../utils/utils'),
 	resizer = require('../utils/resizer'),
 	form = require('../utils/form'),
 	dateTime = require('../utils/datetime'),
 	csvDialog = require('../ui/exportCSVDialog'),
+	associateDialog = require('../ui/associateProjectsDialog'),
 	router = require('../router'),
 	reportFilter = require('../reportFilter'),
 	API = require('../api'),
@@ -34,11 +37,15 @@ let projectsData = {};
 /** @type {CodingWatchingMap} */
 let filesData = {};
 
+/** @type {Association[]} */
+let associations = [];
+
 
 /** Files: "All" "Top 5" "Top 10" ... */
 let $rangeButtons = $pageOneProject.find('.range-block [data-range]'),
 	$btnExportProjects = $('#btnExportProjects'),
-	$btnExportFiles = $('#btnExportFiles');
+	$btnExportFiles = $('#btnExportFiles'),
+	$btnAssociate = $('#btnSetAssociated');
 
 module.exports = { name: utils.basename(__filename, '.js'), start, stop, update };
 
@@ -46,16 +53,13 @@ function stop() {
 	$pageIndex.hide();
 	$pageOneProject.hide();
 
-	$rangeButtons.off(click);
-	$btnExportProjects.off(click);
-	$btnExportFiles.off(click);
-
 	charts.map(chart => chart.dispose());
 }
 
 function start(_projectName) {
 	charts = [
 		chartProjects.init(utils.getChartDom(chartProjects.recommendedChartId, $pageIndex)[0],
+			// click bar for details of a single project(included associate projects)
 			project => router.to('projects', project)),
 	].concat([
 		chartFilesInProject,
@@ -68,17 +72,27 @@ function start(_projectName) {
 	reportFilter.removeSubscribers();
 	reportFilter.subscribe(() => currentProjectName ? showOneProject() : showAllProjects());
 
+	// load associated projects information
+	loadAssociationFromStorage();
+
 	// add event listener for buttons
-	$rangeButtons.on(click, updateRange);
-	$btnExportProjects.on(click, exportCSVProjects);
-	$btnExportFiles.on(click, exportCSVFiles);
+	$rangeButtons.off(click).on(click, updateRange);
+	$btnExportProjects.off(click).on(click, exportCSVProjects);
+	$btnExportFiles.off(click).on(click, exportCSVFiles);
+	$btnAssociate.off(click).on(click, associateProjects);
 
 	update(_projectName);
 }
 
 function update(proj) {
-	console.log(proj);
-	(currentProjectName = proj) ? showOneProject() : showAllProjects();
+	if (proj) {
+		console.log('update: display details of project:', proj);
+		currentProjectName = proj;
+		showOneProject();
+	} else {
+		console.log('update: display all projects');
+		showAllProjects();
+	}
 }
 
 function showAllProjects() {
@@ -88,7 +102,7 @@ function showAllProjects() {
 	requestFilter = Object.assign({}, reportFilter.getFilter());
 	API.requestSilent(URL.overview(), data => {
 		projectsData = data.groupBy.project;
-		chartProjects.update(projectsData);
+		chartProjects.update(projectsData, associations);
 	});
 }
 
@@ -96,9 +110,25 @@ function showOneProject() {
 	$pageIndex.hide();
 	$pageOneProject.show();
 
-	let projPath = decodeURIComponent(currentProjectName);
-	let projName = utils.getShortProjectName(projPath);
-	form.fill($pageOneProject, { projName, projPath });
+	if (currentProjectName.indexOf(':') > 0) {
+		// It is a associated projects set
+		// Query name of associated projects
+		let projPath = currentProjectName.split(':');
+		let projNameIndex = associations.findIndex(a => a.projects.indexOf(projPath[0]) >= 0);
+		let projName = projNameIndex >= 0 ? associations[projNameIndex].name : '';
+		if (!projName) {
+			console.warn(`Could not match association of "${currentProjectName}"`);
+			projName = utils.getShortProjectName(decodeURIComponent(projPath[0]));
+		}
+		form.fill($pageOneProject, {
+			projName, projNameComment: '(Association)',
+			projPath: projPath.map(it => decodeURIComponent(it)).join(' & ')
+		});
+	} else {
+		let projPath = decodeURIComponent(currentProjectName);
+		let projName = utils.getShortProjectName(projPath);
+		form.fill($pageOneProject, { projName, projPath, projNameComment: '' });
+	}
 
 	requestFilter = Object.assign({}, reportFilter.getFilter());
 	API.requestSilent(URL.project(currentProjectName), data => {
@@ -151,4 +181,47 @@ function exportCSVFiles() {
 	let defaultFile = utils.getShortProjectName(decodeURIComponent(currentProjectName));
 	defaultFile = defaultFile.replace(/\W/g, '-').toLowerCase()	+ '_' + csvDialog.getFileNameFromFilter();
 	csvDialog.showExportDialog(defaultFile, headers, data);
+}
+
+function associateProjects() {
+	let projects = utils.orderByWatchingTime(utils.object2array(projectsData), true);
+
+	loadAssociationFromStorage();
+	associateDialog.showAssociateDialog(projects, associations, (newAssociations => {
+		if (JSON.stringify(associations) == JSON.stringify(newAssociations))
+			return console.log('There is nothing changed in associations');
+
+		associations = newAssociations;
+		saveAssociationToStorage();
+
+		console.log('New Associations:', newAssociations);
+		chartProjects.update(projectsData, associations);
+	}));
+}
+
+function saveAssociationToStorage() {
+	if (!('localStorage' in window)) return;
+	localStorage.setItem(storageKeyAssociated, JSON.stringify(associations));
+}
+
+function loadAssociationFromStorage() {
+	if (!('localStorage' in window)) return;
+	try {
+		/** @type {Association[]} */
+		let raw = JSON.parse(localStorage.getItem(storageKeyAssociated) || '[]');
+		if (!Array.isArray(raw))
+			throw new Error(`Info is not an array`);
+		for (let i = 0; i < raw.length; i ++) {
+			let it = raw[i];
+			if (typeof it.name != 'string')
+				throw new Error(`Info[${i}].name is not a string`);
+			if (!Array.isArray(it.projects))
+				throw new Error(`Info[${i}].projects is not an array`);
+		}
+		associations = raw;
+	} catch (ex) {
+		alert(`Error: Could not load associated projects info from localStorage.\n  ${ex.message}`);
+		if (confirm(`Do you want to remove incorrect record in localStorage?\n  key: ${storageKeyAssociated}`))
+			localStorage.setItem(storageKeyAssociated, '[]');
+	}
 }

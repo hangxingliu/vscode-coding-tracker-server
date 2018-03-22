@@ -77,3 +77,8 @@ type AdvancedVCSInfo = {
 	coding: number;
 	selected: boolean;
 };
+
+type Association = {
+	name: string;
+	projects: string[];
+};

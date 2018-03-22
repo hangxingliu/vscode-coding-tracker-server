@@ -12,10 +12,14 @@ div.page-projects-index(style="display: none")
 					.head.d-flex.justify-content-between
 						h4.card-title
 							span(data-i18n="title_projects") Projects
-						a#btnExportProjects.text-accent-color.link-share(href="javascript:;")
-							span Export CSV
-							span.ion-archive.ml-2
-					h6.card-subtitle.text-muted.mb-2.mt-1(data-i18n="title_projects_tip")
+						.d-flex.flex-column.align-items-end
+							a#btnExportProjects.link-share(href="javascript:;")
+								span Export CSV
+								span.ion-archive.ml-2
+							a#btnSetAssociated.text-success.link-share(href="javascript:;")
+								span Associate Projects
+								span.ion-link.ml-2.d-none.d-sm-inline
+					h6.card-subtitle.text-muted.mt-2(data-i18n="title_projects_tip")
 						| (click item in chart for details)
 					.card-text
 						+chartBlock("projects")

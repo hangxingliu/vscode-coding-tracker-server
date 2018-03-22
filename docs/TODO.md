@@ -4,7 +4,7 @@
 
 ---
 
-- [ ] combined report for multi-projects
+- [ ] how to escape character `}` for label text that owned option yAxis.axisLabel.rich
 - [ ] setting about timezone and which day is first day of the week
 - [ ] fix i18n in side menu
 - [ ] full i18n for each languages
@@ -16,6 +16,7 @@
 - [ ] custom chart color scheme
 - [ ] more share charts
 - [ ] update bootstrap to 4.0.0
+- [x] combined report for multi-projects
 - [x] add vcs export dialog
 - [x] report in one day
 - [x] replace glyphicons to ionicons

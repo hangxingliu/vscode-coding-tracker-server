@@ -2,9 +2,10 @@
 
 ### 0.6.0 (2017/03/xx)
 
-1. Fix incorrect 24 hours report.
-2. Fix some wrong i18n on the UI
-3. Support export/download report data as CSV format
+0. Support exporting/downloading report data as CSV format
+1. Support adding association for projects (So you can merge report from different projects)
+2. Fix incorrect 24 hours report.
+3. Fix some wrong i18n on the UI
 
 **Coming soon ...**
 

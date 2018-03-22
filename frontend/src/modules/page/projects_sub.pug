@@ -24,7 +24,9 @@ div.page-projects-sub(style="display: none")
 			.card.my-2
 				.card-body
 					.head.d-flex.justify-content-between
-						h4.card-title(name="projName")
+						h4.card-title
+							span(name="projName")
+							span.ml-2.text-muted(name="projNameComment")
 						a#btnExportFiles.text-accent-color.link-share(href="javascript:;")
 							span Export CSV
 							span.ion-archive.ml-2

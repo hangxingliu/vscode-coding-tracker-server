@@ -1,0 +1,19 @@
+#dlgAssociate.modal.fade
+	.modal-dialog.modal-lg
+		.modal-content
+			.modal-header
+				h4.modal-title(data-i18n="title_associate_projects") Associate Projects
+				button.close(type="button" data-dismiss="modal" aria-label="Close")
+					span(aria-hidden="true") &times;
+			.modal-body(style="max-height: 48vh; overflow-y: auto;")
+				#containerAssociation.container-fluid.mx-0.px-0
+				.container-fluid.mx-0.px-0
+					.row.mt-1: .col-12
+						a#btnNewAssociation.card.text-center(style="cursor: pointer")
+							.card-body
+								h3.card-title.ion-plus-round.text-primary
+								h5.card-subtitle.text-info New Association
+			.modal-footer.flex-wrap
+				#msgAssociationErr.alert.alert-danger.mb-2.mb-sm-0.mx-0(style="display: none")
+				button.btn.btn-secondary(type="button" data-dismiss="modal") Cancel
+				button#btnApplyAssociation.btn.btn-success(type="button") Apply
