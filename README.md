@@ -23,6 +23,16 @@ VSCode Coding Tracker extension server side program.
 
 ![screenshots_2](screenshots/2.jpg)
 
+## Current Version
+
+### 0.6.0 (2018/03/23)
+
+0. Support exporting/downloading report data as CSV format.
+1. Support adding association for projects (So you can merge report from different projects).
+2. Fix incorrect 24 hours report.
+3. Fix some wrong i18n on the UI.
+4. More compatible with old browsers and mobile browsers.
+
 ## How To Install And Use
 
 1. Make sure You have installed `Node.js` development environment included `npm`
@@ -46,21 +56,6 @@ VSCode Coding Tracker extension server side program.
 > `--public-report`: It means anyone could visit report page without token
 > 
 > **more options information you could find by using command `node app --help`**
-
-## Current Version
-
-### 0.6.0 (2017/03/xx)
-
-**Coming soon ...**
-
-### 0.5.0 (2017/11/26)
-
-0. Support collect and report version control system(Git) activities.
-1. More report charts. Better i18n, date format and time format.
-2. Custom report date range. Custom start time for 24hours report.
-3. New report page using Bootstrap4 with multiple child report pages.
-4. Upgrade upload and storage protocol to 4.0. Improve storage action.
-5. Breaking change in frontend structure (charts, i18n, routes, ui, utils ...).
 
 more version information: [CHANGELOG.md](CHANGELOG.md)
 

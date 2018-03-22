@@ -1,9 +1,19 @@
+# ignore tgz tar
+*.tgz
+*.tar
+
+# ignore utilities binary output files
+utilities/*.out
+
+# c++ clang:
+.usages_clang
+
 # ignore frontend source map files
 frontend/dist/**/*.map
 
 test/temp
+test/resources/data-simple
 test/playground
-test/resources
 test/log
 
 # ignore test tracking data files
@@ -12,14 +22,8 @@ database
 # ignore .vscode config
 .vscode
 
-# ignore .json folder
-.json
-
 # ignore spelling check config
 cSpell.json
-
-# ignore jsconfig.json
-jsconfig.json
 
 # ignore log file included npm log
 *.log

@@ -1,13 +1,12 @@
 # CHANGELOG
 
-### 0.6.0 (2017/03/xx)
+### 0.6.0 (2018/03/23)
 
-0. Support exporting/downloading report data as CSV format
-1. Support adding association for projects (So you can merge report from different projects)
+0. Support exporting/downloading report data as CSV format.
+1. Support adding association for projects (So you can merge report from different projects).
 2. Fix incorrect 24 hours report.
-3. Fix some wrong i18n on the UI
-
-**Coming soon ...**
+3. Fix some wrong i18n on the UI.
+4. More compatible with old browsers and mobile browsers.
 
 ### 0.5.0 (2017/11/26)
 

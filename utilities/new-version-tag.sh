@@ -90,6 +90,12 @@ echo "[~] version has write into app.js";
 # =========================
 #   git add tag
 # =========================
+read -r -p "Add a git tag \"${VERSION}\" [y/N] > " CONFIRM
+case "$CONFIRM" in
+    [yY][eE][sS]|[yY]) ;;
+    *) exit 0;;
+esac
+
 echo "[.] adding tag into git ..."
 git tag -a "${VERSION}" -s -m "release ${VERSION}"
 [[ "$?" == "0" ]] || fatal "add tag failed!";
