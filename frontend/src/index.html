@@ -59,7 +59,15 @@
 	<script src="../lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 	<script src="../lib/echarts/dist/echarts.min.js"></script>
 
-	<script src="js/index.js"></script>
+<script>
+(function(){
+	var d=document,l=console.log;var s=d.createElement('script');s.src='js/index.js';
+	function m(){setTimeout(function(){l("loading main script file ...");d.head.appendChild(s);},15);}
+	if(typeof $ == "undefined") {alert("Oops, Your browser is too outdated to support!\n  (Becuase it can't even load jQuery)");}
+	else if(!String.prototype.endsWith){l("loading core-js polyfille ...");$.getScript('js/polyfill.js', m);}
+	else{m();}
+})();
+</script>
 	<script async defer src="https://buttons.github.io/buttons.js"></script>
 
 </body>

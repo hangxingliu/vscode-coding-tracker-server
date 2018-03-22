@@ -60,10 +60,13 @@ function update(groupByProject, associations = []) {
 	// ------------
 	// associate
 	let associated = rawArray.map(() => false);
-	for (let { name, projects } of associations) {
+	for (let i in associations) {
+		let { name, projects } = associations[i];
 		let coding = 0, watching = 0, original = [];
-		for (let project of projects) {
+		for (let j in projects) {
+			let project = projects[j];
 			if (!project) continue;
+
 			let i = projectToIndexMap[project];
 			if (typeof i == 'undefined') continue;
 

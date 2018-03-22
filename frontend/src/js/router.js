@@ -16,19 +16,19 @@ let Router = {
 module.exports = Router;
 
 /**
- * @param {IRoute[]} routes 
+ * @param {IRoute[]} routes
  */
-function init(routes) { 
+function init(routes) {
 	routesMap = {};
-	for (let route of routes)
-		routesMap[route.name] = route;	
+	routes.forEach(route => routesMap[route.name] = route);
+
 	installRouteLinks();
 	return Router;
 }
 
 function isRouteExist(name) { return name in routesMap; }
 
-function installRouteLinks() { 
+function installRouteLinks() {
 	$('[data-route]').off('click').on('click', function () {
 		let $this = $(this),
 			path = $this.attr('data-route');
@@ -41,7 +41,7 @@ function installRouteLinks() {
  * @param {string} path
  * @returns {[string, string]} 0: name; 1: params
  */
-function parseRoutePath(path) { 
+function parseRoutePath(path) {
 	path = path.trim();
 
 	let index = path.indexOf('/');
@@ -49,8 +49,8 @@ function parseRoutePath(path) {
 	return [path.slice(0, index), path.slice(index + 1)];
 }
 
-function followRouterInURL(defaultRoute) { 
-	let [defaultName, defaultParams] = parseRoutePath(defaultRoute); 
+function followRouterInURL(defaultRoute) {
+	let [defaultName, defaultParams] = parseRoutePath(defaultRoute);
 	let hash = location.hash;
 	if (!hash)
 		return to(defaultName, defaultParams);
@@ -61,17 +61,17 @@ function followRouterInURL(defaultRoute) {
 }
 
 /**
- * @param {string} name 
- * @param {string} params 
+ * @param {string} name
+ * @param {string} params
  */
-function to(name, params) { 
+function to(name, params) {
 	if (!isRouteExist(name))
-		return console.error(`Route ${name} is not existed!`);	
-	
+		return console.error(`Route ${name} is not existed!`);
+
 	location.hash = params ? `#${name}/${params}` : `#${name}`;
-	
+
 	if (activeRoute) {
-		if (activeRoute.name == name) { 
+		if (activeRoute.name == name) {
 			console.log(`Updating route ${name}`);
 			return activeRoute.update && activeRoute.update(params);
 		}

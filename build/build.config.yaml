@@ -6,6 +6,7 @@ src:
     - "*.html"
   scripts:
     - "js/index.js"
+    - "js/polyfill.js"
   styles:
     - "sass/index.scss"
 dist:
@@ -35,7 +36,7 @@ processor:
   browser_sync:
     open: false
     enable: true
-    proxy: 127.0.0.1:10345
+    proxy: 127.0.0.1:8765
   ejs_variables:
     enable: true
     files:

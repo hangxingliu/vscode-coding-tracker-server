@@ -28,9 +28,11 @@ function showAssociateDialog(projects, oldAssociation, callback) {
 	/** @type {string[]} */
 	let namesInAssociation = [].concat(...oldAssociation.map(a => a.projects));
 	let otherPaths = [], otherNames = [];
-	for (let name of namesInAssociation) {
+	for (let i in namesInAssociation) {
+		let name = namesInAssociation[i];
 		if (!name) continue;
-		if (projects.findIndex(p => p.name == name) < 0) {
+		let index = projects.findIndex(function (p) { return p.name == name });
+		if(index < 0) {
 			otherPaths.push(name);
 			otherNames.push(utils.getShortProjectName(decodeURIComponent(name)));
 		}
@@ -41,9 +43,11 @@ function showAssociateDialog(projects, oldAssociation, callback) {
 
 	// reset association container
 	$containerAssociation[0].innerHTML = '';
-	for (let ass of oldAssociation)
+	for (let i in oldAssociation) {
+		let ass = oldAssociation[i];
 		$containerAssociation.append(generateAssociateView(ass))
 			.find('.btn-del').off(click).on(click, onClickRemove);
+	}
 
 	$msgAssociationErr.hide();
 	$dialog.modal();
