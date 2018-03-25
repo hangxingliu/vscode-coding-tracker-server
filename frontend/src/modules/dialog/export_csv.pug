@@ -10,9 +10,11 @@
 					.row.mb-4: .col-12
 						label.d-block.d-sm-none(for="txtExportCSVName") Filename:
 						.input-group
-							span.d-none.d-sm-block.input-group-addon Filename:
+							.d-none.d-sm-block.input-group-prepend
+								span.input-group-text Filename:
 							input.form-control(type="text" id="txtExportCSVName")
-							span.input-group-addon .csv
+							.input-group-append
+								span.input-group-text .csv
 					.row.mb-4: .col-12
 						.text-muted.mb-2
 							b Preview:

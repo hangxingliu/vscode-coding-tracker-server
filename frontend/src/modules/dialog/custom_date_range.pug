@@ -2,17 +2,17 @@
 	.modal-dialog.modal-sm
 		.modal-content
 			.modal-header
-				h4.modal-title 
+				h4.modal-title
 					i.ion-calendar.mr-2
 					span Custom range
 			.modal-body
 				.input-group
 					input#rangeStart.form-control(type='text', value='--')
-					.input-group-addon to
+					.input-group-prepend
+						span.input-group-text.border-left-0 to
 					input#rangeEnd.form-control(type='text', value='--')
 				#rangeDescription.text-right
 				#rangeCalendar
 			.modal-footer
 				button.btn.btn-secondary(type="button" data-dismiss="modal") Cancel
 				button#rangeConfirm.btn.btn-success(type="button") OK
-			

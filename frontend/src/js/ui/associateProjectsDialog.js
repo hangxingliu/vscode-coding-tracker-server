@@ -104,7 +104,8 @@ function showAssociateDialog(projects, oldAssociation, callback) {
 						</div>
 						<div class="mt-2 d-sm-none">Name:</div>
 						<div class="input-group mb-3">
-							<span class="input-group-addon d-none d-sm-block" >Name</span>
+							<div class="input-group-prepend d-none d-sm-block">
+								<span class="input-group-text">Name</span></div>
 							<input class="form-control input-name" type="text"
 								value="${html(association.name)}" />
 						</div>
@@ -130,7 +131,8 @@ function showAssociateDialog(projects, oldAssociation, callback) {
 			`<option ${selectedProject == value ? "selected" : ""} value="${html(value)}">${html(label)}</option>`;
 
 		return `<div class="input-group my-1">
-			<span class="input-group-addon d-none d-sm-block">${prepend}</span>
+			<div class="input-group-prepend d-none d-sm-block">
+				<span class="input-group-text">${prepend}</span></div>
 			<select class="form-control" data-id="${dataId}">
 				${option("None", "")}
 				${otherNames.map((name, i) => option(name + " (--)", otherPaths[i]))}

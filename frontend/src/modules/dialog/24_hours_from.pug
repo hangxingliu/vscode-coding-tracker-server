@@ -1,4 +1,4 @@
-- 
+-
 	var times = [
 		"00:00", "01:00", "02:00", "03:00", "04:00", "05:00",
 		"06:00", "07:00", "08:00", "09:00", "10:00", "11:00",
@@ -10,14 +10,14 @@
 	.modal-dialog.modal-sm
 		.modal-content
 			.modal-header
-				h4.modal-title 
+				h4.modal-title
 					i.ion-calendar.mr-2
 					span 24 Hours From:
 			.modal-body
 				.input-group
-					.input-group-addon: i.ion-calendar
+					.input-group-prepend
+						span.input-group-text: i.ion-calendar
 					input.from-date.form-control(type='text', value='--')
-					//- .input-group-addon: i.ion-clock
 					select.from-time.form-control
 						each time in times
 							option(value=time)= time
@@ -26,4 +26,3 @@
 			.modal-footer
 				button.btn.btn-secondary(type="button" data-dismiss="modal") Cancel
 				button#_24hsFromConfirm.btn.btn-success(type="button") OK
-			

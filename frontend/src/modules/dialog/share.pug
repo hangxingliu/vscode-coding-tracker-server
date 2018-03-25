@@ -6,9 +6,11 @@ mixin formTitle(text, i18n)
 
 mixin fontSizeInput(text, name)
 	.col-6.col-lg-12: .input-group.mt-1
-		span.input-group-addon(style="min-width: 60px")= text
+		.input-group-prepend
+			span.input-group-text(style="min-width: 60px")= text
 		input.form-control(type="number" name=name)
-		span.d-none.d-md-block.input-group-addon.hidden-xs px
+		.d-none.d-md-block.input-group-append.hidden-xs
+			span.input-group-text px
 
 mixin markLineButton(_type)
 	button.text-capitalize.btn.btn-markline.btn-default.mx-1(type="button"
