@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.6.1 (2018/xx/xx) **Developing on**
+
+1. add group by directory for files in project (**Working...**)
+
 ### 0.6.0 (2018/03/23)
 
 0. Support exporting/downloading report data as CSV format.

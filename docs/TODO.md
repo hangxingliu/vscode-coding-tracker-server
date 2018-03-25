@@ -1,11 +1,8 @@
 # TODO
 
-- [ ] Write changelog for 0.6.0
-
----
-
 - [ ] how to escape character `}` for label text that owned option yAxis.axisLabel.rich
-- [ ] setting about timezone and which day is first day of the week
+- [ ] compress polyfill.js
+- [ ] settings about timezone and which day is first day of the week
 - [ ] fix i18n in side menu
 - [ ] full i18n for each languages
 - [ ] add lock file (support pm2 and multi-process launching)

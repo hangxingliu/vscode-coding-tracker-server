@@ -2,10 +2,24 @@
 	"compilerOptions": {
 		"outDir": "test/temp",
 
+		"module": "commonjs",
+		"target": "es2015",
+
 		"allowJs": true,
 		"checkJs": true,
 
-		"target": "es2015"
+		"lib": [
+			"es6",
+			"dom"
+		],
+		"types": [
+			"node",
+			"bootstrap",
+			"jquery",
+			"mocha",
+			"popper.js",
+			"colors"
+		]
 	},
 	"include": [
 		"lib/**/*.js",
