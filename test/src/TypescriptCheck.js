@@ -29,7 +29,7 @@ if (process.argv.indexOf('--no-tsc') < 0) {
 
 			exec(COMMAND, { cwd: CWD, encoding: 'utf8' }, (error, stdout, stderr) => {
 				let output = stdout + stderr;
-				let matchedErrors = output.match(/error\s*\w+/g);
+				let matchedErrors = output.match(/error\s*\w+/g) || [];
 
 				/// @todo Dirty Fix for typescript 2.7.2
 				/// because module `colors`:
