@@ -30,9 +30,9 @@
   ],
   "dependencies": {
     "body-parser": "^1.18.2",
-    "colors": "^1.1.2",
-    "commander": "^2.15.0",
-    "express": "^4.16.2",
+    "colors": "^1.2.1",
+    "commander": "^2.15.1",
+    "express": "^4.16.3",
     "fs-extra": "^4.0.3",
     "morgan": "^1.9.0"
   },
@@ -53,6 +53,7 @@
     "core-js": "^2.5.3",
     "downloadjs": "^1.4.7",
     "eslint": "^4.18.2",
+    "hoek": "^5.0.3",
     "mocha": "^4.0.1",
     "node-sass": "^4.9.0",
     "request": "^2.85.0",

@@ -1,5 +1,9 @@
 # TODO
 
+## TODO
+
+- [ ] more filter options. (for example: computer id: <https://github.com/hangxingliu/vscode-coding-tracker/issues/21>)
+- [ ] multiple access token (proposal)
 - [ ] how to escape character `}` for label text that owned option yAxis.axisLabel.rich
 - [ ] compress polyfill.js
 - [ ] settings about timezone and which day is first day of the week
@@ -12,7 +16,11 @@
 - [ ] more unit tests
 - [ ] custom chart color scheme
 - [ ] more share charts
-- [ ] update bootstrap to 4.0.0
+- [ ] translation to Brazilian Portuguese
+
+## Finish
+
+- [x] update bootstrap to 4.0.0
 - [x] combined report for multi-projects
 - [x] add vcs export dialog
 - [x] report in one day
@@ -23,4 +31,3 @@
 - [x] remove summary y axis mins (10h 0mins => 10h)
 - [x] From issues:
 	- [x] add 24 hours report for custom date
-	- [ ] translation to Brazilian Portuguese
