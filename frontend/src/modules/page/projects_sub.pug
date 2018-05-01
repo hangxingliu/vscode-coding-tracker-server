@@ -6,7 +6,7 @@ mixin btn(_type, range)
 		class=_type style="margin: 0 2px;").btn.btn-sm: block
 
 mixin filesRange()
-	.pull-right.mt-n8px.range-block
+	.mt-n8px.range-block
 		+btn("btn-default", 0): span(data-i18n="word_all") All
 		+btn("btn-default", 5)
 			span(data-i18n="word_top") Top
@@ -35,7 +35,11 @@ div.page-projects-sub(style="display: none")
 						+chartBlock('project_summary', '250px')
 					.card-text.mt-2.mb-1(data-i18n="title_files_in_proj")
 						| Files in this project:
-					.card-text
+					.card-text.d-flex.justify-content-between
 						+filesRange()
+						//- TODO: add function: group by directory
+						//- a#btnGroupByDir.btn.btn-sm.btn-info(href="javascript:;")
+						//- 	span.ion-filing.mr-2
+						//- 	span Group by directory
 					.card-text
 						+chartBlock('project_files', '500px')
