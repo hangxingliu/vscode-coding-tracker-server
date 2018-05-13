@@ -37,8 +37,8 @@ let server;
 //Clean resource database
 fs.removeSync(DATABASE_FOLDER);
 
-describe('Start server', function() {
-	it('#Start Server', function(then){
+describe('Start server', function () {
+	it('#Start Server', function (then) {
 		this.slow(1000);
 		var goThen = true;
 		server = require('child_process').spawn('node',
@@ -59,54 +59,66 @@ describe('Start server', function() {
 
 describe('Request test', () => {
 
-	it('#Welcome information', then =>
-		httpGet(TEST_BASE_URL, {}, then).isJSON().test('obj.localServerMode === true'));
+	it('#Welcome information', then => {
+		httpGet(TEST_BASE_URL, {}, then).isJSON().test('obj.localServerMode === true')
+	});
 
-	it('#Static resources', then =>
-		httpGet(TEST_STATIC_RESOURCE, {}, then).isHTML().regexp(/jquery\.min\.js/));
+	it('#Static resources', then => {
+		httpGet(TEST_STATIC_RESOURCE, {}, then).isHTML().regexp(/jquery\.min\.js/)
+	});
 
 	describe('Token test', () => {
-		it('#Token test (GET Invalid)', then =>
-			httpGet(TEST_API_TOKEN, { qs: { token: 'WrongToken' } }, then, true, 403).isJSON().exist(RESPONSE_ERROR));
+		it('#Token test (GET Invalid)', then => {
+			httpGet(TEST_API_TOKEN, { qs: { token: 'WrongToken' } }, then, true, 403).isJSON().exist(RESPONSE_ERROR)
+		});
 
-		it('#Token test (POST Invalid)', then =>
-			httpPost(TEST_API_TOKEN, { form: { token: 'WrongToken' } }, then, true, 403).isJSON().exist(RESPONSE_ERROR));
+		it('#Token test (POST Invalid)', then => {
+			httpPost(TEST_API_TOKEN, { form: { token: 'WrongToken' } }, then, true, 403).isJSON().exist(RESPONSE_ERROR)
+		});
 
-		it('#Token test (GET)', then =>
-			httpGet(TEST_API_TOKEN, { qs: { token: TOKEN } }, then).isJSON().exist(RESPONSE_SUCCESS));
+		it('#Token test (GET)', then => {
+			httpGet(TEST_API_TOKEN, { qs: { token: TOKEN } }, then).isJSON().exist(RESPONSE_SUCCESS)
+		});
 
-		it('#Token test (POST)', then =>
-			httpPost(TEST_API_TOKEN, { form: { token: TOKEN } }, then).isJSON().exist(RESPONSE_SUCCESS));
+		it('#Token test (POST)', then => {
+			httpPost(TEST_API_TOKEN, { form: { token: TOKEN } }, then).isJSON().exist(RESPONSE_SUCCESS)
+		});
 
 	});
 
 	describe('Upload test', () => {
-		it('#has not version', then =>
+		it('#has not version', then => {
 			httpPost(TEST_UPLOAD, { form: { token: TOKEN } }, then)
-				.isJSON().exist(RESPONSE_ERROR).regexp(/empty/));
-		it('#wrong version1', then =>
+				.isJSON().exist(RESPONSE_ERROR).regexp(/empty/)
+		});
+		it('#wrong version1', then => {
 			httpPost(TEST_UPLOAD, { form: { token: TOKEN, version: '1.2.3' } }, then)
-				.isJSON().exist(RESPONSE_ERROR).regexp(/unsupported/));
+				.isJSON().exist(RESPONSE_ERROR).regexp(/unsupported/)
+		});
 
-		it('#wrong version2', then =>
+		it('#wrong version2', then => {
 			httpPost(TEST_UPLOAD, { form: { token: TOKEN, version: '4.0.3' } }, then)
-				.isJSON().exist(RESPONSE_ERROR).regexp(/unsupported/));
+				.isJSON().exist(RESPONSE_ERROR).regexp(/unsupported/)
+		});
 
-		it('#wrong version3', then =>
+		it('#wrong version3', then => {
 			httpPost(TEST_UPLOAD, { form: { token: TOKEN, version: 'version' } }, then)
-				.isJSON().exist(RESPONSE_ERROR).regexp(/unsupported/));
+				.isJSON().exist(RESPONSE_ERROR).regexp(/unsupported/)
+		});
 
-		it('#missing params', then =>
+		it('#missing params', then => {
 			httpPost(TEST_UPLOAD, { form: { token: TOKEN, version: '3.0', type: 0 } }, then)
-				.isJSON().exist(RESPONSE_ERROR).regexp(/missing/));
+				.isJSON().exist(RESPONSE_ERROR).regexp(/missing/)
+		});
 
-		it('#params not an integer', then =>
+		it('#params not an integer', then => {
 			httpPost(TEST_UPLOAD, {
 				form: {
 					token: TOKEN, version: '3.0', type: 0, time: Date.now(), long: '?',
 					lang: 'javascript', file: 'file', proj: 'proj', pcid: 'test'
 				}
-			}, then).isJSON().exist(RESPONSE_ERROR).regexp(/long/).regexp(/integer/));
+			}, then).isJSON().exist(RESPONSE_ERROR).regexp(/long/).regexp(/integer/)
+		});
 
 		it('#success', then =>
 			Async.mapLimit(UPLOAD_RECORDS, 1, (record, then) =>
@@ -165,7 +177,7 @@ describe('Request test', () => {
 		it('#call kill method', then => {
 			httpGet(TEST_KILL, { qs: { token: TOKEN } }, then).test(RESPONSE_SUCCESS);
 		});
-		it('#had kill', function(then){
+		it('#had kill', function (then) {
 			this.retries(10);
 			httpGet(TEST_KILL, { qs: { token: TOKEN } }, then, false);
 		});

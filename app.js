@@ -32,23 +32,19 @@ var log = require('./lib/Log'),
 	tokenChecker = require('./lib/TokenMiddleware'),
 	reporter = require('./lib/analyze/ReportMiddleware'),
 	reporterV2 = require('./lib/analyze/ReportMiddlewareV2'),
-	randomToken = require('./lib/RandomToken'),
-	Program = require('./lib/Launcher');
-
-//If using random token
-Program.token = Program.randomToken ? randomToken.gen() : Program.token;
+	cliArguments = require('./lib/ParseCliArguments');
 
 //Express Server Object
 var app = Express();
 
 //Init Storage
-storage.init(Program.output);
+storage.init(cliArguments.output);
 
 //Using body parser to analyze upload data
 app.use(require('body-parser').urlencoded({ extended: false }));
 
 //Using homepage welcome
-app.use(welcome(Program));
+app.use(welcome(cliArguments));
 
 //Empty favicon.ico
 app.use('/favicon.ico', (req, res) => res.end());
@@ -69,20 +65,20 @@ const TZ_OFFSET = new Date().getTimezoneOffset();
 app.use('/ajax/tz-offset', (req, res) => res.json({ timezoneOffset: TZ_OFFSET}).end());
 
 //If it is public report. Bind analyze report ajax middleware
-Program.publicReport && bindReportAPIToServer();
+cliArguments.publicReport && bindReportAPIToServer();
 
 //Using a upload token checker middleware
-app.use(tokenChecker.get(Program.token));
+app.use(tokenChecker.get(cliArguments.token));
 
 //private report. Bind analyze report ajax middleware
-Program.publicReport || bindReportAPIToServer();
+cliArguments.publicReport || bindReportAPIToServer();
 
 //Handler API token test request
 app.use('/ajax/test', (req, res) => res.json({ success: 'test success!' }).end());
 
 //Handler kill server request
 app.use('/ajax/kill', (req, res) => {
-	return !Program.local ? returnError(res, 'this server is not a local server, could not be kill') :
+	return !cliArguments.local ? returnError(res, 'this server is not a local server, could not be kill') :
 		(res.json({ success: 'killed' }).end(),
 			log.success(`Server killed by "/ajax/kill" API`),
 			process.nextTick(() => process.exit(0)));
@@ -117,11 +113,11 @@ errorHandler(app);
 //--------------------------------------
 
 //If output folder is not exists then mkdirs
-Fs.existsSync(Program.output) || Fs.mkdirsSync(Program.output);
+Fs.existsSync(cliArguments.output) || Fs.mkdirsSync(cliArguments.output);
 //Launch express web server
-Program.local ?
-	app.listen(Program.port, '127.0.0.1', afterServerStarted) :
-	app.listen(Program.port, afterServerStarted);
+cliArguments.local ?
+	app.listen(cliArguments.port, '127.0.0.1', afterServerStarted) :
+	app.listen(cliArguments.port, afterServerStarted);
 
 
 function returnError(res, errInfo) { res.json({ error: errInfo || 'Unknown error' }).end() }
@@ -130,15 +126,15 @@ function bindReportAPIToServer() {
 	/// @deprecated ReportMiddleware is deprecated now.
 	///   Please use /ajax/report-v2 interface.
 	///   /ajax/report interface and ReportMiddleware.js will be remove in 1.0.0
-	app.use('/ajax/report', reporter.init(Program.output));
-	app.use('/ajax/report-v2', reporterV2.init(Program.output));
+	app.use('/ajax/report', reporter.init(cliArguments.output));
+	app.use('/ajax/report-v2', reporterV2.init(cliArguments.output));
 }
 
 function afterServerStarted() {
 	log.success(`Server started!\n` +
 		`-------------------\n` +
-		`Listening port    : ${Program.port}\n` +
-		`API/Upload token  : ${Program.token}\n` +
-		`Report Permission : ${Program.publicReport ? 'public' : 'private'}\n` +
+		`Listening port    : ${cliArguments.port}\n` +
+		`API/Upload token  : ${cliArguments.token}\n` +
+		`Report Permission : ${cliArguments.publicReport ? 'public' : 'private'}\n` +
 		`-------------------`);
 }
