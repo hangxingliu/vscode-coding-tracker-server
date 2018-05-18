@@ -21,6 +21,7 @@ var there_are_some_help_above;
 require('colors');
 
 var Express = require('express'),
+	Favicon	= require('serve-favicon'),
 	Fs = require('fs-extra');
 
 var log = require('./lib/Log'),
@@ -47,7 +48,7 @@ app.use(require('body-parser').urlencoded({ extended: false }));
 app.use(welcome(cliArguments));
 
 //Empty favicon.ico
-app.use('/favicon.ico', (req, res) => res.end());
+app.use(Favicon(`${__dirname}/frontend/favicon.ico`));
 //Using front end static files
 app.use('/lib', Express.static(`${__dirname}/frontend/lib`), (req, res) => { res.writeHead(404); res.end(); });
 app.use('/report', Express.static(`${__dirname}/frontend/dist`));

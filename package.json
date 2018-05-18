@@ -34,7 +34,8 @@
     "commander": "^2.15.1",
     "express": "^4.16.3",
     "fs-extra": "^4.0.3",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "@hangxingliu/assert": "^0.1.1",
