@@ -104,7 +104,7 @@ app.post('/ajax/upload', (req, res) => {
 	storage.write(params);
 });
 
-//add 404 and 500 response to express server
+//add 404 and 500 handler to express server
 errorHandler(app);
 
 

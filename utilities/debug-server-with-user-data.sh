@@ -9,4 +9,4 @@ if [[ "$*" == *open* ]]; then
 	xdg-open "http://localhost:${PORT}/report/";
 fi
 
-npm start -s -- "--port=${PORT}" --public-report --output="$HOME/.coding-tracker"
+npm start -s -- "--port=${PORT}" --public-report --output="$HOME/.coding-tracker" --debug
