@@ -1,0 +1,38 @@
+{
+	"title": "JSON schema for VSCode coding tracker token file",
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"definitions": {
+		"SimpleToken": {
+			"type": "object",
+			"required": ["token"],
+			"properties": {
+				"remark": { "type": "string" },
+				"token": { "type": "string" }
+			}
+		}
+	},
+	"type": "object",
+	"required": ["adminToken"],
+	"properties": {
+		"adminToken": {
+			"type": ["array"],
+			"items": { "$ref": "#/definitions/SimpleToken" }
+		},
+		"viewReportToken": {
+			"type": ["array", "string"],
+			"items": { "$ref": "#/definitions/SimpleToken" }
+		},
+		"uploadToken": {
+			"type": ["array"],
+			"items": {
+				"type": "object",
+				"required": ["token"],
+				"properties": {
+					"remark": { "type": "string" },
+					"token": { "type": "string" },
+					"computerId": { "type": ["string", "array"], "items": { "type": "string"} }
+				}
+			}
+		}
+	}
+}
