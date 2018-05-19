@@ -84,6 +84,8 @@ function createBaseValidate(name) {
 		connected,
 		connectFailed,
 
+		print,
+
 		status200: () => status(200),
 		status403: () => status(403),
 		status404: () => status(404),
@@ -131,6 +133,14 @@ function createBaseValidate(name) {
 		validator.push(err => {
 			if (!err)
 				throwError(`request connected, but expected is not!`);
+		});
+		return chains;
+	}
+
+	function print(printHeader = true, printBody = true) {
+		validator.push((err, res, body) => {
+			if (printHeader) console.log(res.headers);
+			if (printBody) console.log(body);
 		});
 		return chains;
 	}

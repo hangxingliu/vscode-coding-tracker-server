@@ -42,7 +42,7 @@ describe('Start server', function () {
 		this.slow(1000);
 		var goThen = true;
 		server = require('child_process').spawn('node',
-			['app.js', '-p', `${PORT}`, '-t', `${TOKEN}`, '-o', DATABASE_FOLDER, '--local', '--debug'],
+			['app.js', '-p', `${PORT}`, '-t', `${TOKEN}`, '-o', DATABASE_FOLDER, '--local', '--debug', '--no-token-file'],
 			{ cwd: `${__dirname}/../../` });
 		server.stdout.setEncoding('utf8');
 		server.stderr.setEncoding('utf8');

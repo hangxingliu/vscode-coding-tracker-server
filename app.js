@@ -30,27 +30,35 @@ var log = require('./lib/Log'),
 	storage = require('./lib/Storage'),
 	checkParams = require('./lib/ParamsChecker'),
 	errorHandler = require('./lib/Handler404and500'),
-	tokenChecker = require('./lib/TokenMiddleware'),
+	tokenMiddleware = require('./lib/TokenMiddleware'),
 	reporter = require('./lib/analyze/ReportMiddleware'),
 	reporterV2 = require('./lib/analyze/ReportMiddlewareV2'),
-	cliArguments = require('./lib/ParseCliArguments');
+	cliArgsParser = require('./lib/ParseCliArguments'),
+	cliArgs = cliArgsParser.parse(process.argv);
 
 //Express Server Object
-var app = Express();
+const app = Express();
+
+// Init token
+tokenMiddleware.initMiddleware();
+
+const needViewReportToken = tokenMiddleware.getMiddleware('report');
+const needUploadToken = tokenMiddleware.getMiddleware('upload');
+const needAdminToken = tokenMiddleware.getMiddleware('admin');
 
 //Init Storage
-storage.init(cliArguments.output);
+storage.init(cliArgs.output);
 
 //Using body parser to analyze upload data
 app.use(require('body-parser').urlencoded({ extended: false }));
 
 //Using homepage welcome
-app.use(welcome(cliArguments));
+app.use(welcome(cliArgs));
 
 //Empty favicon.ico
 app.use(Favicon(`${__dirname}/frontend/favicon.ico`));
 //Using front end static files
-app.use('/lib', Express.static(`${__dirname}/frontend/lib`), (req, res) => { res.writeHead(404); res.end(); });
+app.use('/lib', Express.static(`${__dirname}/frontend/lib`), errorHandler.on404);
 app.use('/report', Express.static(`${__dirname}/frontend/dist`));
 
 //Display now is debug mode
@@ -65,28 +73,26 @@ if (global.DEBUG) {
 const TZ_OFFSET = new Date().getTimezoneOffset();
 app.use('/ajax/tz-offset', (req, res) => res.json({ timezoneOffset: TZ_OFFSET}).end());
 
-//If it is public report. Bind analyze report ajax middleware
-cliArguments.publicReport && bindReportAPIToServer();
+/// @deprecated ReportMiddleware is deprecated now.
+///   Please use /ajax/report-v2 interface.
+///   /ajax/report interface and ReportMiddleware.js will be remove in 1.0.0
+app.use('/ajax/report', needViewReportToken, reporter.init(cliArgs.output));
 
-//Using a upload token checker middleware
-app.use(tokenChecker.get(cliArguments.token));
-
-//private report. Bind analyze report ajax middleware
-cliArguments.publicReport || bindReportAPIToServer();
+app.use('/ajax/report-v2', needViewReportToken, reporterV2.init(cliArgs.output));
 
 //Handler API token test request
-app.use('/ajax/test', (req, res) => res.json({ success: 'test success!' }).end());
+app.use('/ajax/test', needUploadToken, (req, res) => res.json({ success: 'test success!' }).end());
 
 //Handler kill server request
-app.use('/ajax/kill', (req, res) => {
-	return !cliArguments.local ? returnError(res, 'this server is not a local server, could not be kill') :
+app.use('/ajax/kill', needAdminToken, (req, res) => {
+	return !cliArgs.local ? returnError(res, 'this server is not a local server, could not be kill') :
 		(res.json({ success: 'killed' }).end(),
 			log.success(`Server killed by "/ajax/kill" API`),
 			process.nextTick(() => process.exit(0)));
 })
 
 //Handler upload request
-app.post('/ajax/upload', (req, res) => {
+app.post('/ajax/upload', needUploadToken, (req, res) => {
 	let params = req.body,
 		versionCheckResult = version.check(params.version);
 
@@ -106,7 +112,7 @@ app.post('/ajax/upload', (req, res) => {
 });
 
 //add 404 and 500 handler to express server
-errorHandler(app);
+errorHandler.setup(app);
 
 
 //--------------------------------------
@@ -114,28 +120,26 @@ errorHandler(app);
 //--------------------------------------
 
 //If output folder is not exists then mkdirs
-Fs.existsSync(cliArguments.output) || Fs.mkdirsSync(cliArguments.output);
+Fs.existsSync(cliArgs.output) || Fs.mkdirsSync(cliArgs.output);
 //Launch express web server
-cliArguments.local ?
-	app.listen(cliArguments.port, '127.0.0.1', afterServerStarted) :
-	app.listen(cliArguments.port, afterServerStarted);
+cliArgs.local ?
+	app.listen(cliArgs.port, '127.0.0.1', afterServerStarted) :
+	app.listen(cliArgs.port, afterServerStarted);
 
 
 function returnError(res, errInfo) { res.json({ error: errInfo || 'Unknown error' }).end() }
 
-function bindReportAPIToServer() {
-	/// @deprecated ReportMiddleware is deprecated now.
-	///   Please use /ajax/report-v2 interface.
-	///   /ajax/report interface and ReportMiddleware.js will be remove in 1.0.0
-	app.use('/ajax/report', reporter.init(cliArguments.output));
-	app.use('/ajax/report-v2', reporterV2.init(cliArguments.output));
-}
-
 function afterServerStarted() {
+	let tokenSign = '';
+	if (cliArgs.randomToken)
+		tokenSign = ' (Random)';
+	if (cliArgs.isDefaultAdminToken)
+		tokenSign = ' (Default)';
 	log.success(`Server started!\n` +
 		`-------------------\n` +
-		`Listening port    : ${cliArguments.port}\n` +
-		`API/Upload token  : ${cliArguments.token}\n` +
-		`Report Permission : ${cliArguments.publicReport ? 'public' : 'private'}\n` +
+		`Listening port        : ${cliArgs.port}\n` +
+		`Admin token from cli  : ${cliArgs.token}${tokenSign}\n` +
+		`Report Permission     : ${cliArgs.publicReport ? 'public' : 'private'}\n` +
+		`Token count           : ${tokenMiddleware.getTokenCountStr()}\n` +
 		`-------------------`);
 }

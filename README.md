@@ -25,9 +25,12 @@ VSCode Coding Tracker extension server side program.
 
 ## Current Version
 
-### 0.7.0 (2018/04/xx) **TODOing...**
+### 0.7.0 (2018/05/xx) **Coding...**
 
 0. Support token files to declare multi-tokens
+	- [x] basic support
+	- [ ] support computerId attributes for uploadToken
+	- [ ] more unit tests
 1. More filter rules are supported.
 2. Refactory I18N support placeholder to more readable
 3. Merge file path and project path better.
