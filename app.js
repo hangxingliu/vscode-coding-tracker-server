@@ -135,11 +135,14 @@ function afterServerStarted() {
 		tokenSign = ' (Random)';
 	if (cliArgs.isDefaultAdminToken)
 		tokenSign = ' (Default)';
+
+	const loadedTokenFile = tokenMiddleware.getLoadedTokenFile();
 	log.success(`Server started!\n` +
 		`-------------------\n` +
 		`Listening port        : ${cliArgs.port}\n` +
 		`Admin token from cli  : ${cliArgs.token}${tokenSign}\n` +
-		`Report Permission     : ${cliArgs.publicReport ? 'public' : 'private'}\n` +
-		`Token count           : ${tokenMiddleware.getTokenCountStr()}\n` +
+		`Report permission     : ${cliArgs.publicReport ? 'public' : 'private'}\n` +
+		(loadedTokenFile ? `Loaded token file     : ${loadedTokenFile}\n` : '') +
+		`Token count           : ${tokenMiddleware.getTokenCountString()}\n` +
 		`-------------------`);
 }

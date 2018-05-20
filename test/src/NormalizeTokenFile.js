@@ -12,6 +12,9 @@ describe('Normalize token file object', () => {
 		Assert(normalizeTokenFileObject({ upload: {} }).warnings).child('0')
 			.containsSubString('unknwon token type "upload"')
 			.containsSubString('Did you mean: "uploadToken"?');
+
+		// ignore @schema and other field with name starts with '$'
+		Assert(normalizeTokenFileObject({ $schema: {} }).warnings).length(0);
 	});
 
 	it(`# adminToken is incorrect`, () => {
