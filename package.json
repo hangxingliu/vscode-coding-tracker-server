@@ -1,6 +1,6 @@
 {
   "name": "vscode-coding-tracker-server",
-  "version": "0.6.0",
+  "version": "0.7.0-dev",
   "description": "Visual Studio Code Coding Tracker Server Script",
   "main": "app.js",
   "scripts": {
@@ -29,8 +29,8 @@
     "analyzer"
   ],
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "colors": "^1.2.1",
+    "body-parser": "^1.18.3",
+    "colors": "^1.2.5",
     "commander": "^2.15.1",
     "express": "^4.16.3",
     "fs-extra": "^4.0.3",
