@@ -1,7 +1,7 @@
 //@ts-check
 
 const { Assert } = require('@hangxingliu/assert');
-const { normalizeTokenFileObject } = require('../../lib/NormalizeTokenFile')
+const { normalizeTokenFileObject } = require('../../lib/NormalizeTokenFile');
 
 describe('Normalize token file object', () => {
 	it(`# unknown token type`, () => {

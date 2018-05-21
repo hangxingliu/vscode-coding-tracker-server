@@ -1,0 +1,5 @@
+{
+	"$schema": "https://github.com/hangxingliu/vscode-coding-tracker-server/raw/master/lib/schema/TokenFile.json",
+	"myName": "Incorrect default token file",
+	"why": "for unit test"
+}
