@@ -1,7 +1,7 @@
 {
 	"$schema": "https://github.com/hangxingliu/vscode-coding-tracker-server/raw/master/lib/schema/TokenFile.json",
 	"adminToken": [{
-		"token": "test-token"
+		"token": "default-token"
 	}],
 	"viewReportToken": "public"
 }

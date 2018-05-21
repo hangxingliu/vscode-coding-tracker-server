@@ -1,0 +1,22 @@
+{
+	"$schema": "../../../lib/schema/TokenFile.json",
+	"adminToken": [{
+		"remark": "leader",
+		"token": "leader-token"
+	}],
+	"viewReportToken": [{
+		"token": "view-report-token"
+	}],
+	"uploadToken": [{
+		"remark": "Mike",
+		"token": "mike-token",
+		"computerId": ["Mike's Desktop", "Mike's Laptop"]
+	}, {
+		"remark": "Nick",
+		"token": "nick-token",
+		"computerId": "Nick's PC"
+	}, {
+		"remark": "Ghost",
+		"token": "ghost-token"
+	}]
+}

@@ -31,8 +31,11 @@ VSCode Coding Tracker extension server side program.
 	- [x] basic support
 	- [x] support computerId attributes for uploadToken
 	- [x] more unit tests
-	- [ ] more and more unit tests
+	- [x] more and more unit tests
 1. More filter rules are supported.
+	- [ ] backend support
+	- [ ] frontend support
+		- [ ] start new front-end deveploment (replace pug to [preact jsx](https://preactjs.com/))
 2. Refactory I18N support placeholder to more readable (**maybe delay**)
 3. Merge file path and project path better.
 4. Optimize database reader (add cache for old files)
