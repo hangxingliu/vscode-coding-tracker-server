@@ -29,7 +29,7 @@ VSCode Coding Tracker extension server side program.
 
 0. Support token files to declare multi-tokens
 	- [x] basic support
-	- [ ] support computerId attributes for uploadToken
+	- [x] support computerId attributes for uploadToken
 	- [ ] more unit tests
 1. More filter rules are supported.
 2. Refactory I18N support placeholder to more readable
