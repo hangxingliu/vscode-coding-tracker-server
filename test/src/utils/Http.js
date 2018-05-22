@@ -3,9 +3,13 @@
 let request = require('request'),
 	logFile = require('./LogFile').createLogFile('http-response');
 
-module.exports = { httpGet, httpPost, writeLogToFile};
+const MAX_BODY_LOG_SIZE = 1024;
 
-function writeLogToFile(then) { logFile.write(then); }
+module.exports = {
+	httpGet, httpGetResponse200, httpGetResponse200JSON, httpGetNotResponse,
+
+	deprecatedhttpGet, deprecatedhttpPost
+};
 
 /**
  * @param {string} method
@@ -19,6 +23,51 @@ function generateRequestName(method, url, param) {
 	return name;
 }
 
+/** @param {string} name */
+function createLogMiddleware(name) {
+	return (err, res, body) => {
+		logFile.appendLine(name);
+		if (err) {
+			logFile.appendLine(`error: ${err.message}\n${err.stack}\n`);
+		} else {
+			logFile.appendLine((res ? res.statusCode : '0') + ':');
+			logFile.appendLine(body.length > MAX_BODY_LOG_SIZE ? body.slice(0, MAX_BODY_LOG_SIZE) : body);
+			logFile.appendLine('\n');
+		}
+		return true;
+	};
+}
+
+function httpGet(url, param) {
+	let name = generateRequestName('GET', url, param);
+	let validator = createBaseValidate(name);
+	validator.test(createLogMiddleware(name));
+	return {
+		validator,
+		promise: new Promise((resolve, reject) =>
+			request(url, Object.assign({ method: 'get' }, param),
+				validator.validate(resolve, reject)))
+	};
+}
+
+function httpGetResponse200(url, param = {}) {
+	const obj = httpGet(url, param);
+	obj.validator.connected().status200();
+	return obj;
+}
+
+function httpGetResponse200JSON(url, param = {}) {
+	const obj = httpGet(url, param);
+	obj.validator.connected().status200().isJSON();
+	return obj;
+}
+
+function httpGetNotResponse(url, param = {}) {
+	const obj = httpGet(url, param);
+	obj.validator.connectFailed();
+	return obj;
+}
+
 /**
  * @param {string} url
  * @param {any} param
@@ -26,7 +75,7 @@ function generateRequestName(method, url, param) {
  * @param {boolean} [connected]
  * @param {number} [statusCode]
  */
-function httpGet(url, param, then, connected = true, statusCode = 0) {
+function deprecatedhttpGet(url, param, then, connected = true, statusCode = 0) {
 	let name = generateRequestName('GET', url, param);
 	let v = createCommonValidate(name, connected, statusCode);
 	process.nextTick(() =>
@@ -41,7 +90,7 @@ function httpGet(url, param, then, connected = true, statusCode = 0) {
  * @param {boolean} [connected]
  * @param {number} [statusCode]
  */
-function httpPost(url, param, then, connected = true, statusCode = 0) {
+function deprecatedhttpPost(url, param, then, connected = true, statusCode = 0) {
 	let name = generateRequestName('POST', url, param);
 	let v = createCommonValidate(name, connected, statusCode);
 	process.nextTick(() =>
@@ -54,16 +103,7 @@ function createCommonValidate(name = '', connected = true, statusCode = 0) {
 	let v = createBaseValidate(name);
 
 	//log
-	v.test((err, res, body) => {
-		if (err) {
-			logFile.appendLine(`error: ${err.message}\n${err.stack}\n`);
-		} else {
-			logFile.appendLine((res ? res.statusCode : '0') + ':');
-			logFile.appendLine(body);
-			logFile.appendLine('\n');
-		}
-		return true;
-	});
+	v.test(createLogMiddleware(name));
 
 	if (connected)
 		v.connected();
@@ -108,12 +148,21 @@ function createBaseValidate(name) {
 	};
 	return chains;
 
-	/** @param {Function} then */
-	function validate(then) {
+	/**
+	 * @param {Function} resolve
+	 * @param {Function} [reject]
+	 */
+	function validate(resolve, reject) {
 		return (err, res, body) => {
-			for (let v of validator)
-				v(err, res, body);
-			then();
+			try {
+				for (let v of validator)
+					v(err, res, body);
+			} catch (ex) {
+				if (reject)
+					return reject(ex);
+				throw ex;
+			}
+			resolve();
 		};
 	}
 
@@ -197,7 +246,7 @@ function createBaseValidate(name) {
 				} catch (e) { throwError('result is illegal JSON object'); }
 				try {
 					result = eval(express);
-				} catch (e) { throwError(`result object could not eval ${express}`); }
+				} catch (e) { throwError(`result object could not eval ${JSON.stringify(express)}`); }
 				if (!result)
 					throwError(`${express} is falsy value`);
 			});

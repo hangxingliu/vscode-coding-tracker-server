@@ -54,15 +54,13 @@ function main(then) {
 			});
 		});
 		logFile.appendLine(message);
-		logFile.write(then);
+		console.error(message);
 
-		process.nextTick(() => console.error(message));
-
-		throw new Error(`There has ${problemCount} problems in ${results.length} files. ` +
-			`You can get detailed information by running eslint.`);
+		return then(new Error(`There has ${problemCount} problems in ${results.length} files. ` +
+			`You can get detailed information by running eslint.`));
 	}
 	logFile.appendLine(message);
-	logFile.write(then);
+	then();
 }
 
 if (process.argv.indexOf('--no-eslint') < 0) {

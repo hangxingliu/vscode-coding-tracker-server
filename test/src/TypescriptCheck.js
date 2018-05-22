@@ -49,14 +49,8 @@ if (process.argv.indexOf('--no-tsc') < 0) {
 				// clean temp path
 				removeSync(TEMP_DIRECTORY);
 
-				// write log
 				logFile.appendLine(output);
-				logFile.write(writeError => {
-					if (!error)
-						return done(writeError);
-					return done(error);
-				});
-
+				done(error);
 			});
 		});
 	});

@@ -1,6 +1,6 @@
 //@ts-check
 
-let { Assert, Invoke } = require('../utils/Assert'),
+let { Assert, Invoke } = require('@hangxingliu/assert'),
 	Utils = require('../../../lib/analyze/Utils');
 
 describe('FilterFunction', () => {

@@ -1,7 +1,7 @@
 //@ts-check
 
 let Analyzer = require('../../../lib/analyze/AnalyzeCore'),
-	{ Assert } = require('../utils/Assert'),
+	{ Assert } = require('@hangxingliu/assert'),
 	{ GroupBy } = Analyzer;
 
 // 1520568000000: 2018-03-09 12:00:00 (GMT+0800 CST)
