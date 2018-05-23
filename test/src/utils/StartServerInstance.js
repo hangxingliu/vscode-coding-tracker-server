@@ -59,7 +59,7 @@ function prepareServerInstance(serverId, serverOptions) {
 				instance = fork(SERVER_APP,
 					[...serverOptions, '--port', String(port)],
 					//@ts-ignore
-					{ cwd: SERVER_CWD, stdio: 'pipe' });
+					{ cwd: SERVER_CWD, silent: true }); // silent: pipe stdout, stderr, stdin into parent(event listener).
 				instance.stdout.setEncoding('utf8');
 				instance.stderr.setEncoding('utf8');
 				instance.on('error', error => {
