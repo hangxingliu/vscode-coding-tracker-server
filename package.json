@@ -8,6 +8,7 @@
     "test-without-eslint-tsc": "npm test -- --no-eslint --no-tsc",
     "generate-js": "node ./frontend/src/js/utils/echartsUtils.generator.js",
     "build": "node ./build/build.js",
+    "dev": "node ./build/build.js -w",
     "watch": "node ./build/build.js -w",
     "build-live": "node ./build/build.js -w",
     "start": "node ./app",
