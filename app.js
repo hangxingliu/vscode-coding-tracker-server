@@ -60,6 +60,8 @@ app.use(Favicon(`${__dirname}/frontend/favicon.ico`));
 //Using front end static files
 app.use('/lib', Express.static(`${__dirname}/frontend/lib`), errorHandler.on404);
 app.use('/report', Express.static(`${__dirname}/frontend/dist`));
+// new frontend UI by preact technology
+app.use('/report-new', Express.static(`${__dirname}/frontend/dist`));
 
 //Display now is debug mode
 //@ts-ignore

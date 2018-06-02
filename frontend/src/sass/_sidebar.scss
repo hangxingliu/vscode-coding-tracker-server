@@ -19,7 +19,7 @@
 		top: 3rem;
 		z-index: 1000;
 		max-height: calc(100vh - 3rem);
-	
+
 	}
 
 	#reportRangeDropdown {
@@ -55,7 +55,7 @@
 	.nav-sidebar {
 		margin-top: 20px;
 		margin-bottom: 20px;
-		
+
 		.nav-link {
 			border-radius: 0;
 			color: $sidebar-color !important;
@@ -65,10 +65,19 @@
 				border-left: 5px solid $primary-color-dark;
 			}
 			&:hover {
-				color: $sidebar-color-active !important;				
+				color: $sidebar-color-active !important;
 			}
 
 			.ion { margin-right:  10px; }
+
+			&.btn-new-report-ui {
+				color: $primary-color-dark !important;
+				text-shadow: 0 0 8px $primary-color-light;
+
+				&:hover {
+					color: $primary-color !important;
+				}
+			}
 		}
 
 	}
