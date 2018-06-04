@@ -41,6 +41,7 @@ type AnalyzeResult = {
 		day?: HasCodingWatchingObjectMap;
 		project?: HasCodingWatchingObjectMap;
 		computer?: HasCodingWatchingObjectMap;
+		language?: HasCodingWatchingObjectMap;
 		vcs?: HasCodingWatchingObjectMap;
 	}
 };
