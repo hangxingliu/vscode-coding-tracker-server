@@ -12,7 +12,7 @@ utilities/*.out
 # ignore unit test assets
 test/temp
 test/resources/data-simple
-test/playground
+# test/playground
 test/log
 
 # ignore yarn.lock
