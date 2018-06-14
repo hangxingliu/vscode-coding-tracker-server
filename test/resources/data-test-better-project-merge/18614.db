@@ -1,0 +1,37 @@
+4.0
+
+#
+# Test AnalyzerCoreV2 merge project
+#
+# Projects:
+#    /proj/A                     %2Fproj%2FA
+#    /proj/B                     %2Fproj%2FB
+# Files:
+#    /proj/A/package.json        %2Fproj%2FA%2Fpackage.json                 package.json
+#    /proj/A/src/index.js        %2Fproj%2FA%2Fsrc%2Findex.js               src%2Findex.js
+#    /proj/B/main.cc             %2Fproj%2FB%2Fmain.cc                      main.cc
+#    /proj/B/main.h              %2Fproj%2FB%2Fmain.h                       main.h
+#    /proj/single                %2Fproj%2Fsingle                           single
+#    /proj/C/README.md           %2Fproj%2FC%2FREADME.md                    README.md
+#
+#
+# One day in 2018-06-14 (14th June 2018) Thu Jun 14 2018 00:00:00 GMT+0800 (Hong Kong Standard Time)
+#
+# This day begins at 1528905600000 ends at (1528992000000 - 1)
+#
+
+# 09:00    1528938000000
+0 1528938000000 31990 cpp main.cc %2Fproj%2FB pc1 git::master 10 0 0 0
+2 1528938002000 20000 cpp main.cc %2Fproj%2FB pc1 git::master 10 0 0 0
+
+# 14:30    1528957800000
+0 1528957800000 41990 javascript index.js %2Fproj%2FA pc1 git::master 80 0 0 0
+2 1528957801500 25000 javascript index.js %2Fproj%2FA pc1 git::master 80 0 0 0
+
+# 21:00    1528981200000
+0 1528981200000 20500 cpp %2Fproj%2FB%2Fmain.h %2Fproj%2FA pc1 git::master 80 0 0 0
+2 1528981200500 10000 cpp %2Fproj%2FB%2Fmain.h %2Fproj%2FA pc1 git::master 80 0 0 0
+
+# 21:30    1528983000000
+0 1528983000000 20500 plaintext %2Fproj%2Fsingle unknown pc1 git::master 80 0 0 0
+2 1528983003000 10000 plaintext %2Fproj%2Fsingle unknown pc1 git::master 80 0 0 0
