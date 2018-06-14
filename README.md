@@ -38,13 +38,13 @@ VSCode Coding Tracker extension server side program.
 		- [ ] start new front-end deveploment (replace pug to [preact jsx](https://preactjs.com/))
 2. Refactory I18N support placeholder to more readable (**maybe delay**)
 3. Merge file path and project path better.
-	- [ ] unit test for report-v2
-	- [ ] depends on file **reader with cache** and **pre-scan for finding projects**
+	- [x] unit test for report-v2
+	- [x] depends on file **reader with cache** and **pre-scan for finding projects**
 4. Optimize database reader (add cache for old files)
 	- [x] new intermediate layer for filesystem reading operation
 	- [x] add cache for old files by following modify time
-	- [ ] add this layer into AnalyzeCore
-	- [ ] unit tests
+	- [x] add this layer into AnalyzeCore
+	- [x] unit tests
 
 ### 0.6.0 (2018/03/23)
 
