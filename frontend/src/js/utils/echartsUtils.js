@@ -1,6 +1,9 @@
 //@ts-check
 
-let { getReadableTime, ONE_HOUR, ONE_MINUTE } = require('./datetime');
+const lodashSet = require('lodash/set');
+const lodashGet = require('lodash/get');
+const lodashMerge = require('lodash/merge');
+const { getReadableTime, ONE_HOUR, ONE_MINUTE } = require('./datetime');
 
 module.exports = {
 	createSeries,
@@ -62,8 +65,26 @@ function createTotalDurationXAxisForBar(maxDuration = 0) {
 
 function createSeries(type = '', name = '') {
 	/** @type {any} */
-	let object = { type, name };
-	let originalChains = { setLabels, setValues, add, toObject };
+	const object = { type, name };
+	const chains = {
+		setLabels, setValues,
+		add, toObject,
+		showMaxMarkPoint,
+		showAverageLine,
+		setLineSmooth,
+		setMarkPointAsWideRect,
+		setLineColor,
+		setItemColor,
+		setAreaColor,
+		setTooltip,
+		setLabelFormatter,
+		setLabelBold,
+	};
+	return chains;
+
+	/** @returns {EChartSeriesItem} */
+	function toObject() { return object; }
+
 	function setLabels(labels) {
 		object.data
 			? object.data.forEach((it, i) => it.name = labels[i])
@@ -76,97 +97,63 @@ function createSeries(type = '', name = '') {
 			: (object.data = values.map(value => ({ value })));
 		return chains;
 	}
-	function add(...options) { $.extend(true, object, ...options); return chains; }
-	/** @returns {EChartSeriesItem} */
-	function toObject() { return object; }
-
-	//#region !!! WARNING !!!  Generated codes block
-
-	let chains = Object.assign({
-		showMaxMarkPoint,
-		showAverageLine,
-		setLineSmooth,
-		setMarkPointAsWideRect,
-		setLineColor,
-		setItemColor,
-		setAreaColor,
-		setTooltip,
-		setLabelFormatter,
-		setLabelBold
-	}, originalChains);
-	return chains;
+	function add(...options) {
+		lodashMerge(object, ...options);
+		return chains;
+	}
 
 	function showMaxMarkPoint(name, formatter = null, addons = null) {
-		let _value = Object.assign({ type: 'max', name },  formatter ? { label: { normal: { formatter } } } : {}, addons || {});
-		if(!object.markPoint) object.markPoint = { data : [ _value ] };
-		else if(!object.markPoint.data ) object.markPoint.data  = [ _value ];
-		else object.markPoint.data .push(_value);
+		let value = { type: 'max', name };
+		if (formatter) value.label = { normal: { formatter } };
+		if (addons) value = Object.assign(value, addons);
 
+		const data = lodashGet(object, ['markPoint', 'data']);
+		if (Array.isArray(data)) data.push(value);
+		else lodashSet(object, ['markPoint', 'data'], [value]);
 		return chains;
 	}
 	function showAverageLine(name, formatter = null, addons = null) {
-		let _value = Object.assign({ type: 'average', name },  formatter ? { label: { normal: { formatter } } } : {}, addons || {});
-		if(!object.markLine) object.markLine = { data : [ _value ] };
-		else if(!object.markLine.data ) object.markLine.data  = [ _value ];
-		else object.markLine.data .push(_value);
+		let value = { type: 'average', name };
+		if (formatter) value.label = { normal: { formatter } };
+		if (addons) value = Object.assign(value, addons);
 
+		const data = lodashGet(object, ['markLine', 'data']);
+		if (Array.isArray(data)) data.push(value);
+		else lodashSet(object, ['markLine', 'data'], [value]);
 		return chains;
 	}
 	function setLineSmooth() {
 		object.smooth = true;
-
 		return chains;
 	}
 	function setMarkPointAsWideRect() {
-		if(!object.markPoint) object.markPoint = { symbol : 'rect' };
-		else object.markPoint.symbol  = 'rect';
-		object.markPoint.symbolSize = [80, 30];
-		object.markPoint.symbolOffset = [0, '-60%'];
-
+		lodashSet(object, ['markPoint', 'symbol'], 'rect');
+		lodashSet(object, ['markPoint', 'symbolSize'], [80, 30]);
+		lodashSet(object, ['markPoint', 'symbolOffset'], [0, '-60%']);
 		return chains;
 	}
 	function setLineColor(color) {
-		if(!object.lineStyle) object.lineStyle = { normal: { color } };
-		else if(!object.lineStyle.normal) object.lineStyle.normal = { color };
-		else object.lineStyle.normal.color = color;
-
+		lodashSet(object, ['lineStyle', 'normal', 'color'], color);
 		return chains;
 	}
 	function setItemColor(color) {
-		if(!object.itemStyle) object.itemStyle = { normal: { color } };
-		else if(!object.itemStyle.normal) object.itemStyle.normal = { color };
-		else object.itemStyle.normal.color = color;
-
+		lodashSet(object, ['itemStyle', 'normal', 'color'], color);
 		return chains;
 	}
 	function setAreaColor(color) {
-		if(!object.areaStyle) object.areaStyle = { normal: { color } };
-		else if(!object.areaStyle.normal) object.areaStyle.normal = { color };
-		else object.areaStyle.normal.color = color;
-
+		lodashSet(object, ['areaStyle', 'normal', 'color'], color);
 		return chains;
 	}
 	function setTooltip(formatter) {
-		if(!object.tooltip) object.tooltip = { formatter };
-		else object.tooltip.formatter = formatter;
-
+		lodashSet(object, ['tooltip', 'formatter'], formatter);
 		return chains;
 	}
 	function setLabelFormatter(formatter) {
-		if(!object.label) object.label = { normal: { formatter } };
-		else if(!object.label.normal) object.label.normal = { formatter };
-		else object.label.normal.formatter = formatter;
-
+		lodashSet(object, ['label', 'normal', 'formatter'], formatter);
 		return chains;
 	}
 	function setLabelBold() {
-		if(!object.label) object.label = { normal: { textStyle: { fontWeight: 'bold' } } };
-		else if(!object.label.normal) object.label.normal = { textStyle: { fontWeight: 'bold' } };
-		else if(!object.label.normal.textStyle) object.label.normal.textStyle = { fontWeight: 'bold' };
-		else object.label.normal.textStyle.fontWeight = 'bold';
-
+		lodashSet(object, ['label', 'normal', 'textStyle', 'fontWeight'], 'bold');
 		return chains;
 	}
-
-	//#endregion !!! WARNING !!!  Generated codes block
 }

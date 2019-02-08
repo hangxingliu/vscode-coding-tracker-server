@@ -2,7 +2,8 @@
 /// <reference path="../index.d.ts" />
 /// <reference path="../echarts.d.ts" />
 
-let dateTime = require('./datetime');
+const dateTime = require('./datetime');
+const lodashMerge = require('lodash/merge');
 
 let Utils = {
 	expandGroupByDaysObject,
@@ -15,7 +16,6 @@ let Utils = {
 
 	generateChartOption,
 
-	merge,
 	getShortProjectName,
 
 	getChartDom,
@@ -38,7 +38,8 @@ function expandGroupByDaysObject(obj, startDate, endDate) {
 		throw new Error('startDate could not bigger than endDate');
 	let endDateString = dateTime.getYYYYMMDD(endDate),
 		cursorDateString = '';
-	let result = {};
+	/** @type {CodingWatchingMap} */
+	const result = {};
 	do {
 		cursorDateString = dateTime.getYYYYMMDD(startDate)
 		result[cursorDateString] = obj[cursorDateString] || getEmptyCodingWatchingObject();
@@ -52,9 +53,10 @@ function expandGroupByDaysObject(obj, startDate, endDate) {
  * @returns {CodingWatchingMap}
  */
 function expandAndShortGroupByHoursObject(obj, endDate) {
-	let result = {}, i = 24,
-		cursorDate = new Date(endDate),
-		cursorDateString = '';
+	let i = 24, cursorDate = new Date(endDate), cursorDateString = '';
+
+	/** @type {CodingWatchingMap} */
+	const result = {};
 	while (i--) {
 		cursorDateString = dateTime.getYYYYMMDD_HHMM(cursorDate);
 		result[cursorDateString] = obj[cursorDateString] || getEmptyCodingWatchingObject();
@@ -141,16 +143,7 @@ function object2array(object) {
  * @returns {EChartOption}
  */
 function generateChartOption(name, type, data, ...options) {
-	//@ts-ignore
-	return $.extend(true, {}, { name, type, data }, ...options);
-}
-
-/**
- * @param {any[]} objects
- * @returns any
- */
-function merge(...objects) {
-	return $.extend(true, {}, ...objects);
+	return lodashMerge({}, { name, type, data }, ...options);
 }
 
 /** @param {string} str */
