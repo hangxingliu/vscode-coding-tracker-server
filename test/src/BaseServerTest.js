@@ -39,7 +39,7 @@ fs.removeSync(DATABASE_FOLDER);
 
 describe('Start server', function () {
 	it('#Start Server', function (then) {
-		this.slow(1000);
+		this.slow(2000);
 		var goThen = true;
 		server = require('child_process').spawn('node',
 			['app.js', '-p', `${PORT}`, '-t', `${TOKEN}`, '-o', DATABASE_FOLDER, '--local', '--debug', '--no-token-file'],
@@ -193,7 +193,11 @@ describe('Request test', () => {
 });
 
 describe('Stop server', () => {
-	it('#Stop Server', then => {
-		killAll(server.pid, 'SIGTERM', then);
+	it('#Stop Server', function(then) {
+		this.slow(3000);
+		var serverToStop = require('child_process').spawn('node',
+			['app.js', '-p', `${PORT+1}`, '-t', `${TOKEN}`, '-o', DATABASE_FOLDER, '--local', '--debug', '--no-token-file'],
+			{ cwd: `${__dirname}/../../` });
+		killAll(serverToStop.pid, 'SIGTERM', then);
 	});
 });
