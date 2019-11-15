@@ -1,17 +1,17 @@
-mixin range(range, text)
-	a.dropdown-item(href="javascript:;" data-range=range)= text
+mixin range(range, i18n, text)
+	a.dropdown-item(href="javascript:;" data-range=range)(data-i18n=i18n)= text
 
 mixin reportRangeDropdownMenu
 	.dropdown-menu
-		h6.dropdown-header Report Date Range
-		+range("1", "Recent 7 Days")
-		+range("2", "Recent 14 Days")
-		+range("3", "Recent 30 Days")
-		+range("4", "Recent 365 Days")
+		h6.dropdown-header(data-i18n="report_date_range") Report Date Range
+		+range("1", "nav_recent_7", "Recent 7 Days")
+		+range("2", "nav_recent_14", "Recent 14 Days")
+		+range("3", "nav_recent_30", "Recent 30 Days")
+		+range("4", "nav_recent_365", "Recent 365 Days")
 		.dropdown-divider
-		+range("11", "This Week")
-		+range("12", "Last Week")
-		+range("13", "This Month")
-		+range("14", "Last Month")
+		+range("11", "nav_recent_this_week", "This Week")
+		+range("12", "nav_recent_last_week", "Last Week")
+		+range("13", "nav_recent_this_month", "This Month")
+		+range("14", "nav_recent_last_month", "Last Month")
 		.dropdown-divider
-		+range("20", "Custom Date Range")
+		+range("20", "nav_recent_custom_range", "Custom Date Range")

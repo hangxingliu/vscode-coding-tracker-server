@@ -22,7 +22,7 @@ div.page-24hours(style="display: none")
 					h4.card-title
 						i.ion-clock.mr-2
 						span(data-i18n="title_24hs") 24 hours
-						| &nbsp;from&nbsp;
+						span(data-i18n="date_from") &nbsp;from&nbsp;
 						b: a.filter-24hs.text-info(href="javascript:;")
 							span.txt 11-14 19:00
 							i.ml-2.ion-arrow-down-b
@@ -45,8 +45,8 @@ div.page-24hours(style="display: none")
 					h4.card-title
 						i.ion-document.mr-2
 						span(data-i18n="title_files") Files
-						| (
+						| &nbsp;(
 						span(data-i18n="word_top")
-						| 10):
+						| &nbsp;10):
 					.card-text
 						+chartBlock("files")
