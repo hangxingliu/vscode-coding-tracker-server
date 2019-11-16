@@ -23,4 +23,11 @@ npm i --save-dev\
 	babel-plugin-minify-mangle-names\
 	babel-plugin-transform-merge-sibling-variables
 
-	
+echo "RUN npm update"
+npm update
+
+echo "RUN npm audit fix"
+npm audit fix
+
+echo "RUN npm install"
+npm install
