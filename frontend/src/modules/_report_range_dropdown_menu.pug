@@ -1,5 +1,8 @@
 mixin range(range, i18n, text)
-	a.dropdown-item(href="javascript:;" data-range=range)(data-i18n=i18n)= text
+	a.dropdown-item(
+		href="javascript:;" data-range=range
+		data-i18n=i18n
+	)= text
 
 mixin reportRangeDropdownMenu
 	.dropdown-menu
