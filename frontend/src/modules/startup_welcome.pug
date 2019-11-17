@@ -13,10 +13,10 @@ mixin link2(link)
 		span.ion-information-circled.mr-1
 		span(data-i18n="welcome_intro") Intro:
 	dl.ml-3
-		dt Watching time
+		dt(data-i18n="welcome_watching_time_title")  Watching time
 		dd.ml-1(data-i18n="welcome_watching_time") 
 			| The time you watching in the VS Code (include coding time)
-		dt Coding time
+		dt(data-i18n="welcome_coding_time_title")  Coding time
 		dd.ml-1(data-i18n="welcome_coding_time") 
 			| The time you typing in the VS Code (On the other hand, it reflects how long you focus coding)
 
@@ -46,11 +46,15 @@ mixin link2(link)
 			| or give me 
 		+link2("https://github.com/hangxingliu/vscode-coding-tracker-server/pulls") pull request 
 		br/ 
-		| I welcome translations to this page into other languages. 
-		| And solve the language expression fault in the page.
+		span(data-i18n="welcome_contribution_3")
+			| I welcome translations to this page into other languages. 
+		span(data-i18n="welcome_contribution_4")
+			| And solve the language expression fault in the page.
 		br/
 		i 
-			| (About contributing included translation, you can referer  
+			| (
+			span(data-i18n="welcome_contribution_5") About contributing included translation, you can referer
+			| &nbsp;
 			a(href="https://github.com/hangxingliu/vscode-coding-tracker-server/blob/master/CONTRIBUTING.md" target="_blank") 
 				| CONTRIBUTING.md 
 			| )

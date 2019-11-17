@@ -14,31 +14,31 @@ include _report_range_dropdown_menu.pug
 		li.nav-item
 			a.nav-link.active(href="#" data-route="overview")
 				i.ion.ion-connection-bars
-				| Overview
+				span(data-i18n="title_summary") Overview
 	ul.nav.nav-pills.flex-column.nav-sidebar
 		li.nav-item
 			a.nav-link(href="#" data-route="24hours")
 				i.ion.ion-clock
-				| 24 Hours Report
+				span(data-i18n="title_24hs") 24 Hours Report
 		li.nav-item
 			a.nav-link(href="#" data-route="projects")
 				i.ion.ion-folder
-				| Projects Report
+				span(data-i18n="title_projects") Projects Report
 		li.nav-item
 			a.nav-link(href="#" data-route="languages")
 				i.ion.ion-code
-				| Languages Report
+				span(data-i18n="title_languages") Languages Report
 		li.nav-item
 			a.nav-link(href="#" data-route="vcs")
 				i.ion.ion-network
-				| VCS Branches Report
+				span(data-i18n="title_vcs") VCS Branches Report
 	ul.nav.nav-pills.flex-column.nav-sidebar
 		li.nav-item
 			a.btn-show-welcome.nav-link(href="javascript:;")
 				i.ion.ion-help
-				| Help
+				span(data-i18n="title_help") Help
 	ul.nav.nav-pills.flex-column.nav-sidebar
 		li.nav-item
 			a.btn-new-report-ui.nav-link(href="/report-new")
 				i.ion.ion-erlenmeyer-flask
-				| New Report UI
+				span(data-i18n="title_new_preport_ui") New Report UI

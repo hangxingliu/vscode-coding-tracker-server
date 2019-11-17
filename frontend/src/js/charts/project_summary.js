@@ -25,7 +25,15 @@ function tooltipFormatter(p, ticket, set){
 }
 
 function markFormatter(p) {
-	return getReadableTime(p.data.value);
+	let value = 0;
+	if (p && p.data && p.value) {
+		value = p.data.value;
+	} else if (p && p.data) {
+		value = p.data;
+	} else if (p) {
+		value = p;
+	}
+	return getReadableTime(value);
 }
 
 let dateLabels = [];

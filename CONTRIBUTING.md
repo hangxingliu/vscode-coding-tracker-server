@@ -77,4 +77,4 @@ Detailed files manifest: [FILES.md](docs/FILES.md)
 
 ### Test suites
 
-`npm test` or `npm run test-no-eslint-tsc`
+`npm test` or `npm run test-without-eslint-tsc`

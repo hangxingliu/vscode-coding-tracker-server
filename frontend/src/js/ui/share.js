@@ -129,5 +129,15 @@ function onClickMarkLineBtn() {
 	console.log(lines);
 	chartShareSummary.update(dataGroupByDate, formData);
 }
-function markFormatter(p) { return dateTime.getReadableTime(p.data.value); }
+function markFormatter(p) {
+	let value = 0;
+	if (p && p.data && p.value) {
+		value = p.data.value;
+	} else if (p && p.data) {
+		value = p.data;
+	} else if (p) {
+		value = p;
+	}
+	return dateTime.getReadableTime(value);
+}
 

@@ -8,7 +8,7 @@ header(class=['navbar', 'navbar-expand', 'navbar-dark'],
     class=['bg-primary-color-dark', 'layout-navbar'])
     a.navbar-brand.mr-0.mr-md-2(href='#', aria-label='VSCode Coding Tracker Report')
         | VSCode Coding Tracker Report
-        sub Beta
+        sub &nbsp;Beta
     ul.navbar-nav-scroll.navbar-nav.ml-auto
         li#reportRangeDropdown4Mobile.nav-item.dropdown.mr-auto.d-md-none
             a.nav-item.nav-link.dropdown-toggle.text-primary-color-text(
@@ -22,13 +22,14 @@ header(class=['navbar', 'navbar-expand', 'navbar-dark'],
             a.nav-item.nav-link.dropdown-toggle.text-primary-color-text(
                 href='javascript:;', data-toggle='dropdown',
                 aria-haspopup='true', aria-expanded='false')
-                i.ion.ion-earth.d-none.d-sm-inline
-                | &nbsp;&nbsp;Languages
+                i.ion.ion-earth.d-none.d-sm-inline &nbsp;&nbsp;
+                span(data-i18n="nav_language") Languages
             .dropdown-menu.dropdown-menu-right
                +language("en", "English")
                +language("zh-cn", "简体中文")
                +language("zh-tw", "繁體中文")
                +language("ru", "русский")
+               +language("fr", "Français")
         button#toggleSidebarNav.btn.btn-link.d-md-none.p-0.ml-3(
             type="button",
             data-toggle="collapse",data-target="#sidebarNav",

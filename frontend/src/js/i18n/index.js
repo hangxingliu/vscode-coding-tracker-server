@@ -7,7 +7,8 @@ let languages = {
 	'zh-cn': require('./zh-cn'),
 	'zh-tw': require('./zh-tw'),
 	'ru': require('./ru'),
-	'en': require('./en')
+	'en': require('./en'),
+	'fr': require('./fr')
 }, language = '';
 
 updateUI();
