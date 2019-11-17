@@ -19,7 +19,7 @@ let URL = {
 let API = {
 	URL,
 	init: () => {
-		APIToken = (location.href.match(/[?&]token=(.+?)(&|$)/) || ['', ''])[1];
+		APIToken = (location.href.match(/[?&]token=(.+?)(&|$)?(?=#|$)/) || ['', ''])[1];
 		return API;
 	},
 
