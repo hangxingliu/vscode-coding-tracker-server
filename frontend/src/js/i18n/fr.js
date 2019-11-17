@@ -19,7 +19,7 @@ module.exports = {
 	title_files: 'Fichiers',
 	title_computers: 'Ordinateurs',
 	title_welcome: 'VSCode Coding Tracker',
-	title_vcs: 'Contrôle de version (git)',
+	title_vcs: 'Branches Git',
 
 	title_share: 'Partager',
 
