@@ -62,7 +62,15 @@ function update(dataGroupByDate) {
 }
 
 function markFormatter(p) {
-	return getReadableTime(p.data.value);
+	let value = 0;
+	if (p && p.data && p.value) {
+		value = p.data.value;
+	} else if (p && p.data) {
+		value = p.data;
+	} else if (p) {
+		value = p;
+	}
+	return getReadableTime(value);
 }
 function tooltipFormatter(p, ticket, set){
 	let setText = text => (setTimeout(set, 1, ticket, text), text),
