@@ -6,6 +6,7 @@ let englishDirectoryIsEmpty = true;
 let languages = {
 	'zh-cn': require('./zh-cn'),
 	'zh-tw': require('./zh-tw'),
+	'ja-jp': require('./ja-jp'),
 	'ru': require('./ru'),
 	'en': require('./en')
 }, language = '';
