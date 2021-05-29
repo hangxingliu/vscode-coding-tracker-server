@@ -7,6 +7,7 @@ let languages = {
 	'zh-cn': require('./zh-cn'),
 	'zh-tw': require('./zh-tw'),
 	'ru': require('./ru'),
+	'pt-br': require('./pt-br'),
 	'en': require('./en')
 }, language = '';
 
